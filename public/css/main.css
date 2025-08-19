@@ -653,7 +653,7 @@ footer .footer-social{
 
 @media only screen and (max-width: 48em) {
   .header-section .slide {
-    padding-bottom: 140px;
+    padding-bottom: 80px;
     align-items: flex-end;
   }
 }
