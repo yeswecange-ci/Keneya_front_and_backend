@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
- <section class="team-details">
+ <section class="team-details mgt">
         <div class="container-lg">
             <div class="section--title wow fadeInLeft">
                 <h2>Équipe dirigeante</h2>

@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- ***** -->
-    <section class="about"> 
+    <section class="about mgt"> 
         <div class="container-lg">
             <div class="section--title wow fadeInLeft">
                 <h1>À propos de nous</h1>

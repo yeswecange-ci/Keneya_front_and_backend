@@ -70,7 +70,7 @@
                     publique
                     innovantes et durables.</p>
 
-                <a href="#" class="btn-site">
+                <a href="{{ url('/about') }}" class="btn-site">
                     <span>En savoir plus</span>
                     <span class="arrow">→</span>
                 </a>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
 
-                    <a href="#" class="btn-site wow fadeInRight">
+                    <a href="{{ url('/activities') }}" class="btn-site wow fadeInRight">
                         <span>Découvrir nos domaines d'intervention</span>
                         <span class="arrow">→</span>
                     </a>

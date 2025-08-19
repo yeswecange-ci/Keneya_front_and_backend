@@ -757,60 +757,27 @@ footer .footer-social{
 }
 
 .navigation {
-  position: fixed;
-  /* Fixe la nav en haut */
+  position: fixed; /* Fixe la nav en haut */
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  /* Assure qu'elle est au-dessus */
-  background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  /* Ombre légère */
+  background: white; /* par défaut TRANSPARENT */
+  box-shadow: 0 5px 20px -10px rgba(0, 0, 0, 0.1);
   padding: 2rem 0;
-  /* Réduit le padding */
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Navigation de base */
 .navigation1 {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: transparent;
-  transition: all 0.3s ease;
-  z-index: 1000;
+  background-color: transparent;
   box-shadow: none;
 }
 
-/* État scrollé */
-.navigation1.scrolled {
-  background: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.white {
+  background-color: #fff !important; /* devient blanche au scroll */
+  box-shadow: 0 5px 20px -10px rgba(0, 0, 0, 0.1);
 }
 
-.navigation1:not(.scrolled) .menu ul li a {
-  color: #fff !important;
-}
-
-.navigation1:not(.scrolled) .menu ul li a .navSelect {
-  color: orange !important;
-  /* Toujours orange */
-}
-
-/* Couleurs en mode transparent */
-.navigation1:not(.scrolled) .lang-switcher,
-.navigation1:not(.scrolled) .lang-options a {
-  color: #00A3C6 !important;
-  /* Texte langue en noir */
-}
-
-.navigation1:not(.scrolled) .navSelect {
-  color: orange !important;
-  /* Élément actif en orange */
-}
-
-/* Couleurs en mode scrollé */
 .navigation .container-lg {
   display: flex;
   align-items: center;
@@ -826,7 +793,8 @@ footer .footer-social{
 
 .navigation .img-logo img {
   height: 4rem;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .navigation .menu-toggle {
@@ -848,7 +816,7 @@ footer .footer-social{
   height: 2px;
   width: 100%;
   background: #00A3C6;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   transform-origin: center;
 }
 
@@ -866,7 +834,7 @@ footer .footer-social{
 
 .navigation .menu {
   display: flex;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .navigation .menu ul {
@@ -882,6 +850,7 @@ footer .footer-social{
   position: relative;
   display: flex;
   align-items: center;
+  text-transform: uppercase;
   justify-content: center;
 }
 
@@ -893,8 +862,34 @@ footer .footer-social{
   color: #00A3C6;
   font-size: 14px;
   font-weight: 600;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   text-decoration: none;
+}
+
+.navigation1 .menu ul li a {
+  color: white;
+}
+
+.navigation1 .menu ul li a:hover {
+  color: #00A3C6 ;
+}
+
+
+
+.white .menu ul li a {
+  color:#00A3C6;
+}
+
+.white .menu ul li a:hover {
+  color: #F59200 !important;
+}
+
+.mgt{
+  margin-top: 75px;
+}
+
+.white .navSelect {
+  color: #F59200 !important;
 }
 
 .navigation .menu ul li a:hover {
@@ -907,7 +902,9 @@ footer .footer-social{
 
 .navigation .lang-switcher {
   cursor: pointer;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   position: relative;
   color: #00A3C6;
   font-size: 14px;
@@ -924,6 +921,14 @@ footer .footer-social{
   border-radius: 4px;
   z-index: 10;
   box-shadow: 0px 0px 9px 1px rgba(0, 0, 0, 0.08);
+}
+
+.navigation1 .lang-options{
+  background: #00A3C6 ;
+}
+
+.white .lang-options{
+  background: white;
 }
 
 .navigation .lang-options a {

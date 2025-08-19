@@ -2,7 +2,7 @@
     <div class="navigation navigation1">
         <div class="container-lg">
             <div class="img-logo">
-                <a href="index.html">
+                <a href="{{ url('/') }}">
                     <img src="{{asset('images/logo1.png')}}" alt="logo">
                 </a>
             </div>
@@ -18,11 +18,41 @@
             <div class="menu" id="menu">
                 <ul>
                     <ul> 
-                        <li><a href="about.html" class="navSelect">À PROPOS DE NOUS</a> <i class="fa-solid fa-arrow-right"></i></li>
-                        <li><a href="activities.html">NOS ACTIVITÉS</a><i class="fa-solid fa-arrow-right"></i></li>
-                        <li><a href="news.html">ACTUALITÉS</a><i class="fa-solid fa-arrow-right"></i></li>
-                        <li><a href="team-details.html">ESPACE EXPERTS</a><i class="fa-solid fa-arrow-right"></i></li>
-                        <li><a href="contact.html">CONTACT</a><i class="fa-solid fa-arrow-right"></i></li>
+                        <li>
+                            <a href="{{ url('/about') }}" class="{{ Request::is('about') ? 'navSelect' : '' }}">
+                                A propos de nous
+                            </a> 
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('/activities') }}" class="{{ Request::is('activities') ? 'navSelect' : '' }}">
+                                Nos activités
+                            </a>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('/news') }}" class="{{ Request::is('news') ? 'navSelect' : '' }}">
+                                Actualités
+                            </a>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('/team-details') }}" class="{{ Request::is('team-details') ? 'navSelect' : '' }}">
+                                Espace experts
+                            </a>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('/contact') }}" class="{{ Request::is('contact') ? 'navSelect' : '' }}">
+                                Contact
+                            </a>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </li>
+
 
                         <li>
                               <div class="d-flex align-items-center justify-content-between w-100">
@@ -53,4 +83,4 @@
            
         </div>
     </div>
-    <!-- ***** -->
+<!-- ***** -->
