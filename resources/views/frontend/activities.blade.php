@@ -399,3 +399,14 @@
         </div>
     </section>
 @endsection
+
+
+@section('scripts')
+    <script>
+        function scrollToSection() {
+            document.getElementById('next-section').scrollIntoView({
+            behavior: 'smooth'
+            });
+        }
+    </script>
+@endsection

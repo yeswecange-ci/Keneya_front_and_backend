@@ -1,5 +1,5 @@
 <!-- footer -->
-    <footer class="mt-5">
+    <footer class="">
         <div class="container-lg">
             <div class="row footer-top align-items-start text-md-start wow fadeInUp">
                 <div class="col-12 col-lg-3 footer-logo mb-4 mb-md-0">

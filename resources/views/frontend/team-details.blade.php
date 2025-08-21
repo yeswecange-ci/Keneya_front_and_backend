@@ -4,7 +4,7 @@
 @section('description', 'Découvrez en détail le profil et les réalisations des membres de notre équipe.')
 
 @section('content')
-    <section class="team-details">
+    <section class="team-details mgt">
         <div class="container-lg">
             <div class="section--title wow fadeInLeft">
                 <h2>Équipe dirigeante</h2>

@@ -398,7 +398,7 @@
 @endsection
 
 @push('scripts')
-     <script>
+    <script>
         function scrollToSection() {
             document.getElementById('next-section').scrollIntoView({
             behavior: 'smooth'

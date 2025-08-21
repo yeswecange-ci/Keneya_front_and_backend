@@ -5,7 +5,7 @@
     @include('partials.frontend.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body>
     @include('partials.frontend.navbar')
 
     @yield('content')

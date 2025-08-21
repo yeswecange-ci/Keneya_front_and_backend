@@ -1,5 +1,5 @@
 <!-- Navbar part -->
-<div class="navigation navigation1">
+<div class="navigation  {{ Request::is('/') ? 'navigation1' : '' }} {{ Request::is('activities') ? 'navigation1' : '' }}">
     <div class="container-lg">
         <div class="img-logo">
             <a href="{{ route('front.home') }}">

@@ -285,32 +285,5 @@
 @endsection
 
 @push('scripts')
-<script>
-    new Swiper('.blog-swiper', {
-        slidesPerView: 'auto',
-        spaceBetween: 20,
-        navigation: {
-        nextEl: '.blog-next',
-        prevEl: '.blog-prev',
-        },
-    });
 
-    new Swiper('.event-swiper', {
-        slidesPerView: 'auto',
-        spaceBetween: 20,
-        navigation: {
-        nextEl: '.event-next',
-        prevEl: '.event-prev',
-        },
-    });
-
-    new Swiper('.event1-swiper', {
-        slidesPerView: 'auto',
-        spaceBetween: 20,
-        navigation: {
-        nextEl: '.event1-next',
-        prevEl: '.event1-prev',
-        },
-    });
-</script>
 @endpush
