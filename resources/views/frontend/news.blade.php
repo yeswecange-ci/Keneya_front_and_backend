@@ -5,7 +5,7 @@
 
 @section('content')
     <!-- ***** -->
-    <section class="blog">
+    <section class="blog mgt">
         <div class="container-lg">
              <div class="section--title wow fadeInLeft">
                 <h1>Actualités</h1>

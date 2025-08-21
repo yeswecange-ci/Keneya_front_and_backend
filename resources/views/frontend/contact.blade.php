@@ -5,7 +5,7 @@
 
 @section('content')
     <!-- Contact -->
-    <section class="contact">
+    <section class="contact mgt">
         <div class="container-lg">
             <div class="section--title wow fadeInLeft">
                 <h1>Contact</h1>

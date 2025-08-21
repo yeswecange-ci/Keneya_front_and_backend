@@ -6,7 +6,7 @@
     positif.')
 
 @section('content')
-    <div class="min-h-screen">
+    <div class="min-h-screen mgt">
         <!-- Hero Section -->
         <section class="bg-gradient-to-r from-green-600 to-teal-600 text-white py-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
