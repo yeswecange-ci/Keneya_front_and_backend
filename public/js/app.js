@@ -3,10 +3,13 @@
 //   const navLinks = document.getElementById("navLinks");
 //   const langSwitcher = document.querySelector(".lang-switcher");
 //   const langOptions = document.querySelectorAll(".lang-options a");
-window.addEventListener("scroll", () => {
-  document
-    .querySelector(".navigation1")
-    .classList.toggle("scrolled", window.scrollY > 50);
+window.addEventListener("scroll", function () {
+  const nav = document.querySelector(".navigation1");
+  if (window.scrollY > 0) {
+    nav.classList.add("white");
+  } else {
+    nav.classList.remove("white");
+  }
 });
 //   // Menu toggle functionality
 //   menuToggle.addEventListener("click", () => {
