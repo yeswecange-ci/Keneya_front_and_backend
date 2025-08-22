@@ -1,19 +1,27 @@
 <?php
 
-use App\Http\Controllers\FrontEndController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontEndController;
+use App\Http\Controllers\BackEndController;
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-// Routes d'authentification (dashboard, profile)
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+Route::prefix('dashboard')->middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-require __DIR__ . '/auth.php';
+    Route::get('/', [BackEndController::class, 'index'])->name('dashboard.homepage');
+});
+
+require __DIR__.'/auth.php';
 
 // Route d'accueil frontend
 Route::get('/', [FrontEndController::class, 'index'])->name('front.home');
@@ -25,3 +33,4 @@ Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.cont
 Route::get('/news', [FrontEndController::class, 'news'])->name('front.news');
 Route::get('/teams', [FrontEndController::class, 'teams'])->name('front.teams');
 Route::get('/team-details', [FrontEndController::class, 'teamDetails'])->name('front.team.details');
+
