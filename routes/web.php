@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\BackEndController;
+use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\Admin\HomeController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -19,6 +21,11 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/', [BackEndController::class, 'index'])->name('dashboard.homepage');
+    Route::get('/about', [BackEndController::class, 'about'])->name('dashboard.about');
+    Route::get('/contact', [BackEndController::class, 'contact'])->name('dashboard.contact');
+    Route::get('/activities', [BackEndController::class, 'activities'])->name('dashboard.activities');
+    Route::get('/actualities', [BackEndController::class, 'actualities'])->name('dashboard.actualities');
+    Route::get('/accueil', [BackEndController::class, 'accueil'])->name('dashboard.accueil');
 });
 
 require __DIR__.'/auth.php';

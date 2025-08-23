@@ -11,4 +11,24 @@ class BackEndController extends Controller
     {
         return view('backend.homepage');
     }
+    public function about(): View
+    {
+        return view('backend.about');
+    }
+    public function accueil(): View
+    {
+        return view('backend.accueil');
+    }
+    public function contact(): View
+    {
+        return view('backend.contact');
+    }
+    public function activities(): View
+    {
+        return view('backend.activities');
+    }
+    public function actualities(): View
+    {
+        return view('backend.actualities');
+    }
 }
