@@ -3,75 +3,56 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Models\HomeSlide;
+use App\Models\HomeAbout;
+use App\Models\HomeKeyNumber;
+use App\Models\HomeRecruitment;
 
 class FrontEndController extends Controller
 {
-    /**
-     * Afficher la page d'accueil
-     */
-    public function index(): View
+    public function index()
     {
-        return view('frontend.home');
+        // Récupérer toutes les données nécessaires pour la page d'accueil
+        $homeSlides = HomeSlide::active()->ordered()->get();
+        $homeAbout = HomeAbout::active()->first();
+        $homeKeyNumbers = HomeKeyNumber::active()->with('activeStats')->first();
+        $homeRecruitment = HomeRecruitment::active()->first();
+
+        return view('frontend.home', compact(
+            'homeSlides',
+            'homeAbout',
+            'homeKeyNumbers',
+            'homeRecruitment'
+        ));
     }
 
-    /**
-     * Afficher la page "À propos"
-     */
-    public function about(): View
+    public function about()
     {
         return view('frontend.about');
     }
 
-    /**
-     * Afficher la page des activités
-     */
-    public function activities(): View
+    public function activities()
     {
-        // TODO: Récupérer les activités depuis la base de données
-        $activities = [];
-
-        return view('frontend.activities', compact('activities'));
+        return view('frontend.activities');
     }
 
-    /**
-     * Afficher la page de contact
-     */
-    public function contact(): View
+    public function contact()
     {
         return view('frontend.contact');
     }
 
-    /**
-     * Afficher la page des actualités
-     */
-    public function news(Request $request)
+    public function news()
     {
-        // TODO: Traiter la logique des actualités
-        // Pour l'instant, on retourne une vue simple
         return view('frontend.news');
     }
 
-    /**
-     * Afficher la page des équipes
-     */
-    public function teams(Request $request)
+    public function teams()
     {
-        // TODO: Récupérer les équipes depuis la base de données
-        $teams = [];
-
-        return view('frontend.teams', compact('teams'));
+        return view('frontend.teams');
     }
 
-    /**
-     * Afficher les détails d'une équipe
-     */
-    public function teamDetails(Request $request)
+    public function teamDetails()
     {
-        // TODO: Récupérer les détails de l'équipe
-        $teamId = $request->input('team_id');
-        $team = null; // À remplacer par la logique de récupération
-
-        return view('frontend.team-details', compact('team'));
+        return view('frontend.team-details');
     }
 }

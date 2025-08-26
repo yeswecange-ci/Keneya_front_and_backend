@@ -7,18 +7,21 @@ use Illuminate\View\View;
 
 class BackEndController extends Controller
 {
-    public function index(): View
-    {
-        return view('backend.homepage');
-    }
+    public function index(Request $request)
+{
+    $cookiesAccepted = $request->cookie('cookies_accepted', false);
+
+    return view('dashboard.index', compact('cookiesAccepted'));
+}
+
     public function about(): View
     {
         return view('backend.about');
     }
-    public function accueil(): View
-    {
-        return view('backend.accueil');
-    }
+    // public function accueil(): View
+    // {
+    //     return view('backend.accueil');
+    // }
     public function contact(): View
     {
         return view('backend.contact');
