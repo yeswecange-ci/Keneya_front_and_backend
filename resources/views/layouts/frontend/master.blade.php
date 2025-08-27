@@ -3,6 +3,7 @@
 
 <head>
     @include('partials.frontend.head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -15,6 +16,7 @@
 
 @include('partials.frontend.footer')
 @include('partials.frontend.scripts')
+@include('components.cookies-banner')
 </body>
 
 </html>

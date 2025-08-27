@@ -19,6 +19,10 @@
             <ul>
                 <ul>
                     <li>
+                        <a href="{{ route('front.home') }}" class="{{ Request::is('home') ? 'navSelect' : '' }}">ACCUEIL</a>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </li>
+                    <li>
                         <a href="{{ route('front.about') }}" class="{{ Request::is('about') ? 'navSelect' : '' }}">À
                             PROPOS DE NOUS</a>
                         <i class="fa-solid fa-arrow-right"></i>

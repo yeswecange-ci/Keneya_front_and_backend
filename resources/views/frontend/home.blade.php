@@ -1,166 +1,229 @@
+{{-- Votre fichier home.blade.php mis à jour --}}
 @extends('layouts.frontend.master')
 
 @section('title', 'Accueil - Keneya')
 @section('description', 'Bienvenue chez Keneya, votre marque de confiance pour des produits de qualité exceptionnelle.')
 
 @section('content')
+    <!-- Messages de succès/erreur -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
     <!-- header--index -->
     <section class="header-section">
-        <div class="slide active" style="background-image: url('img/23.jpg');">
-            <div class="container-lg">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="slide-content wow fadeInLeft ">
-                            <small>01</small>
-                            <div class="section--title">
-                                <h1>Formulation des programmes<br>et projets de santé</h1>
-                            </div>
-                            <p>
-                                Nous disposons d’une expertise internationalement reconnue dans la riposte aux pandémies
-                                et aux maladies non transmissibles
-                            </p>
+        @if($homeSlides && $homeSlides->count() > 0)
+            @foreach($homeSlides as $index => $slide)
+                <div class="slide {{ $index === 0 ? 'active' : '' }}" style="background-image: url('{{ asset($slide->home_slide_image) }}');">
+                    <div class="container-lg">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="slide-content {{ $index === 0 ? 'wow fadeInLeft' : '' }}">
+                                    <small>{{ $slide->home_slide_number }}</small>
+                                    <div class="section--title">
+                                        <h1>{!! $slide->home_slide_title !!}</h1>
+                                    </div>
+                                    <p>{{ $slide->home_slide_description }}</p>
 
-                            <div class="slide-bar-env">
-                                <div class="slide-bar"></div>
+                                    <div class="slide-bar-env">
+                                        <div class="slide-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @else
+            <!-- Fallback si aucune slide n'est disponible -->
+            <div class="slide active" style="background-image: url('img/23.jpg');">
+                <div class="container-lg">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="slide-content wow fadeInLeft">
+                                <small>01</small>
+                                <div class="section--title">
+                                    <h1>Contenu par défaut</h1>
+                                </div>
+                                <p>Aucun contenu disponible pour le moment.</p>
+                                <div class="slide-bar-env">
+                                    <div class="slide-bar"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="slide" style="background-image: url('img/24.jpg');">
-            <div class="container-lg">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="slide-content">
-                            <small>02</small>
-                            <div class="section--title">
-                                <h1>Formulation des programmes<br>et projets de santé</h1>
-                            </div>
-                            <p>
-                                Nous disposons d’une expertise internationalement reconnue dans la riposte aux
-                                pandémies
-                                et aux maladies non transmissibles
-                            </p>
-
-                            <div class="slide-bar-env">
-                                <div class="slide-bar"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @endif
 
         <div class="scroll-down" onclick="scrollToSection()">
             ↓
         </div>
     </section>
 
-    <!-- a propos -->
+    <!-- À propos -->
     <section class="about" id="next-section">
         <div class="container-lg">
-            <div class="section--title wow fadeInRight">
-                <h2>À propos de nous</h2>
-                <h1>Créé en 2012 sous l’impulsion du <br> Dr. Jean-Baptiste Guiard-Schmid,</h1>
-            </div>
+            @if($homeAbout)
+                <div class="section--title wow fadeInRight">
+                    <h2>{{ $homeAbout->home_about_section_title }}</h2>
+                    <h1>{!! $homeAbout->home_about_main_title !!}</h1>
+                </div>
 
-            <div class="wow fadeInLeft">
-                <p><strong>KENAYA Impact</strong> (anciennement appelée Initiatives Conseil International-Santé
-                    (ICI-Santé))
-                    est un leader Africain dans l’assistance technique pour faire émerger des solutions de santé
-                    publique
-                    innovantes et durables.</p>
+                <div class="wow fadeInLeft">
+                    <p>{!! $homeAbout->home_about_description !!}</p>
 
-                <a href="#" class="btn-site">
-                    <span>En savoir plus</span>
-                    <span class="arrow">→</span>
-                </a>
-            </div>
+                    <a href="{{ $homeAbout->home_about_button_link }}" class="btn-site">
+                        <span>{{ $homeAbout->home_about_button_text }}</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+            @else
+                <!-- Fallback -->
+                <div class="section--title wow fadeInRight">
+                    <h2>À propos de nous</h2>
+                    <h1>Contenu par défaut</h1>
+                </div>
+                <div class="wow fadeInLeft">
+                    <p>Aucun contenu disponible pour le moment.</p>
+                </div>
+            @endif
         </div>
     </section>
 
-    <!-- *** -->
-
-    <!-- key-numbers -->
+    <!-- Chiffres clés -->
     <section class="knumb">
-        <div class="container-lg ">
+        <div class="container-lg">
             <div class="knumb-card">
                 <!-- left -->
                 <div class="knumb-card__left">
-                    <img src="img/kids.jpg" alt="kids">
+                    @if($homeKeyNumbers)
+                        <img src="{{ asset($homeKeyNumbers->home_key_numbers_image) }}" alt="key numbers image">
+                    @else
+                        <img src="{{ asset('img/kids.jpg') }}" alt="default image">
+                    @endif
                 </div>
 
                 <!-- right -->
                 <div class="knumb-card__right">
-                    <div class="section--title wow fadeInLeft">
-                        <h2>Nos chiffres clés</h2>
-                    </div>
-
-                    <p class="wow fadeInLeft">Lorem ipsum dolor sit amet consectetur. Eget at lacus quis pretium vitae ac
-                        non varius nec.
-                        Feugiat praesent facilisi neque sollicitudin amet. Massa scelerisque pellentesque condimentum ..
-                    </p>
-
-                    <!-- knumb elements -->
-                    <div class="knumb--elts my-5">
-                        <div class="knumb--elts__elt wow fadeInRight">
-                            <h1><img src="img/6.png" alt="img"> 700</h1>
-                            <p>Missions d'assistance technique mise en oeuvre</p>
+                    @if($homeKeyNumbers)
+                        <div class="section--title wow fadeInLeft">
+                            <h2>{{ $homeKeyNumbers->home_key_numbers_section_title }}</h2>
                         </div>
 
-                        <div class="knumb--elts__elt wow fadeInRight">
-                            <h1><img src="img/7.png" alt="img"> 50</h1>
-                            <p>Pays africains bénéficiaires</p>
+                        <p class="wow fadeInLeft">{{ $homeKeyNumbers->home_key_numbers_description }}</p>
+
+                        <!-- Stats elements -->
+                        <div class="knumb--elts my-5">
+                            @if($homeKeyNumbers->activeStats && $homeKeyNumbers->activeStats->count() > 0)
+                                @foreach($homeKeyNumbers->activeStats as $stat)
+                                    <div class="knumb--elts__elt wow fadeInRight">
+                                        <h1>
+                                            <img src="{{ asset($stat->home_stat_icon) }}" alt="stat icon">
+                                            {{ $stat->home_stat_number }}
+                                        </h1>
+                                        <p>{{ $stat->home_stat_description }}</p>
+                                    </div>
+                                @endforeach
+                            @else
+                                <!-- Fallback stats -->
+                                <div class="knumb--elts__elt wow fadeInRight">
+                                    <h1><img src="{{ asset('img/6.png') }}" alt="img"> 700</h1>
+                                    <p>Missions d'assistance technique mise en oeuvre</p>
+                                </div>
+                            @endif
                         </div>
 
-                        <div class="knumb--elts__elt wow fadeInRight">
-                            <h1><img src="img/8.png" alt="img"> 400</h1>
-                            <p>Consultants internationaux mobilisés</p>
+                        <a href="{{ $homeKeyNumbers->home_key_numbers_button_link }}" class="btn-site wow fadeInRight">
+                            <span>{{ $homeKeyNumbers->home_key_numbers_button_text }}</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    @else
+                        <!-- Fallback -->
+                        <div class="section--title wow fadeInLeft">
+                            <h2>Nos chiffres clés</h2>
                         </div>
-                    </div>
-
-                    <a href="#" class="btn-site wow fadeInRight">
-                        <span>Découvrir nos domaines d'intervention</span>
-                        <span class="arrow">→</span>
-                    </a>
+                        <p class="wow fadeInLeft">Aucun contenu disponible pour le moment.</p>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- *** -->
-
+    <!-- Section candidature -->
     <section>
         <div class="container-lg">
-            <div class="section--title wow fadeInLeft ">
-                <h2>Venez travailler avec nous</h2>
-            </div>
-            <p class="wow fadeInLeft">Merci  de remplir ce formulaire, afin de  postuler pour les positions disponibles dans
-                notre cabinet.</p>
+            @if($homeRecruitment)
+                <div class="section--title wow fadeInLeft">
+                    <h2>{{ $homeRecruitment->home_recruitment_section_title }}</h2>
+                </div>
+                <p class="wow fadeInLeft">{{ $homeRecruitment->home_recruitment_description }}</p>
+            @else
+                <!-- Fallback -->
+                <div class="section--title wow fadeInLeft">
+                    <h2>Venez travailler avec nous</h2>
+                </div>
+                <p class="wow fadeInLeft">Merci de remplir ce formulaire, afin de postuler pour les positions disponibles dans notre cabinet.</p>
+            @endif
 
-            <!-- formulaire -->
-            <form class="form-candidature wow fadeInRight">
-                <input type="text" placeholder="Prénom" required>
-                <input type="text" placeholder="Nom de famille" required>
+            <!-- Formulaire -->
+            <div action="{{ route('home.application.store') }}" method="POST" enctype="multipart/form-data" class="form-candidature wow fadeInRight">
+                @csrf
+
+                <input type="text" name="home_application_first_name" placeholder="Prénom" value="{{ old('home_application_first_name') }}" required>
+                @error('home_application_first_name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+
+                <input type="text" name="home_application_last_name" placeholder="Nom de famille" value="{{ old('home_application_last_name') }}" required>
+                @error('home_application_last_name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
                 <div class="row-double">
-                    <input type="email" placeholder="Email" required>
-                    <input type="tel" placeholder="Téléphone" required>
+                    <div>
+                        <input type="email" name="home_application_email" placeholder="Email" value="{{ old('home_application_email') }}" required>
+                        @error('home_application_email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div>
+                        <input type="tel" name="home_application_phone" placeholder="Téléphone" value="{{ old('home_application_phone') }}" required>
+                        @error('home_application_phone')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                 </div>
 
-                <select required>
+                <select name="home_application_desired_position" required>
                     <option value="">Poste souhaité</option>
-                    <option>Développeur</option>
-                    <option>Designer</option>
-                    <option>Assistant</option>
+                    <option value="Développeur" {{ old('home_application_desired_position') == 'Développeur' ? 'selected' : '' }}>Développeur</option>
+                    <option value="Designer" {{ old('home_application_desired_position') == 'Designer' ? 'selected' : '' }}>Designer</option>
+                    <option value="Assistant" {{ old('home_application_desired_position') == 'Assistant' ? 'selected' : '' }}>Assistant</option>
+                    <option value="Consultant" {{ old('home_application_desired_position') == 'Consultant' ? 'selected' : '' }}>Consultant</option>
+                    <option value="Chef de projet" {{ old('home_application_desired_position') == 'Chef de projet' ? 'selected' : '' }}>Chef de projet</option>
                 </select>
+                @error('home_application_desired_position')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
-                <input type="date" placeholder="Date de disponibilité" required>
+                <input type="date" name="home_application_availability_date" placeholder="Date de disponibilité" value="{{ old('home_application_availability_date') }}" required>
+                @error('home_application_availability_date')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
                 <label class="file-upload">
-                    <input type="file" required>
+                    <input type="file" name="home_application_cv" accept=".pdf,.doc,.docx" required>
                     <span>Ajouter votre CV</span>
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -172,15 +235,23 @@
                         </svg>
                     </span>
                 </label>
+                @error('home_application_cv')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
-                <button class="btn-site1">
+                <button type="button" onclick="submitApplication()" class="btn-site1">
                     <span>Postuler</span>
                     <span class="arrow">→</span>
                 </button>
-            </form>
+            </div>
         </div>
     </section>
+
+    <!-- NOUVEAU: Inclusion du composant cookies -->
+    @include('components.cookies-banner')
+
 @endsection
+
 @section('scripts')
     <script>
         const slides = document.querySelectorAll('.slide');
@@ -192,21 +263,65 @@
                 if (i === index) {
                     slide.classList.add('active');
                     const bar = slide.querySelector('.slide-bar');
-                    bar.style.animation = 'none';
-                    void bar.offsetWidth;
-                    bar.style.animation = 'barSlide 10s linear forwards';
+                    if (bar) {
+                        bar.style.animation = 'none';
+                        void bar.offsetWidth;
+                        bar.style.animation = 'barSlide 10s linear forwards';
+                    }
                 }
             });
         }
 
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }, 10000);
+        if (slides.length > 1) {
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }, 10000);
+        }
 
         function scrollToSection() {
             document.getElementById('next-section').scrollIntoView({
                 behavior: 'smooth'
+            });
+        }
+
+        // Fonction pour soumettre le formulaire avec gestion des cookies
+        function submitApplication() {
+            const form = document.querySelector('.form-candidature');
+            const formData = new FormData();
+
+            // Récupérer tous les champs du formulaire
+            const inputs = form.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                if (input.type === 'file') {
+                    if (input.files[0]) {
+                        formData.append(input.name, input.files[0]);
+                    }
+                } else {
+                    formData.append(input.name, input.value);
+                }
+            });
+
+            // Ajouter le token CSRF
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+            // Envoyer la requête
+            fetch('{{ route("home.application.store") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Candidature envoyée avec succès !');
+                    form.reset();
+                } else {
+                    alert('Erreur lors de l\'envoi de la candidature');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'envoi');
             });
         }
     </script>

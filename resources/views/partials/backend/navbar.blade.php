@@ -21,7 +21,7 @@
         </ul>
     </div>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+        {{-- <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link nav-link-lg message-toggle"><i data-feather="mail"></i>
                 <span class="badge headerBadge1">
                     6 </span> </a>
@@ -82,8 +82,8 @@
                     <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
             </div>
-        </li>
-        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+        </li> --}}
+        {{-- <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
             </a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
@@ -134,34 +134,30 @@
                     <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
             </div>
-        </li>
+        </li> --}}
         <li class="dropdown"><a href="#" data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image"
-                    src="{{ asset('assets/img/user.png') }}" class="user-img-radious-style"> <span
+                    src="{{ asset('assets/img/avatar.png') }}" class="user-img-radious-style"> <span
                     class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-                <div class="dropdown-title">Hello Sarah Smith</div>
-                <a href="profile.html" class="dropdown-item has-icon"> <i class="far
-										fa-user"></i> Profile
-                </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
-                    Activities
-                </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
-                    Settings
-                </a>
+                <div class="dropdown-title"><span class="user-name">{{ Auth::user()->name ?? 'Utilisateur' }}</span>
+                </div>
+                {{-- <a href="{{ route('profile.edit') }}" class="dropdown-item has-icon">
+                    <i class="far fa-user"></i>
+                    {{ __('Profile') }}
+                </a> --}}
                 <div class="dropdown-divider"></div>
-                <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i
-                        class="fas fa-sign-out-alt"></i>
+                <!-- Formulaire caché -->
+                <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                    @csrf
+                </form>
+
+                <!-- Lien qui déclenche le formulaire -->
+                <a href="#" class="dropdown-item has-icon text-danger"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt"></i>
                     Logout
                 </a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-dropdown-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-dropdown-link>
-                </form>
             </div>
         </li>
     </ul>

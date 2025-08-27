@@ -13,50 +13,24 @@
             <div class="part-flex">
                 <!-- left -->
                 <div class="part-flex__left wow fadeInRight">
-                    <img src="img/12.jpg" alt="kids">
+                    <img src="{{ asset($teamLeader->image) }}" alt="{{ $teamLeader->name }}">
 
-                    <h1>Dr Jean-Baptiste GUIARD-SCHMID</h1>
-                    <h2>Directeur Général </h2>
+                    <h1>{{ $teamLeader->name }}</h1>
+                    <h2>{{ $teamLeader->position }}</h2>
                 </div>
 
                 <!-- right -->
                 <div class="part-flex__right">
-
-                    <p class="wow fadeInLeft">Spécialiste en médecine interne, maladies infectieuses et tropicales et
-                        santé publique,
-                        Jean-Baptiste Guiard-Schmid possède une solide expertise internationale dans le domaine des
-                        Maladies Transmissibles (VIH, TB, Paludisme, Hépatites), de la Santé de la Mère, du Nouveau-né,
-                        de l’enfant et de l’adolescent / Santé Sexuelle et Reproductive, du Renforcement des Systèmes de
-                        Santé et des Maladies Non Transmissibles en Afrique.
-                    </p>
-
-                    <p class="wow fadeInLeft">
-                        Son expertise porte sur la planification stratégique, la mobilisation de ressources, la
-                        conception, la mise en œuvre, le management et le suivi et évaluation des politiques, programmes
-                        et projets de santé dans ces domaines, ainsi que la recherche opérationnelle.
-                    </p>
-
-                    <p class="wow fadeInLeft">
-                        Depuis plus de 20 ans, il travaille au développement d'une assistance technique africaine de
-                        haut niveau en santé publique, engagée dans une approche holistique et durable du renforcement
-                        des systèmes de santé et qui engage pleinement les communautés et usagers de la santé. Par le
-                        renforcement des capacités des parties prenantes, y compris des populations bénéficiaires, dans
-                        les réponses aux défis majeurs pour la santé publique.
-                    </p>
-
-                    <p class="wow fadeInLeft">
-                        Après 5 années à l'OMS en tant que conseiller régional pour l'Afrique de l'Ouest, il a fondé à
-                        Ouagadougou (Burkina Faso) en 2012 Initiatives Conseil International-Santé (ICI-Santé). Il est
-                        citoyen français et burkinabè.
-                    </p>
-
+                    @foreach(explode("\n", $teamLeader->description) as $paragraph)
+                        @if(trim($paragraph))
+                            <p class="wow fadeInLeft">{{ $paragraph }}</p>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
     </section>
 
-
-    <!-- ***** -->
     <section class="team-section">
         <div class="container-lg">
             <div class="section--title wow fadeInRight">
@@ -65,57 +39,21 @@
 
             <div class="swiper team-swiper">
                 <div class="swiper-wrapper">
+                    @foreach($teamMembers as $member)
                     <div class="swiper-slide">
-                        <a href="team-details.html" class="team-card">
-                            <img src="img/12.jpg" alt="DR JEAN-BAPTISTE GUIARD-SCHMID">
+                        <a href="{{ $member->link }}" class="team-card">
+                            <img src="{{ asset($member->image) }}" alt="{{ $member->name }}">
                             <div class="card-content">
                                 <div class="p-4">
-                                    <h3>DR JEAN-BAPTISTE GUIARD-SCHMID</h3>
-                                    <p>Directeur Général</p>
+                                    <h3>{{ $member->name }}</h3>
+                                    <p>{{ $member->position }}</p>
                                 </div>
                                 <span class="arrow p-4">&#8594;</span>
                             </div>
                         </a>
                     </div>
-
-                    <!-- ***** -->
-                    <div class="swiper-slide">
-                        <a href="team-details.html" class="team-card">
-                            <img src="img/13.jpg" alt="DR BENOIT KAFANDO">
-                            <div class="card-content">
-                                <div class="p-4">
-                                    <h3>DR BENOIT KAFANDO</h3>
-                                    <p>Directeur des Programmes</p>
-                                </div>
-                                <span class="arrow p-4">&#8594;</span>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- ***** -->
-
-
-                    <div class="swiper-slide">
-                        <a href="team-details.html" class="team-card">
-                            <img src="img/14.jpg" alt="MARTIAL SIDWAYAN ZONGO">
-                            <div class="card-content">
-                                <div class="p-4">
-                                    <h3>MARTIAL SIDWAYAN ZONGO</h3>
-                                    <p>Directeur Administratif et Financier</p>
-                                </div>
-                                <span class="arrow p-4">&#8594;</span>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- ***** -->
-
+                    @endforeach
                 </div>
-
-                <!-- <div class="navigation-buttons">
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div> -->
-
 
                 <div class="navigation-buttons-swiper">
                     <div class="swiper-button-prev team-prev"></div>
