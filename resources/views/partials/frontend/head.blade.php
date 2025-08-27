@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    
+    <link rel='shortcut icon' type='image/x-icon' href='{{ asset('img/logo1.png') }}' />
+
 
 
     <title>@yield('title', config('app.name', 'Keneya'))</title>
