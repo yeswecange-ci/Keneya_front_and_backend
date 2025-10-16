@@ -95,7 +95,7 @@
     <section class="team-section">
         <div class="container-lg">
             <div class="section--title wow fadeInRight">
-                <h2>Blog d'actualités</h2>
+                <h2>Notre équipe</h2>
             </div>
 
             <div class="swiper team-swiper">

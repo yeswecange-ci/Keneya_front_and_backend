@@ -94,6 +94,7 @@
                     <h2>À propos de nous</h2>
                     <h1>Contenu par défaut</h1>
                 </div>
+                
                 <div class="wow fadeInLeft">
                     <p>Aucun contenu disponible pour le moment.</p>
                 </div>

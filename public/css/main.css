@@ -46,7 +46,7 @@ a:hover {
 p {
   margin-bottom: 0;
   font-size: 16px;
-  font-weight: 400;
+  /*font-weight: 500;*/
 }
 
 p a {
@@ -527,6 +527,11 @@ input[type="date"] {
   transition: color 0.3s;
 }
 
+.custom-accordion p {
+ padding-bottom: 15px !important;
+}
+
+
 .custom-accordion-item.active h3 {
   color: #f90;
   /* orange */
@@ -771,8 +776,8 @@ footer .footer-social{
   right: 0;
   z-index: 1000;
   background: white; /* par défaut TRANSPARENT */
-  box-shadow: 0 5px 20px -10px rgba(0, 0, 0, 0.1);
-  padding: 2rem 0;
+ /* box-shadow: 0 5px 20px -10px rgba(0, 0, 0, 0.1);*/
+  /*padding: 2rem 0;*/
   transition: all 0.3s ease-in-out;
 }
 
@@ -792,7 +797,8 @@ footer .footer-social{
   justify-content: space-between;
   position: relative;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 2rem 15px;
+  border-bottom: 1px solid black;
 }
 
 .navigation .img-logo {
@@ -867,7 +873,7 @@ footer .footer-social{
 }
 
 .navigation .menu ul li a {
-  color: #00A3C6;
+  color: black;
   font-size: 14px;
   font-weight: 600;
   transition: all 0.3s ease-in-out;
@@ -1084,6 +1090,25 @@ footer .footer-social{
   object-fit: cover;
 }
 
+.knumb-card__activities .knumb-card__right {
+  width: 100%;
+}
+
+.knumb-card__activities .knumb-card__right .knumb--elts h1 {
+  justify-content: center;
+}
+
+.knumb-card__activities .knumb-card__right .knumb--elts{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.knumb-card__activities .knumb-card__right .knumb--elts__elt{
+  text-align: center;
+}
+
 .knumb-card__right {
   width: 60%;
   padding: 40px;
@@ -1233,7 +1258,7 @@ footer .footer-social{
 .part-flex__right {
   width: 60%;
   padding: 40px;
-  background-color: #F4F4F4;
+  /*background-color: #F4F4F4;*/
 }
 
 @media only screen and (max-width: 48em) {
@@ -1322,7 +1347,7 @@ footer .footer-social{
 }
 
 .team-card {
-  height: 450px;
+  height: 370px;
   overflow: hidden;
   text-decoration: none;
   color: white;
