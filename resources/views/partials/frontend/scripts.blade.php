@@ -23,9 +23,9 @@
         },
     });
 
+
     new Swiper('.partners-swiper', {
         spaceBetween: 20,
-        slidesPerView: 5,
         breakpoints: {
             640: {
                 slidesPerView: 2,
