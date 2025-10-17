@@ -16,7 +16,7 @@
                     <div class="footer-links">
                         <a href="#">Histoire de l'entreprise</a>
                         <a href="#">Mission, vision, valeurs</a>
-                        <a href="#">Transition ICI-Santé → Kenaya Impact</a>
+                        <a href="#">Transition ICI-Santé vers Kenaya Impact</a>
                         <a href="#">Équipe dirigeante</a>
                     </div>
                 </div>

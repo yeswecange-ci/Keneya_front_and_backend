@@ -29,15 +29,15 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="slide-content {{ $index === 0 ? 'wow fadeInLeft' : '' }}">
-                                    <small>{{ $slide->home_slide_number }}</small>
+                                    <!--<small>{{ $slide->home_slide_number }}</small>-->
                                     <div class="section--title">
                                         <h1>{!! $slide->home_slide_title !!}</h1>
                                     </div>
-                                    <p>{{ $slide->home_slide_description }}</p>
+                                    <!--<p>{{ $slide->home_slide_description }}</p>-->
 
-                                    <div class="slide-bar-env">
+                                    <!--<div class="slide-bar-env">
                                         <div class="slide-bar"></div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -94,6 +94,7 @@
                     <h2>À propos de nous</h2>
                     <h1>Contenu par défaut</h1>
                 </div>
+                
                 <div class="wow fadeInLeft">
                     <p>Aucun contenu disponible pour le moment.</p>
                 </div>
@@ -161,7 +162,7 @@
     </section>
 
     <!-- Section candidature -->
-    <section>
+   <!-- <section>
         <div class="container-lg">
             @if($homeRecruitment)
                 <div class="section--title wow fadeInLeft">
@@ -169,14 +170,12 @@
                 </div>
                 <p class="wow fadeInLeft">{{ $homeRecruitment->home_recruitment_description }}</p>
             @else
-                <!-- Fallback -->
                 <div class="section--title wow fadeInLeft">
                     <h2>Venez travailler avec nous</h2>
                 </div>
                 <p class="wow fadeInLeft">Merci de remplir ce formulaire, afin de postuler pour les positions disponibles dans notre cabinet.</p>
             @endif
 
-            <!-- Formulaire -->
             <div action="{{ route('home.application.store') }}" method="POST" enctype="multipart/form-data" class="form-candidature wow fadeInRight">
                 @csrf
 
@@ -245,7 +244,48 @@
                 </button>
             </div>
         </div>
+    </section>-->
+
+    <!-- Section testimonial -->
+    <section>
+        <div class="container-lg">
+            <div class="section--title wow fadeInRight">
+                <h2>ILS NOUS FONT CONFIANCE</h2>
+            </div>
+
+
+             <div class="swiper partners-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="{{asset('images/27.png')}}" alt="img">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="{{asset('images/27.png')}}" alt="img">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="{{asset('images/27.png')}}" alt="img">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="{{asset('images/27.png')}}" alt="img">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="{{asset('images/27.png')}}" alt="img">
+                    </div>
+                </div>
+
+
+                <div class="navigation-buttons-swiper">
+                    <div class="swiper-button-prev partners-prev"></div>
+                    <div class="swiper-button-next partners-next"></div>
+                </div>
+            </div>
+        </div>
     </section>
+
 
     <!-- NOUVEAU: Inclusion du composant cookies -->
     @include('components.cookies-banner')
