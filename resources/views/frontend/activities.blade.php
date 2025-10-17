@@ -25,24 +25,26 @@
         </div>
     </section>
 
-    <section class="knumb-card__activities" >
+    <section class="knumb-card__activities " >
         <div class="container-lg">
-            <div class="knumb-card__right">
-                <!-- knumb elements -->
-                <div class="knumb--elts ">
-                    <div class="knumb--elts__elt wow fadeInRight">
-                        <h1><img src="{{ asset('images/6.png')}}" alt="img"> 700</h1>
-                        <p>Missions d'assistance technique mise en oeuvre</p>
-                    </div>
+            <div class="position-relative">
+                <div class="knumb-card__right">
+                    <!-- knumb elements -->
+                    <div class="knumb--elts ">
+                        <div class="knumb--elts__elt wow fadeInRight">
+                            <h1><img src="{{ asset('images/6.png')}}" alt="img"> 700</h1>
+                            <p>Missions d'assistance technique mise en oeuvre</p>
+                        </div>
 
-                    <div class="knumb--elts__elt wow fadeInRight">
-                        <h1><img src="{{ asset('images/7.png') }}" alt="img"> 50</h1>
-                        <p>Pays africains bénéficiaires</p>
-                    </div>
+                        <div class="knumb--elts__elt wow fadeInRight">
+                            <h1><img src="{{ asset('images/7.png') }}" alt="img"> 50</h1>
+                            <p>Pays africains bénéficiaires</p>
+                        </div>
 
-                    <div class="knumb--elts__elt wow fadeInRight">
-                        <h1><img src="{{ asset('images/8.png') }}" alt="img"> 400</h1>
-                        <p>Consultants internationaux mobilisés</p>
+                        <div class="knumb--elts__elt wow fadeInRight">
+                            <h1><img src="{{ asset('images/8.png') }}" alt="img"> 400</h1>
+                            <p>Consultants internationaux mobilisés</p>
+                        </div>
                     </div>
                 </div>
             </div>

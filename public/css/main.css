@@ -801,6 +801,10 @@ footer .footer-social{
   border-bottom: 1px solid black;
 }
 
+.navigation1 .container-lg {
+  border-bottom: .5px solid white;
+}
+
 .navigation .img-logo {
   margin-bottom: 0;
 }
@@ -874,7 +878,7 @@ footer .footer-social{
 
 .navigation .menu ul li a {
   color: black;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   transition: all 0.3s ease-in-out;
   text-decoration: none;
@@ -920,7 +924,7 @@ footer .footer-social{
      -moz-user-select: none;
           user-select: none;
   position: relative;
-  color: #00A3C6;
+  color: black;
   font-size: 14px;
   font-weight: 600;
 }
@@ -1003,7 +1007,7 @@ footer .footer-social{
   .navigation .menu ul li {
     width: 100%;
     padding: 2rem;
-    height: 14%;
+    height: 13.5%;
     justify-content: space-between;
     display: flex;
     align-items: center !important;
@@ -1092,6 +1096,9 @@ footer .footer-social{
 
 .knumb-card__activities .knumb-card__right {
   width: 100%;
+  position: absolute;
+  bottom: -30px;
+  z-index: 1;
 }
 
 .knumb-card__activities .knumb-card__right .knumb--elts h1 {
@@ -1107,6 +1114,7 @@ footer .footer-social{
 
 .knumb-card__activities .knumb-card__right .knumb--elts__elt{
   text-align: center;
+  width: 33%;
 }
 
 .knumb-card__right {

@@ -16,7 +16,8 @@
             <div class="part-flex">
                 <!-- left -->
                 <div class="part-flex__left">
-                    <img src="{{ $mainSection->about_image_path }}" alt="kids">
+                    <img src="{{asset('images/25.png')}}" alt="kids">
+                    <!--<img src="{{ $mainSection->about_image_path }}" alt="kids">-->
                 </div>
 
                 <!-- right -->
