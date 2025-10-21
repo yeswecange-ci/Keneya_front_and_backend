@@ -293,6 +293,9 @@
 @endsection
 
 @section('scripts')
+
+    
+
     <script>
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;

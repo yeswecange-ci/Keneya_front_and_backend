@@ -14,6 +14,34 @@
 </script>
 
 <script>
+    new Swiper('.partners-swiper', {
+        autoplay: true,
+        loop:true,
+        spaceBetween: 20,
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+            },
+            
+            768: {
+                slidesPerView: 4,
+            },
+
+            1024: {
+                slidesPerView: 5,
+            },
+        },
+        
+
+        navigation: {
+            nextEl: '.partners-next',
+            prevEl: '.partners-prev',
+        },
+    });
+</script>
+
+<script>
+
     new Swiper('.team-swiper', {
         slidesPerView: 'auto',
         spaceBetween: 20,
@@ -23,26 +51,6 @@
         },
     });
 
-
-    new Swiper('.partners-swiper', {
-        spaceBetween: 20,
-        breakpoints: {
-            640: {
-                slidesPerView: 2,
-            },
-            768: {
-                slidesPerView: 4,
-            },
-            1024: {
-                slidesPerView: 5,
-            },
-        },
-
-        navigation: {
-            nextEl: '.partners-next',
-            prevEl: '.partners-prev',
-        },
-    });
 </script>
 
 <script>
