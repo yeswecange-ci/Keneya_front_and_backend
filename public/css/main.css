@@ -388,6 +388,8 @@ section img {
   /* permet à la carte noire de chevaucher l'image */
   padding: 20px 20px;
   z-index: 1;
+  height: 400px;
+  overflow: auto;
 }
 
 @media (max-width: 768px) {
@@ -1052,6 +1054,11 @@ footer .footer-social{
 
 /* Version mobile */
 @media (max-width: 992px) {
+
+  .navigation1 .menu ul li a {
+    color: black;
+  }
+
   .navigation .menu-toggle {
     display: flex;
   }
@@ -1203,6 +1210,19 @@ footer .footer-social{
 
 @media only screen and (max-width: 48em) {
   .knumb-card__right {
+    width: 100%;
+
+  }
+
+  .knumb-card__activities .knumb-card__right {
+    position: relative;
+  }
+
+  .knumb-card__activities .knumb-card__right .knumb--elts{
+    flex-direction: column;
+  }
+
+  .knumb-card__activities .knumb-card__right .knumb--elts__elt{
     width: 100%;
   }
 }
@@ -1529,4 +1549,101 @@ footer .footer-social{
     padding: 40px 0 30px;
   }
 }
+
+
+
+.preloader {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #151415;
+  z-index: 9999;
+  overflow: hidden;
+  opacity: 2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader-content {
+  text-align: center;
+}
+
+.preloader-content .logo {
+  height: 10rem;
+  width: 10rem;
+  animation: 2s img linear infinite;
+}
+
+.preloader-content .logo img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.preloader .loader {
+  border: 0.05em #00b9b9 solid;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  height: 12rem;
+  width: 12rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.preloader .loader:after, .preloader .loader:before {
+  content: '';
+  border-radius: 50%;
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  animation: loader 2s infinite linear;
+}
+
+.preloader .loader:before {
+  border-top: 0.2em #00b9b9 solid;
+  top: -.15em;
+  left: calc( -50% - .15em);
+  transform-origin: right center;
+}
+
+.preloader .loader:after {
+  border-bottom: 0.2em #00b9b9 solid;
+  top: .15em;
+  right: calc( -50% - .15em);
+  transform-origin: left center;
+}
+
+@keyframes loader {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes img {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  33% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  66% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
 /*# sourceMappingURL=main.css.map */
