@@ -546,7 +546,9 @@ input[type="date"] {
 .domain-map__map--image svg{
   width: 100%;
   height: 100%;
+  margin: 20px auto;
 }
+
 
 .login-subtitle {
   font-size: 16px;
@@ -1528,12 +1530,12 @@ footer .footer-social{
 }
 
 .domain-map .domain-map__map--image {
-  width: 80%;
+ /* width: 80%;
   max-width: 800px;
-  float: left;
+  float: left;*/
 }
 
-.domain-map .domain-map__map--image path {
+/*.domain-map .domain-map__map--image path {
   fill: #fff;
   stroke: #1E1E1E;
   stroke-width: 1px;
@@ -1542,7 +1544,21 @@ footer .footer-social{
 
 .domain-map .domain-map__map--image path:hover {
   fill: #F59200;
+}*/
+
+ .domain-map__map--image svg path {
+  fill: #e9ecef;
+  stroke: #212529;
+  stroke-width: 1;
+  transition: fill 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
 }
+
+.domain-map__map--image svg path:hover {
+  fill: #F59200 !important;
+   /*  transform: scale(1.02);*/
+}
+
 
 @media (max-width: 768px) {
   .temoignages {

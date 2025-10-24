@@ -318,6 +318,12 @@
         }, 3000)
     </script>
 
+    <script>
+        // Active tous les tooltips Bootstrap
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+        new bootstrap.Tooltip(el);
+        });
+    </script>
     
 
     <script>
