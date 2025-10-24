@@ -1588,8 +1588,8 @@ footer .footer-social{
 }
 
 .preloader-content .logo {
-  height: 10rem;
-  width: 10rem;
+  height: 5rem;
+  width: 5rem;
   animation: 2s img linear infinite;
 }
 
