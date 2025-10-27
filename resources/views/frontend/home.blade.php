@@ -20,6 +20,17 @@
         </div>
     @endif
 
+    <div class="preloader">
+        <div class="preloader-content">
+            <div class="loader">
+                <div class="logo">
+                    <img src="{{ asset('img/logo1.png') }}" alt="logo">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- header--index -->
     <section class="header-section">
         @if($homeSlides && $homeSlides->count() > 0)
@@ -275,6 +286,10 @@
                     <div class="swiper-slide">
                         <img src="{{asset('images/27.png')}}" alt="img">
                     </div>
+
+                    <div class="swiper-slide">
+                        <img src="{{asset('images/27.png')}}" alt="img">
+                    </div>
                 </div>
 
 
@@ -293,6 +308,19 @@
 @endsection
 
 @section('scripts')
+    <script>
+        // loader
+        let time = setInterval(() => {
+            if (document.readyState == "complete") {
+                $(".preloader").hide();
+                clearInterval;
+            }
+        }, 3000)
+    </script>
+
+   
+    
+
     <script>
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;

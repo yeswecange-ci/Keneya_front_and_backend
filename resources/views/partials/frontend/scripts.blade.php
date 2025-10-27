@@ -3,17 +3,55 @@
 
 <!--**************  -->
 <script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/wow.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 
 <!-- ********* -->
 
+
+
 <script>
     new WOW().init();
 </script>
 
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+      new bootstrap.Tooltip(el);
+    });
+  });
+  </script>
+
 <script>
+    new Swiper('.partners-swiper', {
+        autoplay: true,
+        loop:true,
+        spaceBetween: 20,
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+            },
+            
+            768: {
+                slidesPerView: 4,
+            },
+
+            1024: {
+                slidesPerView: 5,
+            },
+        },
+        
+
+        navigation: {
+            nextEl: '.partners-next',
+            prevEl: '.partners-prev',
+        },
+    });
+</script>
+
+<script>
+
     new Swiper('.team-swiper', {
         slidesPerView: 'auto',
         spaceBetween: 20,
@@ -23,26 +61,6 @@
         },
     });
 
-
-    new Swiper('.partners-swiper', {
-        spaceBetween: 20,
-        breakpoints: {
-            640: {
-                slidesPerView: 2,
-            },
-            768: {
-                slidesPerView: 4,
-            },
-            1024: {
-                slidesPerView: 5,
-            },
-        },
-
-        navigation: {
-            nextEl: '.partners-next',
-            prevEl: '.partners-prev',
-        },
-    });
 </script>
 
 <script>
