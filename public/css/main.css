@@ -1564,6 +1564,10 @@ footer .footer-social{
   .temoignages {
     padding: 40px 0 30px;
   }
+
+   .domain-map__map--image svg path {
+    fill: #F59200 !important;
+  }
 }
 
 
