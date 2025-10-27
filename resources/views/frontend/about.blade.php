@@ -110,7 +110,7 @@
                                     <h3>{{ $member->about_team_name }}</h3>
                                     <p>{{ $member->about_team_position }}</p>
                                 </div>
-                                <span class="arrow p-4">&#8594;</span>
+                                <span class="arrow p-4"> &#8594; </span>
                             </div>
                         </a>
                     </div>
