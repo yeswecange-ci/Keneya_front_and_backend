@@ -30,6 +30,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     // Pages secondaires du dashboard
     Route::get('/about', [AdminAboutController::class, 'index'])->name('dashboard.about');
     Route::get('/contact', [BackEndController::class, 'contact'])->name('dashboard.contact');
+    Route::get('/expert', [BackEndController::class, 'expert'])->name('dashboard.expert');
     Route::get('/activities', [\App\Http\Controllers\Admin\ActivitiesController::class, 'index'])->name('dashboard.activities');
     Route::get('/accueil', [AdminHomeController::class, 'index'])->name('dashboard.accueil');
     Route::get('/actualities', [\App\Http\Controllers\Admin\NewsController::class, 'index'])->name('dashboard.actualities');

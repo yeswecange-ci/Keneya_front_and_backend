@@ -32,6 +32,11 @@
                 <i data-feather="copy"></i><span>Actualities</span>
             </a>
         </li>
+        <li class="dropdown {{ request()->routeIs('dashboard.expert') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.expert') }}" class="nav-link">
+                <i data-feather="copy"></i><span>Expert</span>
+            </a>
+        </li>
         <li class="dropdown {{ request()->routeIs('dashboard.contact') ? 'active' : '' }}">
             <a href="{{ route('dashboard.contact') }}" class="nav-link">
                 <i data-feather="grid"></i><span>Contact</span>
