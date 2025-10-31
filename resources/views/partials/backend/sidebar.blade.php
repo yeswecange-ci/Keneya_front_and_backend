@@ -1,8 +1,8 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
         <a href="{{ route('dashboard.homepage') }}">
-            <img alt="image" src="{{ asset('assets/img/logo.png') }}" class="header-logo" />
-            <span class="logo-name">KENAYA</span>
+            <img alt="image" src="{{ asset('img/logo2.png') }}" class="header-logo" />
+            {{-- <span class="logo-name">KENAYA</span> --}}
         </a>
     </div>
     <ul class="sidebar-menu">

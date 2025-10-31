@@ -1,9 +1,7 @@
 @extends('layouts.frontend.master')
 
-@section('title', 'À Propos - Keneya')
-@section('description',
-    'Découvrez l\'histoire et les valeurs de Keneya, une organisation engagée pour l\'impact social
-    et le développement communautaire.')
+@section('title', isset($seoData['title']) ? $seoData['title'] : 'À Propos - Keneya')
+@section('description', isset($seoData['description']) ? $seoData['description'] : 'Découvrez l\'histoire et les valeurs de Keneya, une organisation engagée pour l\'impact social et le développement communautaire.')
 
 @section('content')
     <!-- ***** Section Principale ***** -->
@@ -11,25 +9,44 @@
     <section class="about mgt">
         <div class="container-lg">
             <div class="section--title wow fadeInLeft">
-                <h1>{{ $mainSection->about_title }}</h1>
+                <h1>{{ $mainSection->about_title ?? 'À Propos de Nous' }}</h1>
             </div>
             <div class="part-flex">
                 <!-- left -->
                 <div class="part-flex__left">
-                    <img src="{{ $mainSection->about_image_path }}" alt="kids">
+                    {{-- CORRECTION : Utiliser Storage::url() pour les images uploadées --}}
+                    @if($mainSection->about_image_path)
+                        <img src="{{ Storage::url($mainSection->about_image_path) }}" alt="{{ $mainSection->about_image_alt ?? 'À propos de Keneya' }}">
+                    @else
+                        {{-- Image statique par défaut --}}
+                        <img src="{{ asset('images/25.png') }}" alt="À propos de Keneya">
+                    @endif
                 </div>
 
                 <!-- right -->
                 <div class="part-flex__right">
+                    @if($mainSection->about_description_1)
                     <p class="wow fadeInRight">{!! $mainSection->about_description_1 !!}</p>
+                    @endif
+                    
+                    @if($mainSection->about_description_2)
                     <p class="wow fadeInRight">{!! $mainSection->about_description_2 !!}</p>
+                    @endif
+                    
+                    @if($mainSection->about_description_3)
                     <p class="wow fadeInRight">{!! $mainSection->about_description_3 !!}</p>
+                    @endif
+                    
+                    @if($mainSection->about_description_4)
                     <p class="wow fadeInRight">{!! $mainSection->about_description_4 !!}</p>
+                    @endif
 
+                    @if($mainSection->about_button_text && $mainSection->about_button_link)
                     <a href="{{ $mainSection->about_button_link }}" class="btn-site wow fadeInRight">
                         <span>{{ $mainSection->about_button_text }}</span>
                         <span class="arrow">→</span>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -37,7 +54,7 @@
     @endif
 
     <!-- ***** Accordion ***** -->
-    @if(isset($accordionItems) && $accordionItems && $accordionItems->count() > 0)
+    @if(isset($accordionItems) && $accordionItems->count() > 0)
     <section>
         <div class="container-lg">
             <div class="custom-accordion wow fadeInLeft">
@@ -64,18 +81,25 @@
             <div class="part-flex">
                 <!-- left -->
                 <div class="part-flex__left">
-                    <img src="{{ $transitionSection->about_transition_image_path }}" alt="transition">
+                    {{-- CORRECTION : Utiliser Storage::url() --}}
+                    @if($transitionSection->about_transition_image_path)
+                        <img src="{{ Storage::url($transitionSection->about_transition_image_path) }}" alt="{{ $transitionSection->about_transition_image_alt ?? 'Transition' }}">
+                    @else
+                        <img src="{{ asset('images/placeholder.jpg') }}" alt="Transition">
+                    @endif
                 </div>
 
                 <!-- right -->
                 <div class="part-flex__right">
                     <div class="section--title">
-                        <h2>{!! $transitionSection->about_transition_title !!}</h2>
+                        <h2>{!! $transitionSection->about_transition_title ?? 'Notre Transition' !!}</h2>
                     </div>
 
+                    @if($transitionSection->about_transition_description_1)
                     <p class="wow fadeInRight">{!! $transitionSection->about_transition_description_1 !!}</p>
+                    @endif
 
-                    @if($transitionSection->aboutTransitionListItems->count() > 0)
+                    @if(isset($transitionSection->aboutTransitionListItems) && $transitionSection->aboutTransitionListItems->count() > 0)
                     <ul class="wow fadeInRight">
                         @foreach($transitionSection->aboutTransitionListItems as $listItem)
                         <li>{{ $listItem->about_transition_list_content }}</li>
@@ -83,7 +107,9 @@
                     </ul>
                     @endif
 
+                    @if($transitionSection->about_transition_description_2)
                     <p class="wow fadeInRight">{!! $transitionSection->about_transition_description_2 !!}</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -91,25 +117,30 @@
     @endif
 
     <!-- ***** Section Équipe ***** -->
-    @if(isset($teamMembers) && $teamMembers && $teamMembers->count() > 0)
+    @if(isset($teamMembers) && $teamMembers->count() > 0)
     <section class="team-section">
         <div class="container-lg">
             <div class="section--title wow fadeInRight">
-                <h2>Blog d'actualités</h2>
+                <h2>{{ $teamSectionTitle ?? 'Notre équipe' }}</h2>
             </div>
 
             <div class="swiper team-swiper">
                 <div class="swiper-wrapper">
                     @foreach($teamMembers as $member)
                     <div class="swiper-slide">
-                        <a href="{{ $member->about_team_detail_link }}" class="team-card">
-                            <img src="{{ $member->about_team_image_path }}" alt="{{ $member->about_team_name }}">
+                        <a href="{{ $member->about_team_detail_link ?? '#' }}" class="team-card">
+                            {{-- CORRECTION : Utiliser Storage::url() --}}
+                            @if($member->about_team_image_path)
+                                <img src="{{ Storage::url($member->about_team_image_path) }}" alt="{{ $member->about_team_name ?? 'Membre de l\'équipe' }}">
+                            @else
+                                <img src="{{ asset('images/team-placeholder.jpg') }}" alt="{{ $member->about_team_name ?? 'Membre de l\'équipe' }}">
+                            @endif
                             <div class="card-content">
                                 <div class="p-4">
-                                    <h3>{{ $member->about_team_name }}</h3>
-                                    <p>{{ $member->about_team_position }}</p>
+                                    <h3>{{ $member->about_team_name ?? 'Nom du membre' }}</h3>
+                                    <p>{{ $member->about_team_position ?? 'Poste' }}</p>
                                 </div>
-                                <span class="arrow p-4">&#8594;</span>
+                                <span class="arrow p-4"> &#8594; </span>
                             </div>
                         </a>
                     </div>
