@@ -1,3 +1,4 @@
+
 @extends('layouts.backend.app')
 
 @section('title', 'Gestion des Contacts')
@@ -292,8 +293,8 @@ $(document).on('click', '.view-application-btn', function(e) {
     debug('Modal application ouvert');
     
     // Ensuite faire l'AJAX
-    const url = '{{ route("dashboard.contact.show-application", ":id") }}'.replace(':id', applicationId);
-    const markReadUrl = '{{ route("dashboard.contact.mark-read", ":id") }}'.replace(':id', applicationId);
+    const url = `/dashboard/contact/application/${applicationId}`;
+    const markReadUrl = `/dashboard/contact/mark-read/${applicationId}`;
     
     debug('URL AJAX:', url);
     
@@ -361,12 +362,23 @@ $(document).on('click', '.view-application-btn', function(e) {
         },
         error: function(xhr, status, error) {
             debug('Erreur AJAX:', error);
+            let errorMessage = 'Une erreur est survenue lors du chargement des détails.';
+            
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.status === 404) {
+                errorMessage = 'La candidature n\'a pas été trouvée.';
+            } else if (xhr.status === 500) {
+                errorMessage = 'Une erreur serveur est survenue.';
+            }
+            
             $('#applicationDetails').html(`
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-triangle mr-2"></i>
-                    Erreur lors du chargement des détails: ${error}
+                    ${errorMessage}
                 </div>
             `);
+            console.error('Détails de l\'erreur:', {xhr, status, error});
         }
     });
 });
@@ -393,8 +405,8 @@ $(document).on('click', '.view-quote-btn', function(e) {
     debug('Modal quote ouvert');
     
     // Ensuite faire l'AJAX
-    const url = '{{ route("dashboard.contact.show-quote", ":id") }}'.replace(':id', quoteId);
-    const markReadUrl = '{{ route("dashboard.contact.mark-read", ":id") }}'.replace(':id', quoteId);
+    const url = `/dashboard/contact/quote/${quoteId}`;
+    const markReadUrl = `/dashboard/contact/mark-read/${quoteId}`;
     
     debug('URL AJAX:', url);
     
@@ -451,12 +463,23 @@ $(document).on('click', '.view-quote-btn', function(e) {
         },
         error: function(xhr, status, error) {
             debug('Erreur AJAX:', error);
+            let errorMessage = 'Une erreur est survenue lors du chargement des détails.';
+            
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.status === 404) {
+                errorMessage = 'La demande de devis n\'a pas été trouvée.';
+            } else if (xhr.status === 500) {
+                errorMessage = 'Une erreur serveur est survenue.';
+            }
+            
             $('#quoteDetails').html(`
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-triangle mr-2"></i>
-                    Erreur lors du chargement des détails: ${error}
+                    ${errorMessage}
                 </div>
             `);
+            console.error('Détails de l\'erreur:', {xhr, status, error});
         }
     });
 });
