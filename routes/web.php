@@ -4,7 +4,6 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ActivitiesController;
 use App\Http\Controllers\Admin\AdminAboutController;
 use App\Http\Controllers\Admin\AdminHomeController;
-use App\Http\Controllers\BackEndController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\FrontEndController;
@@ -26,14 +25,13 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
     // Pages secondaires du dashboard
     Route::get('/about', [AdminAboutController::class, 'index'])->name('dashboard.about');
-    Route::get('/contact', [BackEndController::class, 'contact'])->name('dashboard.contact');
+    Route::get('/contact', [\App\Http\Controllers\Admin\ContactController::class, 'index'])->name('dashboard.contact');
+    Route::get('/expert', [\App\Http\Controllers\Admin\ExpertController::class, 'index'])->name('dashboard.expert');
     Route::get('/activities', [\App\Http\Controllers\Admin\ActivitiesController::class, 'index'])->name('dashboard.activities');
     Route::get('/accueil', [AdminHomeController::class, 'index'])->name('dashboard.accueil');
     Route::get('/actualities', [\App\Http\Controllers\Admin\NewsController::class, 'index'])->name('dashboard.actualities');
-
 
     // Page principale du dashboard = Analytics
     Route::get('/', [CookiesController::class, 'dashboard'])->name('dashboard.homepage');
@@ -56,6 +54,11 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     // Routes CRUD pour les activités
     Route::prefix('activities')->name('activities.')->group(function () {
+
+        // Key Numbers
+        Route::post('/keynumbers', [\App\Http\Controllers\Admin\ActivitiesController::class, 'storeKeyNumber'])->name('store-keynumber');
+        Route::put('/keynumbers/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateKeyNumber'])->name('update-keynumber');
+        Route::delete('/keynumbers/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'deleteKeyNumber'])->name('delete-keynumber');
         // Page Content
         Route::put('/page-content', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updatePageContent'])->name('update-page-content');
 
@@ -87,6 +90,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::delete('/{id}/delete', [AdminHomeController::class, 'deleteSlide'])->name('delete');
         });
 
+        // Partenaires
+        Route::prefix('partners')->name('partners.')->group(function () {
+            Route::put('/update', [AdminHomeController::class, 'updatePartners'])->name('update');
+            Route::post('/items/store', [AdminHomeController::class, 'storePartnerItem'])->name('items.store');
+            Route::put('/items/{id}/update', [AdminHomeController::class, 'updatePartnerItem'])->name('items.update');
+            Route::delete('/items/{id}/delete', [AdminHomeController::class, 'deletePartnerItem'])->name('items.delete');
+            Route::get('/items/{id}/toggle', [AdminHomeController::class, 'togglePartnerItemStatus'])->name('items.toggle');
+        });
+
         // À propos
         Route::put('/about/update', [AdminHomeController::class, 'updateAbout'])->name('about.update');
 
@@ -103,29 +115,73 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
         // Recrutement
         Route::put('/recruitment/update', [AdminHomeController::class, 'updateRecruitment'])->name('recruitment.update');
+
+        // FOOTER - Routes ajoutées
+        Route::prefix('footer')->name('footer.')->group(function () {
+            // Paramètres généraux
+            Route::put('/settings/update', [AdminHomeController::class, 'updateFooterSettings'])->name('settings.update');
+
+            // Colonnes
+            Route::post('/columns/store', [AdminHomeController::class, 'storeFooterColumn'])->name('columns.store');
+            Route::put('/columns/{id}/update', [AdminHomeController::class, 'updateFooterColumn'])->name('columns.update');
+            Route::delete('/columns/{id}/delete', [AdminHomeController::class, 'deleteFooterColumn'])->name('columns.delete');
+            Route::get('/columns/{id}/toggle', [AdminHomeController::class, 'toggleColumnStatus'])->name('columns.toggle');
+
+            // Liens
+            Route::post('/links/store', [AdminHomeController::class, 'storeFooterLink'])->name('links.store');
+            Route::put('/links/{id}/update', [AdminHomeController::class, 'updateFooterLink'])->name('links.update');
+            Route::delete('/links/{id}/delete', [AdminHomeController::class, 'deleteFooterLink'])->name('links.delete');
+            Route::get('/links/{id}/toggle', [AdminHomeController::class, 'toggleLinkStatus'])->name('links.toggle');
+
+            // Réseaux sociaux
+            Route::post('/socials/store', [AdminHomeController::class, 'storeFooterSocial'])->name('socials.store');
+            Route::put('/socials/{id}/update', [AdminHomeController::class, 'updateFooterSocial'])->name('socials.update');
+            Route::delete('/socials/{id}/delete', [AdminHomeController::class, 'deleteFooterSocial'])->name('socials.delete');
+            Route::get('/socials/{id}/toggle', [AdminHomeController::class, 'toggleSocialStatus'])->name('socials.toggle');
+        });
     });
 
-    // Routes CRUD pour la page About
+    // Ajoutez ce groupe APRÈS la route dashboard.contact
+    Route::prefix('contact')->name('dashboard.contact.')->group(function () {
+        Route::get('/application/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'showApplication'])->name('show-application');
+        Route::get('/quote/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'showQuote'])->name('show-quote');
+        Route::get('/download-cv/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'downloadCv'])->name('download-cv');
+        Route::post('/mark-read/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'markAsRead'])->name('mark-read');
+        Route::delete('/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'destroy'])->name('destroy');
+    });
+
+    // Routes CRUD pour l'équipe expert
+    Route::prefix('expert')->name('dashboard.expert.')->group(function () {
+        // Team Leader - Accepter PUT et POST
+        Route::match(['put', 'post'], '/update-leader', [\App\Http\Controllers\Admin\ExpertController::class, 'updateTeamLeader'])->name('update-leader');
+
+        // Team Members
+        Route::post('/store-member', [\App\Http\Controllers\Admin\ExpertController::class, 'storeTeamMember'])->name('store-member');
+        Route::match(['put', 'post'], '/update-member/{id}', [\App\Http\Controllers\Admin\ExpertController::class, 'updateTeamMember'])->name('update-member');
+        Route::delete('/delete-member/{id}', [\App\Http\Controllers\Admin\ExpertController::class, 'deleteTeamMember'])->name('delete-member');
+    });
+
+    // Routes CRUD pour la page About - CORRIGÉES
     Route::prefix('about')->name('dashboard.about.')->group(function () {
         Route::get('/manage', [AdminAboutController::class, 'index'])->name('manage');
 
         // Section principale
-        Route::put('/main-section', [AdminAboutController::class, 'updateMainSection'])->name('main-section.update');
+        Route::put('/main-section/update', [AdminAboutController::class, 'updateMainSection'])->name('main-section.update');
 
         // Accordion
-        Route::post('/accordion', [AdminAboutController::class, 'storeAccordionItem'])->name('accordion.store');
+        Route::post('/accordion/store', [AdminAboutController::class, 'storeAccordionItem'])->name('accordion.store');
         Route::get('/accordion/{id}/edit', [AdminAboutController::class, 'getAccordionItem'])->name('accordion.edit');
-        Route::put('/accordion/{id}', [AdminAboutController::class, 'updateAccordionItem'])->name('accordion.update');
-        Route::delete('/accordion/{id}', [AdminAboutController::class, 'deleteAccordionItem'])->name('accordion.delete');
+        Route::put('/accordion/{id}/update', [AdminAboutController::class, 'updateAccordionItem'])->name('accordion.update');
+        Route::delete('/accordion/{id}/delete', [AdminAboutController::class, 'deleteAccordionItem'])->name('accordion.delete');
 
         // Transition
-        Route::put('/transition-section', [AdminAboutController::class, 'updateTransitionSection'])->name('transition-section.update');
+        Route::put('/transition-section/update', [AdminAboutController::class, 'updateTransitionSection'])->name('transition-section.update');
 
         // Team
-        Route::post('/team', [AdminAboutController::class, 'storeTeamMember'])->name('team.store');
+        Route::post('/team/store', [AdminAboutController::class, 'storeTeamMember'])->name('team.store');
         Route::get('/team/{id}/edit', [AdminAboutController::class, 'getTeamMember'])->name('team.edit');
-        Route::put('/team/{id}', [AdminAboutController::class, 'updateTeamMember'])->name('team.update');
-        Route::delete('/team/{id}', [AdminAboutController::class, 'deleteTeamMember'])->name('team.delete');
+        Route::put('/team/{id}/update', [AdminAboutController::class, 'updateTeamMember'])->name('team.update');
+        Route::delete('/team/{id}/delete', [AdminAboutController::class, 'deleteTeamMember'])->name('team.delete');
     });
 });
 
@@ -161,5 +217,3 @@ Route::post('/contact/quote', [ContactController::class, 'storeQuote'])->name('c
 Route::post('/cookies/accept', [CookiesController::class, 'accept'])->name('cookies.accept');
 Route::post('/cookies/decline', [CookiesController::class, 'decline'])->name('cookies.decline');
 Route::get('/cookies/status', [CookiesController::class, 'status'])->name('cookies.status');
-
-

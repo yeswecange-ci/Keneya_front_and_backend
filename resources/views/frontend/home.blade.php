@@ -105,7 +105,7 @@
                     <h2>À propos de nous</h2>
                     <h1>Contenu par défaut</h1>
                 </div>
-                
+
                 <div class="wow fadeInLeft">
                     <p>Aucun contenu disponible pour le moment.</p>
                 </div>
@@ -257,50 +257,74 @@
         </div>
     </section>-->
 
-    <!-- Section testimonial -->
+    <!-- Section partenaires -->
     <section>
         <div class="container-lg">
             <div class="section--title wow fadeInRight">
                 <h2>ILS NOUS FONT CONFIANCE</h2>
             </div>
 
+            @php
+                // Récupérer directement les partenaires actifs depuis la base de données
+                $partnerItems = \App\Models\HomePartnerItem::where('home_partner_item_active', true)
+                    ->orderBy('home_partner_item_order')
+                    ->get();
+            @endphp
 
-             <div class="swiper partners-swiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="{{asset('images/27.png')}}" alt="img">
+            @if($partnerItems->count() > 0)
+                <div class="swiper partners-swiper">
+                    <div class="swiper-wrapper">
+                        @foreach($partnerItems as $partnerItem)
+                            <div class="swiper-slide">
+                                <img src="{{ asset($partnerItem->home_partner_item_image) }}"
+                                     alt="{{ $partnerItem->home_partner_item_alt ?? 'Partenaire Keneya' }}"
+                                     onerror="this.style.display='none'">
+                            </div>
+                        @endforeach
                     </div>
 
-                    <div class="swiper-slide">
-                        <img src="{{asset('images/27.png')}}" alt="img">
-                    </div>
-
-                    <div class="swiper-slide">
-                        <img src="{{asset('images/27.png')}}" alt="img">
-                    </div>
-
-                    <div class="swiper-slide">
-                        <img src="{{asset('images/27.png')}}" alt="img">
-                    </div>
-
-                    <div class="swiper-slide">
-                        <img src="{{asset('images/27.png')}}" alt="img">
-                    </div>
-
-                    <div class="swiper-slide">
-                        <img src="{{asset('images/27.png')}}" alt="img">
+                    <div class="navigation-buttons-swiper">
+                        <div class="swiper-button-prev partners-prev"></div>
+                        <div class="swiper-button-next partners-next"></div>
                     </div>
                 </div>
+            @else
+                <!-- Fallback si aucun partenaire n'est trouvé -->
+                <div class="swiper partners-swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="{{ asset('images/27.png') }}" alt="img">
+                        </div>
 
+                        <div class="swiper-slide">
+                            <img src="{{ asset('images/27.png') }}" alt="img">
+                        </div>
 
-                <div class="navigation-buttons-swiper">
-                    <div class="swiper-button-prev partners-prev"></div>
-                    <div class="swiper-button-next partners-next"></div>
+                        <div class="swiper-slide">
+                            <img src="{{ asset('images/27.png') }}" alt="img">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="{{ asset('images/27.png') }}" alt="img">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="{{ asset('images/27.png') }}" alt="img">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="{{ asset('images/27.png') }}" alt="img">
+                        </div>
+                    </div>
+
+                    <div class="navigation-buttons-swiper">
+                        <div class="swiper-button-prev partners-prev"></div>
+                        <div class="swiper-button-next partners-next"></div>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </section>
-
 
     <!-- NOUVEAU: Inclusion du composant cookies -->
     @include('components.cookies-banner')
@@ -317,9 +341,6 @@
             }
         }, 3000)
     </script>
-
-   
-    
 
     <script>
         const slides = document.querySelectorAll('.slide');
@@ -352,6 +373,34 @@
                 behavior: 'smooth'
             });
         }
+
+        // Initialisation du swiper pour les partenaires
+        document.addEventListener('DOMContentLoaded', function() {
+            const partnersSwiper = new Swiper('.partners-swiper', {
+                slidesPerView: 2,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: '.partners-next',
+                    prevEl: '.partners-prev',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 3,
+                    },
+                    768: {
+                        slidesPerView: 4,
+                    },
+                    1024: {
+                        slidesPerView: 5,
+                    },
+                },
+            });
+        });
 
         // Fonction pour soumettre le formulaire avec gestion des cookies
         function submitApplication() {

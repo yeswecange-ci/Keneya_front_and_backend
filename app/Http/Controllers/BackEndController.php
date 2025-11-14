@@ -34,4 +34,8 @@ class BackEndController extends Controller
     {
         return view('backend.actualities');
     }
+    public function expert(): View
+    {
+        return view('backend.expert');
+    }
 }

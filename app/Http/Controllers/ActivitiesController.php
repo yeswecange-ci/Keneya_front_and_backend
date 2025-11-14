@@ -7,6 +7,7 @@ use App\Models\ActivitiesService;
 use App\Models\ActivitiesGeographicCoverage;
 use App\Models\ActivitiesTestimonial;
 use App\Models\ActivitiesPageContent;
+use App\Models\ActivitiesKeyNumber;
 use Illuminate\Http\Request;
 
 class ActivitiesController extends Controller
@@ -27,12 +28,15 @@ class ActivitiesController extends Controller
 
         $testimonials = ActivitiesTestimonial::active()->ordered()->get();
 
+        $keyNumbers = ActivitiesKeyNumber::active()->ordered()->get(); 
+
         return view('frontend.activities', compact(
             'pageContent',
             'themes',
             'services',
             'geographicCoverage',
-            'testimonials'
+            'testimonials',
+            'keyNumbers'
         ));
     }
 }

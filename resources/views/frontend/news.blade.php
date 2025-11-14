@@ -22,7 +22,6 @@
                                         <div class="cardBlog--img">
                                             <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}" alt="{{ $article->news_title }}">
                                         </div>
-
                                         <div class="cardBlog--body">
                                             <h3>{{ $article->news_title }}</h3>
                                             <p>{{ Str::limit($article->news_description, 150) }}</p>
@@ -32,11 +31,12 @@
                             </div>
                         @endforeach
                     </div>
-
-                    <div class="navigation-buttons-swiper">
-                        <div class="swiper-button-prev blog-prev"></div>
-                        <div class="swiper-button-next blog-next"></div>
-                    </div>
+                    @if($blogArticles->count() > 1)
+                        <div class="navigation-buttons-swiper">
+                            <div class="swiper-button-prev blog-prev"></div>
+                            <div class="swiper-button-next blog-next"></div>
+                        </div>
+                    @endif
                 </div>
             @else
                 <div class="alert alert-info">
@@ -63,7 +63,6 @@
                                         <div class="cardBlog--img">
                                             <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}" alt="{{ $article->news_title }}">
                                         </div>
-
                                         <div class="cardBlog--body">
                                             <h3>{{ $article->news_title }}</h3>
                                             <p>{{ Str::limit($article->news_description, 150) }}</p>
@@ -73,11 +72,12 @@
                             </div>
                         @endforeach
                     </div>
-
-                    <div class="navigation-buttons-swiper">
-                        <div class="swiper-button-prev event-prev"></div>
-                        <div class="swiper-button-next event-next"></div>
-                    </div>
+                    @if($eventArticles->count() > 1)
+                        <div class="navigation-buttons-swiper">
+                            <div class="swiper-button-prev event-prev"></div>
+                            <div class="swiper-button-next event-next"></div>
+                        </div>
+                    @endif
                 </div>
             @else
                 <div class="alert alert-info">
@@ -104,7 +104,6 @@
                                         <div class="cardBlog--img">
                                             <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}" alt="{{ $article->news_title }}">
                                         </div>
-
                                         <div class="cardBlog--body">
                                             <h3>{{ $article->news_title }}</h3>
                                             <p>{{ Str::limit($article->news_description, 150) }}</p>
@@ -114,11 +113,12 @@
                             </div>
                         @endforeach
                     </div>
-
-                    <div class="navigation-buttons-swiper">
-                        <div class="swiper-button-prev event1-prev"></div>
-                        <div class="swiper-button-next event1-next"></div>
-                    </div>
+                    @if($publicationArticles->count() > 1)
+                        <div class="navigation-buttons-swiper">
+                            <div class="swiper-button-prev event1-prev"></div>
+                            <div class="swiper-button-next event1-next"></div>
+                        </div>
+                    @endif
                 </div>
             @else
                 <div class="alert alert-info">
@@ -144,7 +144,6 @@
                                     <div class="cardBlog--img">
                                         <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}" alt="{{ $article->news_title }}">
                                     </div>
-
                                     <div class="cardBlog--body">
                                         <h3>{{ $article->news_title }}</h3>
                                         <p>{{ Str::limit($article->news_description, 150) }}</p>
@@ -161,4 +160,59 @@
             @endif
         </div>
     </section>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Swiper Blog
+    if (document.querySelector('.blog-swiper')) {
+        new Swiper('.blog-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            navigation: {
+                nextEl: '.blog-next',
+                prevEl: '.blog-prev',
+            },
+            breakpoints: {
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
+            }
+        });
+    }
+
+    // Swiper Events
+    if (document.querySelector('.event-swiper')) {
+        new Swiper('.event-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            navigation: {
+                nextEl: '.event-next',
+                prevEl: '.event-prev',
+            },
+            breakpoints: {
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
+            }
+        });
+    }
+
+    // Swiper Publications - CORRIGÉ
+    if (document.querySelector('.event1-swiper')) {
+        new Swiper('.event1-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            navigation: {
+                nextEl: '.event1-next',
+                prevEl: '.event1-prev',
+            },
+            breakpoints: {
+                576: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 }
+            }
+        });
+    }
+});
+</script>
 @endsection
