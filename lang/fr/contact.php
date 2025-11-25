@@ -51,4 +51,9 @@ return [
     'enter_phone' => 'Entrez votre téléphone',
     'enter_company' => 'Entrez le nom de votre entreprise',
     'describe_project' => 'Décrivez votre projet en détail',
+    'contact_description' => 'Merci de remplir ce formulaire pour nous faire part de votre demande. Nous vous répondrons dans les plus brefs délais.',
+    'find_us' => 'Nous trouver',
+    'send' => 'Envoyer',
+    'message' => 'Message',
+    'message_placeholder' => 'Laissez votre message',
 ];

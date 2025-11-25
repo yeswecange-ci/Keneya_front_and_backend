@@ -26,4 +26,7 @@ return [
     'loading' => 'Chargement...',
     'no_data' => 'Aucune donnée disponible',
     'copyright' => 'Tous droits réservés',
+    'success_message' => 'Opération réussie !',
+    'error_message' => 'Une erreur est survenue',
+    'no_articles' => 'Aucun article disponible pour le moment.',
 ];

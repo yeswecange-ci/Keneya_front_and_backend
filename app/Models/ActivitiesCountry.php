@@ -9,6 +9,7 @@ class ActivitiesCountry extends Model
     protected $fillable = [
         'country_code',
         'country_name',
+        'color',
         'description',
         'activities',
         'image',

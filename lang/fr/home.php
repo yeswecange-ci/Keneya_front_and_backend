@@ -29,6 +29,24 @@ return [
     // Recruitment Section
     'recruitment_title' => 'Rejoignez Notre Équipe',
     'recruitment_description' => 'Nous recherchons des talents passionnés par la santé publique',
+    'recruitment_default_title' => 'Venez travailler avec nous',
+    'recruitment_default_description' => 'Merci de remplir ce formulaire, afin de postuler pour les positions disponibles dans notre cabinet.',
     'apply_now' => 'Postuler maintenant',
     'view_positions' => 'Voir les postes disponibles',
+    'submit_application' => 'Postuler',
+
+    // Recruitment Form
+    'desired_position' => 'Poste souhaité',
+    'position_developer' => 'Développeur',
+    'position_designer' => 'Designer',
+    'position_assistant' => 'Assistant',
+    'position_consultant' => 'Consultant',
+    'position_project_manager' => 'Chef de projet',
+    'availability_date' => 'Date de disponibilité',
+    'upload_cv' => 'Ajouter votre CV',
+
+    // Form Messages
+    'application_success' => 'Candidature envoyée avec succès !',
+    'application_error' => 'Erreur lors de l\'envoi de la candidature',
+    'sending_error' => 'Erreur lors de l\'envoi',
 ];

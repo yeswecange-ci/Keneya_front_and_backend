@@ -51,4 +51,9 @@ return [
     'enter_phone' => 'Enter your phone',
     'enter_company' => 'Enter your company name',
     'describe_project' => 'Describe your project in detail',
+    'contact_description' => 'Please fill out this form to let us know about your request. We will respond as soon as possible.',
+    'find_us' => 'Find us',
+    'send' => 'Send',
+    'message' => 'Message',
+    'message_placeholder' => 'Leave your message',
 ];

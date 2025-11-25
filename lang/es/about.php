@@ -31,4 +31,8 @@ return [
     // Achievements
     'our_achievements' => 'Nuestros Logros',
     'view_projects' => 'Ver nuestros proyectos',
+
+    // Defaults
+    'about_us_default' => 'Sobre Nosotros',
+    'team_section_title' => 'Nuestro equipo',
 ];

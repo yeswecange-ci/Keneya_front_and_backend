@@ -481,29 +481,58 @@
         // Interactive Map functionality
         document.addEventListener('DOMContentLoaded', function() {
             const svgPaths = document.querySelectorAll('#map svg path[data-id]');
+            
+            // Data from backend
+            const activeCountries = @json($countries->map(function($country) {
+                return [
+                    'code' => $country->country_code,
+                    'color' => $country->color ?? '#FFD700',
+                    'name' => $country->country_name
+                ];
+            }));
 
-            // Add click and hover effects to all country paths
+            // Create a map of country codes to colors for easy lookup
+            const countryColors = {};
+            activeCountries.forEach(country => {
+                countryColors[country.code] = country.color;
+            });
+
+            // Initialize map colors
             svgPaths.forEach(path => {
-                // Add cursor pointer and hover effect
-                path.style.cursor = 'pointer';
+                const countryCode = path.getAttribute('data-id') || path.getAttribute('id');
+                
+                // Apply color if country is active
+                if (countryColors[countryCode]) {
+                    path.style.fill = countryColors[countryCode];
+                    path.setAttribute('data-original-color', countryColors[countryCode]);
+                    path.style.cursor = 'pointer';
+                } else {
+                    // Default styling for inactive countries
+                    path.setAttribute('data-original-color', '#f2f2f2');
+                }
+                
                 path.style.transition = 'all 0.3s ease';
 
                 path.addEventListener('mouseenter', function() {
-                    this.style.fill = '#D4A017';
-                    this.style.opacity = '0.8';
+                    // Only apply hover effect if country is active (has a color in our list)
+                    if (countryColors[countryCode]) {
+                        this.style.fill = '#D4A017'; // Hover color (darker gold)
+                        this.style.opacity = '0.8';
+                    }
                 });
 
                 path.addEventListener('mouseleave', function() {
-                    this.style.fill = '#f2f2f2';
+                    // Restore original color
+                    const originalColor = this.getAttribute('data-original-color');
+                    this.style.fill = originalColor;
                     this.style.opacity = '1';
                 });
 
                 // Add click event to show country modal
                 path.addEventListener('click', function() {
-                    const countryCode = this.getAttribute('data-id') || this.getAttribute('id');
-                    const countryName = this.getAttribute('data-name') || this.getAttribute('data-bs-title');
-
-                    if (countryCode) {
+                    // Only show modal for active countries
+                    if (countryColors[countryCode]) {
+                        const countryName = this.getAttribute('data-name') || this.getAttribute('data-bs-title');
                         showCountryInfo(countryCode, countryName);
                     }
                 });
@@ -635,13 +664,7 @@
 
         /* Map interaction styles */
         #map svg path[data-id] {
-            cursor: pointer;
             transition: all 0.3s ease;
-        }
-
-        #map svg path[data-id]:hover {
-            fill: #D4A017 !important;
-            opacity: 0.8;
         }
     </style>
 @endsection

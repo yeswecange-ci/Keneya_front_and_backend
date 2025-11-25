@@ -451,6 +451,7 @@
                                 <th>Pays</th>
                                 <th>Nombre d'activités</th>
                                 <th>Image</th>
+                                <th>Couleur</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
@@ -475,6 +476,12 @@
                                     @else
                                         <span class="text-muted">Aucune image</span>
                                     @endif
+                                </td>
+                                <td>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded border border-gray-200" style="background-color: {{ $country->color ?? '#FFD700' }}"></div>
+                                        <span class="text-xs text-muted">{{ $country->color ?? '#FFD700' }}</span>
+                                    </div>
                                 </td>
                                 <td>
                                     <span class="badge badge-{{ $country->is_active ? 'success' : 'secondary' }}">

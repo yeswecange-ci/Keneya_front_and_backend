@@ -47,19 +47,19 @@
                 <div class="col-12 col-lg-3 footer-column">
                     <div class="footer-title">{{ __('footer.about_company') }}</div>
                     <div class="footer-links">
-                        <a href="#"><!-- TODO: Traduire: Histoire de l'entreprise --></a>
-                        <a href="#"><!-- TODO: Traduire: Mission, vision, valeurs --></a>
-                        <a href="#"><!-- TODO: Traduire: Transition ICI-Santé vers Kenaya Impact --></a>
-                        <a href="#"><!-- TODO: Traduire: Équipe dirigeante --></a>
+                        <a href="#">{{ __('footer.company_history') }}</a>
+                        <a href="#">{{ __('footer.mission_vision_values') }}</a>
+                        <a href="#">{{ __('footer.transition') }}</a>
+                        <a href="#">{{ __('footer.leadership_team') }}</a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 footer-column">
-                    <div class="footer-title"><!-- TODO: Traduire: Nos activités --></div>
+                    <div class="footer-title">{{ __('footer.our_activities') }}</div>
                     <div class="footer-links">
-                        <a href="#"><!-- TODO: Traduire: Domaines d'intervention --></a>
-                        <a href="#"><!-- TODO: Traduire: Services proposés --></a>
-                        <a href="#"><!-- TODO: Traduire: Couverture géographique --></a>
-                        <a href="#"><!-- TODO: Traduire: Études de cas/témoignages --></a>
+                        <a href="#">{{ __('footer.intervention_areas') }}</a>
+                        <a href="#">{{ __('footer.services_offered') }}</a>
+                        <a href="#">{{ __('footer.geographic_coverage') }}</a>
+                        <a href="#">{{ __('footer.case_studies') }}</a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 footer-column">
@@ -100,7 +100,7 @@
     <div class="footer-bottom wow fadeInUp">
         <div>&copy;{{ $footerSettings ? $footerSettings->footer_copyright : 'KENAYAIMPACT 2025' }}</div>
         <a href="{{ $footerSettings ? $footerSettings->footer_legal_link : '#' }}">
-            {{ $footerSettings ? $footerSettings->footer_legal_text : 'MENTION LÉGALES' }}
+            {{ $footerSettings ? $footerSettings->footer_legal_text : __('footer.legal_notice') }}
         </a>
     </div>
 </footer>

@@ -38,4 +38,11 @@ return [
     // Related
     'related_news' => 'Related news',
     'you_might_like' => 'You might like',
+
+    // Page specific
+    'blog_subtitle' => 'News blog',
+    'no_articles_blog' => 'No blog articles available at the moment.',
+    'no_articles_events' => 'No events available at the moment.',
+    'no_articles_publications' => 'No publications available at the moment.',
+    'no_articles_press' => 'No press releases available at the moment.',
 ];

@@ -26,4 +26,7 @@ return [
     'loading' => 'Loading...',
     'no_data' => 'No data available',
     'copyright' => 'All rights reserved',
+    'success_message' => 'Operation successful!',
+    'error_message' => 'An error occurred',
+    'no_articles' => 'No articles available at the moment.',
 ];

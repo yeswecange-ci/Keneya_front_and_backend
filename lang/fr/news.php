@@ -38,4 +38,11 @@ return [
     // Related
     'related_news' => 'Actualités connexes',
     'you_might_like' => 'Vous aimerez peut-être',
+
+    // Page specific
+    'blog_subtitle' => 'Blog d\'actualités',
+    'no_articles_blog' => 'Aucun article de blog disponible pour le moment.',
+    'no_articles_events' => 'Aucun événement disponible pour le moment.',
+    'no_articles_publications' => 'Aucune publication disponible pour le moment.',
+    'no_articles_press' => 'Aucun communiqué de presse disponible pour le moment.',
 ];
