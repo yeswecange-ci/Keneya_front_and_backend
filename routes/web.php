@@ -167,6 +167,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/quote/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'showQuote'])->name('show-quote');
         Route::get('/download-cv/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'downloadCv'])->name('download-cv');
         Route::post('/mark-read/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'markAsRead'])->name('mark-read');
+        Route::post('/mark-unread/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'markAsUnread'])->name('mark-unread');
         Route::post('/mark-multiple-read', [\App\Http\Controllers\Admin\ContactController::class, 'markMultipleRead'])->name('mark-multiple-read');
         Route::post('/delete-multiple', [\App\Http\Controllers\Admin\ContactController::class, 'deleteMultiple'])->name('delete-multiple');
         Route::get('/export', [\App\Http\Controllers\Admin\ContactController::class, 'export'])->name('export');

@@ -18,6 +18,7 @@ class ContactSubmission extends Model
         'availability_date',
         'cv_path',
         'message',
-        'type'
+        'type',
+        'read_at'
     ];
 }

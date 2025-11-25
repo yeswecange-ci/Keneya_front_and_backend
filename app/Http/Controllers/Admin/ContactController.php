@@ -40,6 +40,14 @@ class ContactController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function markAsUnread($id)
+    {
+        $submission = ContactSubmission::findOrFail($id);
+        $submission->update(['read_at' => null]);
+
+        return response()->json(['success' => true]);
+    }
+
     public function destroy($id)
     {
         $submission = ContactSubmission::findOrFail($id);
