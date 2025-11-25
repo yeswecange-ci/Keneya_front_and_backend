@@ -19,34 +19,31 @@
             <ul>
                 <ul>
                     <li>
-                        <a href="{{ route('front.home') }}" class="{{ Request::is('home') ? 'navSelect' : '' }}">ACCUEIL</a>
+                        <a href="{{ route('front.home') }}" class="{{ Request::is('home') ? 'navSelect' : '' }}">{{ __('nav.home') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
                     <li>
-                        <a href="{{ route('front.about') }}" class="{{ Request::is('about') ? 'navSelect' : '' }}">À
-                            PROPOS DE NOUS</a>
+                        <a href="{{ route('front.about') }}" class="{{ Request::is('about') ? 'navSelect' : '' }}">{{ __('nav.about') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
                     <li>
                         <a href="{{ route('front.activities') }}"
-                            class="{{ Request::is('activities') ? 'navSelect' : '' }}">NOS
-                            ACTIVITÉS</a>
+                            class="{{ Request::is('activities') ? 'navSelect' : '' }}">{{ __('nav.activities') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
                     <li>
                         <a href="{{ route('front.news') }}"
-                            class="{{ Request::is('news') ? 'navSelect' : '' }}">ACTUALITÉS</a>
+                            class="{{ Request::is('news') ? 'navSelect' : '' }}">{{ __('nav.news') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
                     <li>
                         <a href="{{ route('front.team.details') }}"
-                            class="{{ Request::is('team-details') ? 'navSelect' : '' }}">ESPACE
-                            EXPERTS</a>
+                            class="{{ Request::is('team-details') ? 'navSelect' : '' }}">{{ __('nav.experts') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
                     <li>
                         <a href="{{ route('front.contact') }}"
-                            class="{{ Request::is('contact') ? 'navSelect' : '' }}">CONTACT</a>
+                            class="{{ Request::is('contact') ? 'navSelect' : '' }}">{{ __('nav.contact') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
 
@@ -54,11 +51,11 @@
                         <div class="d-flex align-items-center justify-content-between w-100">
                             <div class="lang-container">
                                 <div class="lang-switcher" id="langSwitcher">
-                                    <span id="currentLang">FR ▼</span>
+                                    <span id="currentLang">{{ strtoupper(app()->getLocale()) }} ▼</span>
                                     <div class="lang-options" id="langOptions">
-                                        <a href="#" data-lang="FR">FR</a>
-                                        <a href="#" data-lang="EN">EN</a>
-                                        <a href="#" data-lang="ES">ES</a>
+                                        <a href="#" data-lang="fr">FR</a>
+                                        <a href="#" data-lang="en">EN</a>
+                                        <a href="#" data-lang="es">ES</a>
                                     </div>
                                 </div>
                             </div>

@@ -70,7 +70,7 @@
                     <div class="knumb--elts my-5">
                         @foreach ($themes as $theme)
                             <div class="knumb--elts__elt wow fadeInLeft">
-                                <img src="{{ $theme->activities_theme_icon ?? 'img/16.png' }}"
+                                <img src="{{ asset($theme->activities_theme_icon ?? 'img/16.png') }}"
                                     alt="{{ $theme->activities_theme_title }}">
                                 <div>
                                     <h1>{{ $theme->activities_theme_title }}</h1>
@@ -109,7 +109,7 @@
                                 <div class="swiper-slide">
                                     <div class="card-offers">
                                         <div class="card-image-offer"
-                                            style="background: url('{{ $service->activities_service_image ?? 'img/12.jpg' }}');">
+                                            style="background: url('{{ asset($service->activities_service_image ?? 'img/12.jpg') }}');">
                                             <!-- <img src="" alt="Image santé" class="card-img" > -->
                                         </div>
                                         <div class="card-content-offer">
@@ -412,6 +412,25 @@
         </div>
     </section>
 
+    <!-- Country Modal -->
+    <div id="countryModal" class="modal fade" tabindex="-1" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="countryModalTitle">Informations sur le pays</h5>
+                    <button type="button" class="btn-close" onclick="closeCountryModal()"></button>
+                </div>
+                <div class="modal-body" id="countryModalBody">
+                    <div class="text-center py-4">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- temoignages -->
     <section class="temoignages">
         <div class="container-lg">
@@ -426,7 +445,7 @@
                             <div class="cardBlog">
                                 <a href="{{ $testimonial->activities_testimonial_link ?? '#' }}">
                                     <div class="cardBlog--img">
-                                        <img src="{{ $testimonial->activities_testimonial_image ?? 'img/21.jpg' }}"
+                                        <img src="{{ asset($testimonial->activities_testimonial_image ?? 'img/21.jpg') }}"
                                             alt="{{ $testimonial->activities_testimonial_title }}">
                                     </div>
 
@@ -458,5 +477,194 @@
                 behavior: 'smooth'
             });
         }
+
+        // Interactive Map functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const svgPaths = document.querySelectorAll('#map svg path[data-id]');
+            
+            // Data from backend
+            const activeCountries = @json($countries->map(function($country) {
+                return [
+                    'code' => $country->country_code,
+                    'color' => $country->color ?? '#FFD700',
+                    'name' => $country->country_name
+                ];
+            }));
+
+            // Create a map of country codes to colors for easy lookup
+            const countryColors = {};
+            activeCountries.forEach(country => {
+                countryColors[country.code] = country.color;
+            });
+
+            // Initialize map colors
+            svgPaths.forEach(path => {
+                const countryCode = path.getAttribute('data-id') || path.getAttribute('id');
+                
+                // Apply color if country is active
+                if (countryColors[countryCode]) {
+                    path.style.fill = countryColors[countryCode];
+                    path.setAttribute('data-original-color', countryColors[countryCode]);
+                    path.style.cursor = 'pointer';
+                } else {
+                    // Default styling for inactive countries
+                    path.setAttribute('data-original-color', '#f2f2f2');
+                }
+                
+                path.style.transition = 'all 0.3s ease';
+
+                path.addEventListener('mouseenter', function() {
+                    // Only apply hover effect if country is active (has a color in our list)
+                    if (countryColors[countryCode]) {
+                        this.style.fill = '#D4A017'; // Hover color (darker gold)
+                        this.style.opacity = '0.8';
+                    }
+                });
+
+                path.addEventListener('mouseleave', function() {
+                    // Restore original color
+                    const originalColor = this.getAttribute('data-original-color');
+                    this.style.fill = originalColor;
+                    this.style.opacity = '1';
+                });
+
+                // Add click event to show country modal
+                path.addEventListener('click', function() {
+                    // Only show modal for active countries
+                    if (countryColors[countryCode]) {
+                        const countryName = this.getAttribute('data-name') || this.getAttribute('data-bs-title');
+                        showCountryInfo(countryCode, countryName);
+                    }
+                });
+            });
+        });
+
+        function showCountryInfo(countryCode, countryName) {
+            const modal = document.getElementById('countryModal');
+            const modalTitle = document.getElementById('countryModalTitle');
+            const modalBody = document.getElementById('countryModalBody');
+
+            // Show modal with loading state
+            modal.style.display = 'block';
+            modal.classList.add('show');
+            document.body.classList.add('modal-open');
+
+            // Create backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            backdrop.id = 'countryModalBackdrop';
+            document.body.appendChild(backdrop);
+
+            // Set title
+            modalTitle.textContent = countryName || 'Informations sur le pays';
+
+            // Show loading spinner
+            modalBody.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                </div>
+            `;
+
+            // Fetch country data
+            fetch(`/activities/country/${countryCode}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Pays non trouvé');
+                    }
+                    return response.json();
+                })
+                .then(country => {
+                    displayCountryInfo(country);
+                })
+                .catch(error => {
+                    modalBody.innerHTML = `
+                        <div class="alert alert-warning">
+                            <p class="mb-0">Aucune information disponible pour ce pays.</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function displayCountryInfo(country) {
+            const modalBody = document.getElementById('countryModalBody');
+
+            let activitiesList = '';
+            if (country.activities && country.activities.length > 0) {
+                activitiesList = '<ul class="list-unstyled">';
+                country.activities.forEach(activity => {
+                    activitiesList += `<li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>${activity}</li>`;
+                });
+                activitiesList += '</ul>';
+            } else {
+                activitiesList = '<p class="text-muted">Aucune activité enregistrée.</p>';
+            }
+
+            let imageHtml = '';
+            if (country.image) {
+                imageHtml = `
+                    <div class="mb-4">
+                        <img src="{{ asset('') }}${country.image}" alt="${country.country_name}" class="img-fluid rounded" style="max-height: 300px; width: 100%; object-fit: cover;">
+                    </div>
+                `;
+            }
+
+            let descriptionHtml = '';
+            if (country.description) {
+                descriptionHtml = `
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Description</h6>
+                        <p>${country.description}</p>
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = `
+                ${imageHtml}
+                ${descriptionHtml}
+                <div>
+                    <h6 class="fw-bold">Nos activités en ${country.country_name}</h6>
+                    ${activitiesList}
+                </div>
+            `;
+        }
+
+        function closeCountryModal() {
+            const modal = document.getElementById('countryModal');
+            const backdrop = document.getElementById('countryModalBackdrop');
+
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+
+            if (backdrop) {
+                backdrop.remove();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('countryModal');
+            if (event.target === modal) {
+                closeCountryModal();
+            }
+        });
     </script>
+
+    <style>
+        /* Modal styles */
+        #countryModal {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #countryModal.show {
+            display: block !important;
+        }
+
+        /* Map interaction styles */
+        #map svg path[data-id] {
+            transition: all 0.3s ease;
+        }
+    </style>
 @endsection

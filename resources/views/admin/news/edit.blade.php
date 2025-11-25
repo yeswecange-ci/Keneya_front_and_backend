@@ -1,19 +1,24 @@
-@extends('layouts.backend.app')
+@extends('layouts.admin')
 
 @section('title', 'Modifier un Article')
 
 @section('content')
-<div class="container-fluid">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Modifier l'article</h1>
-        <a href="{{ route('dashboard.actualities') }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Retour
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-900">Modifier l'article</h1>
+        <a href="{{ route('dashboard.actualities') }}" class="btn-secondary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Retour
         </a>
     </div>
 
+    <!-- Error Messages -->
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <ul class="list-disc list-inside space-y-1">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -21,46 +26,44 @@
         </div>
     @endif
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Modification de l'article</h6>
+    <!-- Form Card -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">Modification de l'article</h3>
         </div>
         <div class="card-body">
             <form action="{{ route('news.update', $article->id) }}" method="POST" enctype="multipart/form-data" id="editArticleForm">
                 @csrf
                 @method('PUT')
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="news_title">Titre *</label>
-                            <input type="text" name="news_title" id="news_title" class="form-control" required
-                                   value="{{ old('news_title', $article->news_title) }}">
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="form-group">
+                        <label class="form-label">Titre *</label>
+                        <input type="text" name="news_title" class="form-input" required
+                               value="{{ old('news_title', $article->news_title) }}" placeholder="Titre de l'article">
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="news_order">Ordre d'affichage</label>
-                            <input type="number" name="news_order" id="news_order" class="form-control"
-                                   value="{{ old('news_order', $article->news_order) }}" min="0">
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label">Ordre d'affichage</label>
+                        <input type="number" name="news_order" class="form-input"
+                               value="{{ old('news_order', $article->news_order) }}" min="0">
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="news_description">Description</label>
-                    <textarea name="news_description" id="news_description" class="form-control" rows="4">{{ old('news_description', $article->news_description) }}</textarea>
+                <div class="form-group mb-6">
+                    <label class="form-label">Description</label>
+                    <textarea name="news_description" class="form-textarea" rows="4"
+                              placeholder="Description de l'article">{{ old('news_description', $article->news_description) }}</textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="news_link">Lien</label>
-                    <input type="url" name="news_link" id="news_link" class="form-control"
+                <div class="form-group mb-6">
+                    <label class="form-label">Lien</label>
+                    <input type="url" name="news_link" class="form-input"
                            value="{{ old('news_link', $article->news_link) }}" placeholder="https://exemple.com">
                 </div>
 
-                <div class="form-group">
-                    <label for="news_type">Type *</label>
-                    <select name="news_type" id="news_type" class="form-control" required>
+                <div class="form-group mb-6">
+                    <label class="form-label">Type *</label>
+                    <select name="news_type" class="form-select" required>
                         @foreach($types as $key => $label)
                             <option value="{{ $key }}" {{ old('news_type', $article->news_type) == $key ? 'selected' : '' }}>
                                 {{ $label }}
@@ -69,35 +72,41 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="news_image">Image</label>
-                    <input type="file" name="news_image" id="news_image" class="form-control-file">
-                    <small class="text-muted">Formats acceptés: jpeg, png, jpg, gif (max: 2MB)</small>
+                <div class="form-group mb-6">
+                    <label class="form-label">Image</label>
+                    <input type="file" name="news_image" class="form-input" accept="image/*">
+                    <p class="text-xs text-muted mt-1">Formats acceptés: jpeg, png, jpg, gif (max: 2MB)</p>
 
                     @if($article->news_image)
-                        <div class="mt-2">
-                            <p class="text-muted">Image actuelle:</p>
+                        <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Image actuelle:</p>
                             <img src="{{ asset($article->news_image) }}" alt="Image actuelle"
-                                 style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
-                            <p class="text-muted small">{{ basename($article->news_image) }}</p>
+                                 class="max-w-xs h-auto border border-gray-300 rounded shadow-sm">
+                            <p class="text-xs text-muted mt-2">{{ basename($article->news_image) }}</p>
                         </div>
                     @endif
                 </div>
 
-                <div class="form-group">
-                    <div class="form-check">
-                        <input type="checkbox" name="news_is_active" id="news_is_active" class="form-check-input" value="1"
+                <div class="form-group mb-6">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" name="news_is_active" value="1" class="form-checkbox"
                                {{ old('news_is_active', $article->news_is_active) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="news_is_active">Article actif</label>
-                    </div>
+                        <span class="text-sm font-medium text-gray-700">Article actif</span>
+                    </label>
                 </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary" id="submitButton">
-                        <i class="fas fa-save"></i> Mettre à jour
+                <div class="flex items-center space-x-3">
+                    <button type="submit" class="btn-primary" id="submitButton">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                        </svg>
+                        Mettre à jour
                     </button>
-                    <a href="{{ route('dashboard.actualities') }}" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Annuler
+                    <a href="{{ route('dashboard.actualities') }}" class="btn-secondary">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Annuler
                     </a>
                 </div>
             </form>
@@ -109,37 +118,15 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Page d\'édition chargée');
-    console.log('ID de l\'article:', '{{ $article->id }}');
-    console.log('Type actuel:', '{{ $article->news_type }}');
-
     const form = document.getElementById('editArticleForm');
     const submitButton = document.getElementById('submitButton');
 
     if (form) {
-        console.log('Action du formulaire:', form.action);
-        console.log('Méthode du formulaire:', form.method);
-
         form.addEventListener('submit', function(e) {
-            console.log('Formulaire en cours de soumission...');
-
-            // Afficher les données du formulaire
-            const formData = new FormData(form);
-            console.log('Données du formulaire:');
-            for (let [key, value] of formData.entries()) {
-                console.log(key + ': ' + value);
-            }
-
             submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mise à jour...';
+            submitButton.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Mise à jour...';
         });
     }
-
-    // Vérifier les valeurs des champs
-    console.log('Titre:', document.getElementById('news_title').value);
-    console.log('Ordre:', document.getElementById('news_order').value);
-    console.log('Type sélectionné:', document.getElementById('news_type').value);
-    console.log('Statut actif:', document.getElementById('news_is_active').checked);
 });
 </script>
 @endsection

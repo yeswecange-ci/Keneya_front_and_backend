@@ -26,8 +26,9 @@ class AdminHomeController extends Controller
         $homeRecruitment = HomeRecruitment::first();
         $homePartners    = HomePartner::with('allItems')->first();
         $footerSettings  = FooterSetting::first();
-        $footerColumns   = FooterColumn::with('activeLinks')->active()->orderBy('column_order')->get();
-        $footerSocials   = FooterSocial::active()->get();
+        $footerColumns   = FooterColumn::with('allLinks')->orderBy('column_order')->get();
+        $footerLinks     = FooterLink::with('column')->orderBy('link_order')->get();
+        $footerSocials   = FooterSocial::orderBy('social_order')->get();
 
         return view('admin.home.index', compact(
             'homeSlides',
@@ -37,6 +38,7 @@ class AdminHomeController extends Controller
             'homePartners',
             'footerSettings',
             'footerColumns',
+            'footerLinks',
             'footerSocials'
         ));
     }
@@ -133,7 +135,7 @@ class AdminHomeController extends Controller
             'home_about_main_title'    => 'required|string|max:500',
             'home_about_description'   => 'required|string',
             'home_about_button_text'   => 'required|string|max:100',
-            'home_about_button_link'   => 'required|url|max:500',
+            'home_about_button_link'   => 'required|string|max:500',
         ]);
 
         $homeAbout = HomeAbout::first();
@@ -154,7 +156,7 @@ class AdminHomeController extends Controller
             'home_key_numbers_section_title' => 'required|string|max:255',
             'home_key_numbers_description'   => 'required|string',
             'home_key_numbers_button_text'   => 'required|string|max:100',
-            'home_key_numbers_button_link'   => 'required|url|max:500',
+            'home_key_numbers_button_link'   => 'required|string|max:500',
             'home_key_numbers_image'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

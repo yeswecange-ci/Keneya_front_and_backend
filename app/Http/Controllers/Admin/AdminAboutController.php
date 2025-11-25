@@ -38,22 +38,22 @@ class AdminAboutController extends Controller
             'about_description_3' => 'nullable|string',
             'about_description_4' => 'nullable|string',
             'about_button_text'   => 'required|string|max:255',
-            'about_button_link'   => 'required|string|url',
+            'about_button_link'   => 'required|string|max:500',
             'about_image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $mainSection = AboutMainSection::firstOrNew([]);
 
-        // Gérer l'upload d'image - CORRECTION ICI
+        // Gérer l'upload d'image
         if ($request->hasFile('about_image')) {
             // Supprimer l'ancienne image
             if ($mainSection->about_image_path) {
                 Storage::disk('public')->delete($mainSection->about_image_path);
             }
 
-            // CORRECTION : Stocker correctement le chemin
+            // Stocker le chemin sans préfixe (Storage::url() ajoutera /storage/ automatiquement)
             $imagePath                     = $request->file('about_image')->store('about', 'public');
-            $mainSection->about_image_path = $imagePath; // Stocker directement
+            $mainSection->about_image_path = $imagePath;
         }
 
         // Mettre à jour les autres champs
@@ -138,7 +138,8 @@ class AdminAboutController extends Controller
                 Storage::disk('public')->delete($transitionSection->about_transition_image_path);
             }
 
-            $validated['about_transition_image_path'] = $request->file('about_transition_image')->store('about', 'public');
+            $imagePath = $request->file('about_transition_image')->store('about', 'public');
+            $validated['about_transition_image_path'] = $imagePath;
         }
 
         if ($transitionSection->exists) {
@@ -172,7 +173,7 @@ class AdminAboutController extends Controller
         $validated = $request->validate([
             'about_team_name'        => 'required|string|max:255',
             'about_team_position'    => 'required|string|max:255',
-            'about_team_detail_link' => 'required|string|url',
+            'about_team_detail_link' => 'required|string|max:500',
             'about_team_image'       => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
@@ -203,7 +204,7 @@ class AdminAboutController extends Controller
         $validated = $request->validate([
             'about_team_name'        => 'required|string|max:255',
             'about_team_position'    => 'required|string|max:255',
-            'about_team_detail_link' => 'required|string|url',
+            'about_team_detail_link' => 'required|string|max:500',
             'about_team_image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
@@ -215,7 +216,8 @@ class AdminAboutController extends Controller
                 Storage::disk('public')->delete($member->about_team_image_path);
             }
 
-            $validated['about_team_image_path'] = $request->file('about_team_image')->store('team', 'public');
+            $imagePath = $request->file('about_team_image')->store('team', 'public');
+            $validated['about_team_image_path'] = $imagePath;
         }
 
         $member->update($validated);
