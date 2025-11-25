@@ -45,30 +45,30 @@
             @else
                 <!-- Fallback si pas de colonnes en base de données -->
                 <div class="col-12 col-lg-3 footer-column">
-                    <div class="footer-title">À propos de nous</div>
+                    <div class="footer-title">{{ __('footer.about_company') }}</div>
                     <div class="footer-links">
-                        <a href="#">Histoire de l'entreprise</a>
-                        <a href="#">Mission, vision, valeurs</a>
-                        <a href="#">Transition ICI-Santé vers Kenaya Impact</a>
-                        <a href="#">Équipe dirigeante</a>
+                        <a href="#">{{ __('footer.company_history') }}</a>
+                        <a href="#">{{ __('footer.mission_vision_values') }}</a>
+                        <a href="#">{{ __('footer.transition') }}</a>
+                        <a href="#">{{ __('footer.leadership_team') }}</a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 footer-column">
-                    <div class="footer-title">Nos activités</div>
+                    <div class="footer-title">{{ __('footer.our_activities') }}</div>
                     <div class="footer-links">
-                        <a href="#">Domaines d'intervention</a>
-                        <a href="#">Services proposés</a>
-                        <a href="#">Couverture géographique</a>
-                        <a href="#">Études de cas/témoignages</a>
+                        <a href="#">{{ __('footer.intervention_areas') }}</a>
+                        <a href="#">{{ __('footer.services_offered') }}</a>
+                        <a href="#">{{ __('footer.geographic_coverage') }}</a>
+                        <a href="#">{{ __('footer.case_studies') }}</a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 footer-column">
-                    <div class="footer-title">Actualités</div>
+                    <div class="footer-title">{{ __('news.title') }}</div>
                     <div class="footer-links">
-                        <a href="#">Blog d'actualités</a>
-                        <a href="#">Événements</a>
-                        <a href="#">Publications</a>
-                        <a href="#">Communiqués de presse</a>
+                        <a href="#">{{ __('news.blog') }}</a>
+                        <a href="#">{{ __('news.events') }}</a>
+                        <a href="#">{{ __('news.publications') }}</a>
+                        <a href="#">{{ __('news.press_releases') }}</a>
                     </div>
                 </div>
             @endif
@@ -76,7 +76,7 @@
 
         <div class="row py-5">
             <div class="col text-center wow fadeInUp">
-                <p class="mb-3">Suivez-nous</p>
+                <p class="mb-3">{{ __('footer.follow_us') }}</p>
                 <div class="footer-social">
                     @if($footerSocials->count() > 0)
                         @foreach($footerSocials as $social)
@@ -100,7 +100,7 @@
     <div class="footer-bottom wow fadeInUp">
         <div>&copy;{{ $footerSettings ? $footerSettings->footer_copyright : 'KENAYAIMPACT 2025' }}</div>
         <a href="{{ $footerSettings ? $footerSettings->footer_legal_link : '#' }}">
-            {{ $footerSettings ? $footerSettings->footer_legal_text : 'MENTION LÉGALES' }}
+            {{ $footerSettings ? $footerSettings->footer_legal_text : __('footer.legal_notice') }}
         </a>
     </div>
 </footer>

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ActivitiesThemesSeeder::class,
             ActivitiesServicesSeeder::class,
             ActivitiesGeographicCoverageSeeder::class,
+            ActivitiesCountriesSeeder::class,
             ActivitiesTestimonialsSeeder::class,
             ContactSubmissionSeeder::class,
             TeamDetailsSeeder::class,

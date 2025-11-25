@@ -56,9 +56,30 @@ window.addEventListener("scroll", function () {
             link.addEventListener("click", (e) => {
                 e.preventDefault();
                 const selectedLang = link.getAttribute("data-lang");
-                currentLang.textContent = `${selectedLang} ▼`;
-                // Optional: redirect to other language version
-                // window.location.href = `/${selectedLang.toLowerCase()}/index.html`;
+
+                // Créer un formulaire pour envoyer la requête POST
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/locale/change';
+
+                // Ajouter le token CSRF
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+
+                // Ajouter la locale
+                const localeInput = document.createElement('input');
+                localeInput.type = 'hidden';
+                localeInput.name = 'locale';
+                localeInput.value = selectedLang;
+                form.appendChild(localeInput);
+
+                // Soumettre le formulaire
+                document.body.appendChild(form);
+                form.submit();
             });
         });
 
