@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivitiesCountry;
 use App\Models\ActivitiesGeographicCoverage;
 use App\Models\ActivitiesKeyNumber;
 use App\Models\ActivitiesPageContent;
@@ -23,6 +24,7 @@ class ActivitiesController extends Controller
         $geographicCoverage = ActivitiesGeographicCoverage::first();
         $testimonials       = ActivitiesTestimonial::orderBy('created_at', 'desc')->get();
         $keyNumbers         = ActivitiesKeyNumber::orderBy('activities_keynumber_order')->get();
+        $countries          = ActivitiesCountry::ordered()->get();
 
         return view('admin.activities.index', compact(
             'pageContents',
@@ -30,7 +32,8 @@ class ActivitiesController extends Controller
             'services',
             'geographicCoverage',
             'testimonials',
-            'keyNumbers'
+            'keyNumbers',
+            'countries'
         ));
     }
 
@@ -399,5 +402,133 @@ class ActivitiesController extends Controller
         $keyNumber->delete();
 
         return redirect()->back()->with('success', 'Chiffre clé supprimé avec succès.');
+    }
+
+    // Edit methods for AJAX requests
+    public function editKeyNumber($id)
+    {
+        $keyNumber = ActivitiesKeyNumber::findOrFail($id);
+        return response()->json($keyNumber);
+    }
+
+    public function editTheme($id)
+    {
+        $theme = ActivitiesTheme::findOrFail($id);
+        return response()->json($theme);
+    }
+
+    public function editService($id)
+    {
+        $service = ActivitiesService::findOrFail($id);
+        return response()->json($service);
+    }
+
+    public function editTestimonial($id)
+    {
+        $testimonial = ActivitiesTestimonial::findOrFail($id);
+        return response()->json($testimonial);
+    }
+
+    // Country Management
+    public function storeCountry(Request $request)
+    {
+        $validated = $request->validate([
+            'country_code' => 'required|string|size:2|unique:activities_countries,country_code',
+            'country_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'activities' => 'nullable|array',
+            'activities.*' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'order' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean'
+        ]);
+
+        $country = new ActivitiesCountry();
+        $country->country_code = strtoupper($validated['country_code']);
+        $country->country_name = $validated['country_name'];
+        $country->description = $validated['description'] ?? null;
+        $country->activities = $validated['activities'] ?? [];
+        $country->order = $validated['order'] ?? 0;
+        $country->is_active = $validated['is_active'] ?? true;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('activities/countries', 'public');
+            $country->image = 'storage/' . $imagePath;
+        }
+
+        $country->save();
+
+        return redirect()->back()->with('success', 'Pays ajouté avec succès.');
+    }
+
+    public function editCountry($id)
+    {
+        $country = ActivitiesCountry::findOrFail($id);
+        return response()->json($country);
+    }
+
+    public function updateCountry(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'country_code' => 'required|string|size:2|unique:activities_countries,country_code,' . $id,
+            'country_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'activities' => 'nullable|array',
+            'activities.*' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'order' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean'
+        ]);
+
+        $country = ActivitiesCountry::findOrFail($id);
+        $country->country_code = strtoupper($validated['country_code']);
+        $country->country_name = $validated['country_name'];
+        $country->description = $validated['description'] ?? null;
+        $country->activities = $validated['activities'] ?? [];
+        $country->order = $validated['order'] ?? 0;
+        $country->is_active = $request->has('is_active');
+
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image
+            if ($country->image) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $country->image));
+            }
+
+            $image = $request->file('image');
+            $imagePath = $image->store('activities/countries', 'public');
+            $country->image = 'storage/' . $imagePath;
+        }
+
+        $country->save();
+
+        return redirect()->back()->with('success', 'Pays mis à jour avec succès.');
+    }
+
+    public function deleteCountry($id)
+    {
+        $country = ActivitiesCountry::findOrFail($id);
+
+        // Supprimer l'image
+        if ($country->image) {
+            Storage::disk('public')->delete(str_replace('storage/', '', $country->image));
+        }
+
+        $country->delete();
+
+        return redirect()->back()->with('success', 'Pays supprimé avec succès.');
+    }
+
+    public function getCountryData($countryCode)
+    {
+        $country = ActivitiesCountry::where('country_code', strtoupper($countryCode))
+            ->where('is_active', true)
+            ->first();
+
+        if (!$country) {
+            return response()->json(['error' => 'Pays non trouvé'], 404);
+        }
+
+        return response()->json($country);
     }
 }

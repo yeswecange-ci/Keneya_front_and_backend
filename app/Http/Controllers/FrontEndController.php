@@ -7,6 +7,7 @@ use App\Models\HomeSlide;
 use App\Models\HomeAbout;
 use App\Models\HomeKeyNumber;
 use App\Models\HomeRecruitment;
+use App\Models\HomePartner;
 
 class FrontEndController extends Controller
 {
@@ -17,12 +18,14 @@ class FrontEndController extends Controller
         $homeAbout = HomeAbout::active()->first();
         $homeKeyNumbers = HomeKeyNumber::active()->with('activeStats')->first();
         $homeRecruitment = HomeRecruitment::active()->first();
+        $homePartners = HomePartner::active()->with('activeItems')->first();
 
         return view('frontend.home', compact(
             'homeSlides',
             'homeAbout',
             'homeKeyNumbers',
-            'homeRecruitment'
+            'homeRecruitment',
+            'homePartners'
         ));
     }
 

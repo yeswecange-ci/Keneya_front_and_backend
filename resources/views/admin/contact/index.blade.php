@@ -1,193 +1,144 @@
+@extends('layouts.admin')
 
-@extends('layouts.backend.app')
-
-@section('title', 'Gestion des Contacts')
+@section('title', 'Gestion des Demandes de Devis')
 
 @section('content')
-<div class="container-fluid">
-    <!-- Header avec gradient subtil -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-            <h1 class="h3 mb-1 text-gray-900 font-weight-bold">Gestion des Contacts</h1>
-            <p class="text-muted mb-0 small">Gérez vos candidatures et demandes de devis</p>
+            <h1 class="text-2xl font-bold text-gray-900">Gestion des Demandes de Devis</h1>
+            <p class="text-gray-500 mt-1">Gérez et suivez toutes vos demandes de devis</p>
         </div>
+        <button onclick="exportCSV()" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Exporter CSV
+        </button>
     </div>
 
+    <!-- Success Message -->
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert" style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);">
-            <i class="fas fa-check-circle mr-2"></i>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
             {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     @endif
 
-    <!-- Candidatures Section -->
-    <div class="card shadow-sm mb-4 border-0" style="border-radius: 12px; overflow: hidden;">
-        <div class="card-header py-3 border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <div class="d-flex align-items-center">
-                <div class="bg-white rounded-circle p-2 mr-3 shadow-sm" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-briefcase" style="color: #667eea;"></i>
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 p-3 bg-blue-100 rounded-lg">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
                 </div>
-                <div>
-                    <h6 class="m-0 font-weight-bold text-white">
-                        Candidatures Spontanées
-                    </h6>
-                    <small class="text-white" style="opacity: 0.9;">{{ $applications->count() }} candidature(s) reçue(s)</small>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Total Devis</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $quotes->count() }}</p>
                 </div>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead style="background-color: #f8f9fc;">
-                        <tr>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted px-4 py-3">Candidat</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3">Contact</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3">Poste</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3">Disponibilité</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3">Date</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($applications as $application)
-                            <tr class="{{ is_null($application->read_at) ? 'bg-light' : '' }}" style="border-left: 3px solid {{ is_null($application->read_at) ? '#667eea' : 'transparent' }};">
-                                <td class="px-4 py-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-gradient-primary text-white d-flex align-items-center justify-content-center mr-3" style="width: 35px; height: 35px; font-size: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                                            {{ strtoupper(substr($application->first_name, 0, 1)) }}{{ strtoupper(substr($application->last_name, 0, 1)) }}
-                                        </div>
-                                        <div>
-                                            <strong class="text-gray-900">{{ $application->first_name }} {{ $application->last_name }}</strong>
-                                            @if(is_null($application->read_at))
-                                                <span class="badge badge-pill ml-2" style="background-color: #667eea; color: white; font-size: 10px;">Nouveau</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-3">
-                                    <div class="small">
-                                        <div class="text-gray-900"><i class="fas fa-envelope text-muted mr-1" style="font-size: 11px;"></i> {{ $application->email }}</div>
-                                        <div class="text-muted"><i class="fas fa-phone text-muted mr-1" style="font-size: 11px;"></i> {{ $application->phone }}</div>
-                                    </div>
-                                </td>
-                                <td class="py-3">
-                                    <span class="badge badge-pill px-3 py-2" style="background-color: #e3f2fd; color: #1976d2; font-weight: 500;">{{ $application->desired_position }}</span>
-                                </td>
-                                <td class="py-3">
-                                    @if($application->availability_date)
-                                        <span class="text-gray-900">{{ \Carbon\Carbon::parse($application->availability_date)->format('d/m/Y') }}</span>
-                                    @else
-                                        <span class="text-muted small">Non spécifiée</span>
-                                    @endif
-                                </td>
-                                <td class="py-3">
-                                    <span class="text-muted small">{{ $application->created_at->format('d/m/Y H:i') }}</span>
-                                </td>
-                                <td class="py-3 text-center">
-                                    <div class="btn-group" role="group">
-                                        <button class="btn btn-sm view-application-btn" data-id="{{ $application->id }}" title="Voir les détails" style="background-color: #e3f2fd; color: #1976d2; border: none;">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <a href="{{ route('dashboard.contact.download-cv', $application->id) }}" class="btn btn-sm" title="Télécharger CV" style="background-color: #e8f5e9; color: #388e3c; border: none;">
-                                            <i class="fas fa-download"></i>
-                                        </a>
-                                        <form method="POST" action="{{ route('dashboard.contact.destroy', $application->id) }}" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette candidature ?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm" title="Supprimer" style="background-color: #ffebee; color: #c62828; border: none;">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-5">
-                                    <i class="fas fa-inbox text-muted mb-3" style="font-size: 48px; opacity: 0.3;"></i>
-                                    <p class="text-muted mb-0">Aucune candidature pour le moment</p>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 p-3 bg-yellow-100 rounded-lg">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Non lus</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $quotes->whereNull('read_at')->count() }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 p-3 bg-green-100 rounded-lg">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Cette semaine</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $quotes->where('created_at', '>=', now()->startOfWeek())->count() }}</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Demandes de Devis Section -->
-    <div class="card shadow-sm mb-4 border-0" style="border-radius: 12px; overflow: hidden;">
-        <div class="card-header py-3 border-0" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-            <div class="d-flex align-items-center">
-                <div class="bg-white rounded-circle p-2 mr-3 shadow-sm" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-file-invoice" style="color: #f093fb;"></i>
-                </div>
-                <div>
-                    <h6 class="m-0 font-weight-bold text-white">
-                        Demandes de Devis
-                    </h6>
-                    <small class="text-white" style="opacity: 0.9;">{{ $quotes->count() }} demande(s) reçue(s)</small>
-                </div>
+    <!-- Simple Table without Alpine.js for now -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <h3 class="text-lg font-medium text-gray-900">Demandes de Devis</h3>
+                <span class="text-sm text-gray-500 mt-1 sm:mt-0">{{ $quotes->count() }} résultat(s)</span>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead style="background-color: #f8f9fc;">
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted px-4 py-3">Client</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3">Contact</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3">Message</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3">Date</th>
-                            <th class="border-0 text-uppercase small font-weight-bold text-muted py-3 text-center">Actions</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($quotes as $quote)
-                            <tr class="{{ is_null($quote->read_at) ? 'bg-light' : '' }}" style="border-left: 3px solid {{ is_null($quote->read_at) ? '#f093fb' : 'transparent' }};">
-                                <td class="px-4 py-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mr-3" style="width: 35px; height: 35px; font-size: 14px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                                            {{ strtoupper(substr($quote->first_name, 0, 1)) }}{{ strtoupper(substr($quote->last_name, 0, 1)) }}
+                            <tr class="{{ !$quote->read_at ? 'bg-blue-50' : '' }} hover:bg-gray-50">
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            {{ substr($quote->first_name, 0, 1) }}{{ substr($quote->last_name, 0, 1) }}
                                         </div>
                                         <div>
-                                            <strong class="text-gray-900">{{ $quote->first_name }} {{ $quote->last_name }}</strong>
-                                            @if(is_null($quote->read_at))
-                                                <span class="badge badge-pill ml-2" style="background-color: #f093fb; color: white; font-size: 10px;">Nouveau</span>
+                                            <p class="font-medium text-gray-900">{{ $quote->first_name }} {{ $quote->last_name }}</p>
+                                            @if(!$quote->read_at)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">Nouveau</span>
                                             @endif
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3">
-                                    <div class="small">
-                                        <div class="text-gray-900"><i class="fas fa-envelope text-muted mr-1" style="font-size: 11px;"></i> {{ $quote->email }}</div>
-                                        <div class="text-muted"><i class="fas fa-phone text-muted mr-1" style="font-size: 11px;"></i> {{ $quote->phone }}</div>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <div class="text-sm">
+                                        <div class="text-gray-900">{{ $quote->email }}</div>
+                                        <div class="text-gray-500">{{ $quote->phone ?? 'Non renseigné' }}</div>
                                     </div>
                                 </td>
-                                <td class="py-3">
-                                    <div class="text-gray-700">
-                                        {{ Str::limit($quote->message, 50) }}
-                                        @if(strlen($quote->message) > 50)
-                                            <button class="btn btn-link btn-sm p-0 view-quote-btn" data-id="{{ $quote->id }}" style="color: #f093fb; text-decoration: none;">Voir plus <i class="fas fa-arrow-right ml-1" style="font-size: 10px;"></i></button>
-                                        @endif
-                                    </div>
+                                <td class="px-4 py-3">
+                                    <p class="text-sm text-gray-600 max-w-xs truncate">{{ $quote->message }}</p>
                                 </td>
-                                <td class="py-3">
-                                    <span class="text-muted small">{{ $quote->created_at->format('d/m/Y H:i') }}</span>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="text-sm text-gray-500">{{ $quote->created_at->format('d/m/Y H:i') }}</span>
                                 </td>
-                                <td class="py-3 text-center">
-                                    <div class="btn-group" role="group">
-                                        <button class="btn btn-sm view-quote-btn" data-id="{{ $quote->id }}" title="Voir les détails" style="background-color: #e3f2fd; color: #1976d2; border: none;">
-                                            <i class="fas fa-eye"></i>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $quote->read_at ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                        {{ $quote->read_at ? 'Lu' : 'Non lu' }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="viewQuote({{ $quote->id }})" class="inline-flex items-center p-1.5 border border-transparent rounded text-blue-600 hover:bg-blue-100 transition-colors" title="Voir les détails">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
                                         </button>
-                                        <form method="POST" action="{{ route('dashboard.contact.destroy', $quote->id) }}" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')">
+                                        <form action="{{ route('dashboard.contact.destroy', $quote->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm" title="Supprimer" style="background-color: #ffebee; color: #c62828; border: none;">
-                                                <i class="fas fa-trash"></i>
+                                            <button type="submit" class="inline-flex items-center p-1.5 border border-transparent rounded text-red-600 hover:bg-red-100 transition-colors" title="Supprimer">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
                                             </button>
                                         </form>
                                     </div>
@@ -195,9 +146,11 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-5">
-                                    <i class="fas fa-inbox text-muted mb-3" style="font-size: 48px; opacity: 0.3;"></i>
-                                    <p class="text-muted mb-0">Aucune demande de devis pour le moment</p>
+                                <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                    <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                                    </svg>
+                                    Aucune demande de devis pour le moment
                                 </td>
                             </tr>
                         @endforelse
@@ -208,285 +161,111 @@
     </div>
 </div>
 
-<!-- Modal pour voir les détails d'une candidature -->
-<div class="modal fade" id="applicationModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
-            <div class="modal-header border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0;">
-                <h5 class="modal-title text-white font-weight-bold">Détails de la Candidature</h5>
-                <button type="button" class="close text-white" data-dismiss="modal">
-                    <span>&times;</span>
+<!-- Quote Detail Modal -->
+<div id="quoteModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+    <div class="flex items-center justify-center min-h-screen px-4 py-4">
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-50" onclick="closeModal()"></div>
+        <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-900">Détails de la Demande de Devis</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
                 </button>
             </div>
-            <div class="modal-body p-4" id="applicationDetails">
-                <!-- Les détails seront chargés ici via AJAX -->
+            <div id="modalContent" class="p-6 space-y-6">
+                <!-- Le contenu sera chargé dynamiquement -->
             </div>
-            <div class="modal-footer border-0 bg-light">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px;">Fermer</button>
+            <div class="flex justify-end p-6 border-t border-gray-200">
+                <button onclick="closeModal()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                    Fermer
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal pour voir les détails d'un devis -->
-<div class="modal fade" id="quoteModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
-            <div class="modal-header border-0" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px 12px 0 0;">
-                <h5 class="modal-title text-white font-weight-bold">Détails de la Demande de Devis</h5>
-                <button type="button" class="close text-white" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body p-4" id="quoteDetails">
-                <!-- Les détails seront chargés ici via AJAX -->
-            </div>
-            <div class="modal-footer border-0 bg-light">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px;">Fermer</button>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
-
-@section('scripts')
 <script>
-// Debug function
-function debug(message, data = null) {
-    console.log('DEBUG:', message, data || '');
+function exportCSV() {
+    window.location.href = '{{ route('dashboard.contact.export') }}';
 }
 
-// Vérifier que le DOM est chargé et que jQuery est disponible
-$(document).ready(function() {
-    debug('Document ready');
-    debug('jQuery version:', $().jquery);
-    debug('Boutons application trouvés:', $('.view-application-btn').length);
-    debug('Boutons quote trouvés:', $('.view-quote-btn').length);
-    
-    // Vérifier que Bootstrap est chargé
-    if (typeof $.fn.modal === 'function') {
-        debug('Bootstrap modal est disponible');
-    } else {
-        debug('ERREUR: Bootstrap modal non disponible');
+function viewQuote(id) {
+    fetch('/dashboard/contact/quote/' + id)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors du chargement des données');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Afficher les données dans le modal
+            document.getElementById('modalContent').innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <p class="text-xs text-gray-500 mb-1">Prénom</p>
+                        <p class="font-medium text-gray-900">${data.first_name}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <p class="text-xs text-gray-500 mb-1">Nom</p>
+                        <p class="font-medium text-gray-900">${data.last_name}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <p class="text-xs text-gray-500 mb-1">Email</p>
+                        <a href="mailto:${data.email}" class="text-blue-600 hover:text-blue-800">${data.email}</a>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <p class="text-xs text-gray-500 mb-1">Téléphone</p>
+                        <a href="tel:${data.phone}" class="text-blue-600 hover:text-blue-800">${data.phone || 'Non renseigné'}</a>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg">
+                    <p class="text-xs text-gray-500 mb-2">Message</p>
+                    <div class="p-4 bg-white border border-gray-200 rounded-lg">
+                        <p class="text-gray-700 whitespace-pre-wrap">${data.message}</p>
+                    </div>
+                </div>
+                <div class="flex items-center text-sm text-gray-500">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Soumis le <span class="font-medium ml-1">${data.created_at_formatted}</span>
+                </div>
+            `;
+
+            // Afficher le modal
+            document.getElementById('quoteModal').style.display = 'block';
+
+            // Marquer comme lu
+            fetch('/dashboard/contact/mark-read/' + id, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(() => {
+                // Recharger la page pour mettre à jour le statut
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erreur lors du chargement des données');
+        });
+}
+
+function closeModal() {
+    document.getElementById('quoteModal').style.display = 'none';
+}
+
+// Fermer le modal en cliquant à l'extérieur
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('quoteModal');
+    if (event.target === modal) {
+        closeModal();
     }
 });
-
-// Gestion des candidatures - Version SIMPLIFIÉE pour debug
-$(document).on('click', '.view-application-btn', function(e) {
-    e.preventDefault();
-    debug('Bouton application cliqué');
-    
-    const applicationId = $(this).data('id');
-    debug('ID application:', applicationId);
-    
-    // Test simple d'abord - juste ouvrir le modal
-    $('#applicationDetails').html(`
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary mb-3" role="status">
-                <span class="sr-only">Chargement...</span>
-            </div>
-            <p>Chargement des détails...</p>
-        </div>
-    `);
-    
-    $('#applicationModal').modal('show');
-    debug('Modal application ouvert');
-    
-    // Ensuite faire l'AJAX
-    const url = `/dashboard/contact/application/${applicationId}`;
-    const markReadUrl = `/dashboard/contact/mark-read/${applicationId}`;
-    
-    debug('URL AJAX:', url);
-    
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: function(response) {
-            debug('Réponse AJAX reçue:', response);
-            
-            $('#applicationDetails').html(`
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Prénom</small>
-                            <p class="mb-0 text-gray-900 font-weight-bold">${response.first_name}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Nom</small>
-                            <p class="mb-0 text-gray-900 font-weight-bold">${response.last_name}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Email</small>
-                            <p class="mb-0 text-gray-900">${response.email}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Téléphone</small>
-                            <p class="mb-0 text-gray-900">${response.phone}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Poste souhaité</small>
-                            <p class="mb-0"><span class="badge badge-pill px-3 py-2" style="background-color: #e3f2fd; color: #1976d2; font-weight: 500;">${response.desired_position}</span></p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Date de disponibilité</small>
-                            <p class="mb-0 text-gray-900">${response.availability_date || 'Non spécifiée'}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="p-3 rounded" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <a href="${'{{ route("dashboard.contact.download-cv", ":id") }}'.replace(':id', response.id)}" class="btn btn-white btn-block shadow-sm">
-                                <i class="fas fa-download mr-2"></i> Télécharger le CV
-                            </a>
-                        </div>
-                        <p class="text-muted small mt-3 mb-0"><i class="far fa-clock mr-1"></i> Soumis le ${response.created_at}</p>
-                    </div>
-                </div>
-            `);
-            
-            // Marquer comme lu
-            $.post(markReadUrl).done(function() {
-                debug('Marqué comme lu');
-            });
-        },
-        error: function(xhr, status, error) {
-            debug('Erreur AJAX:', error);
-            let errorMessage = 'Une erreur est survenue lors du chargement des détails.';
-            
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-            } else if (xhr.status === 404) {
-                errorMessage = 'La candidature n\'a pas été trouvée.';
-            } else if (xhr.status === 500) {
-                errorMessage = 'Une erreur serveur est survenue.';
-            }
-            
-            $('#applicationDetails').html(`
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    ${errorMessage}
-                </div>
-            `);
-            console.error('Détails de l\'erreur:', {xhr, status, error});
-        }
-    });
-});
-
-// Gestion des demandes de devis - Version SIMPLIFIÉE pour debug
-$(document).on('click', '.view-quote-btn', function(e) {
-    e.preventDefault();
-    debug('Bouton quote cliqué');
-    
-    const quoteId = $(this).data('id');
-    debug('ID quote:', quoteId);
-    
-    // Test simple d'abord - juste ouvrir le modal
-    $('#quoteDetails').html(`
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary mb-3" role="status">
-                <span class="sr-only">Chargement...</span>
-            </div>
-            <p>Chargement des détails...</p>
-        </div>
-    `);
-    
-    $('#quoteModal').modal('show');
-    debug('Modal quote ouvert');
-    
-    // Ensuite faire l'AJAX
-    const url = `/dashboard/contact/quote/${quoteId}`;
-    const markReadUrl = `/dashboard/contact/mark-read/${quoteId}`;
-    
-    debug('URL AJAX:', url);
-    
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: function(response) {
-            debug('Réponse AJAX reçue:', response);
-            
-            $('#quoteDetails').html(`
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Prénom</small>
-                            <p class="mb-0 text-gray-900 font-weight-bold">${response.first_name}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Nom</small>
-                            <p class="mb-0 text-gray-900 font-weight-bold">${response.last_name}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Email</small>
-                            <p class="mb-0 text-gray-900">${response.email}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-1" style="font-size: 11px; font-weight: 600;">Téléphone</small>
-                            <p class="mb-0 text-gray-900">${response.phone}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-3 p-3 bg-light rounded">
-                            <small class="text-muted text-uppercase d-block mb-2" style="font-size: 11px; font-weight: 600;">Message</small>
-                            <div class="p-3 bg-white border rounded">
-                                ${response.message}
-                            </div>
-                        </div>
-                        <p class="text-muted small mb-0"><i class="far fa-clock mr-1"></i> Soumis le ${response.created_at}</p>
-                    </div>
-                </div>
-            `);
-            
-            // Marquer comme lu
-            $.post(markReadUrl).done(function() {
-                debug('Marqué comme lu');
-            });
-        },
-        error: function(xhr, status, error) {
-            debug('Erreur AJAX:', error);
-            let errorMessage = 'Une erreur est survenue lors du chargement des détails.';
-            
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-            } else if (xhr.status === 404) {
-                errorMessage = 'La demande de devis n\'a pas été trouvée.';
-            } else if (xhr.status === 500) {
-                errorMessage = 'Une erreur serveur est survenue.';
-            }
-            
-            $('#quoteDetails').html(`
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    ${errorMessage}
-                </div>
-            `);
-            console.error('Détails de l\'erreur:', {xhr, status, error});
-        }
-    });
-});
-
-// Auto-dismiss alerts
-setTimeout(function() {
-    $('.alert').alert('close');
-}, 5000);
 </script>
 @endsection

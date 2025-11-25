@@ -64,9 +64,9 @@
                             <div class="slide-content wow fadeInLeft">
                                 <small>01</small>
                                 <div class="section--title">
-                                    <h1>Contenu par défaut</h1>
+                                    <h1>{{ __('home.hero_title') }}</h1>
                                 </div>
-                                <p>Aucun contenu disponible pour le moment.</p>
+                                <p>{{ __('common.no_data') }}</p>
                                 <div class="slide-bar-env">
                                     <div class="slide-bar"></div>
                                 </div>
@@ -102,12 +102,12 @@
             @else
                 <!-- Fallback -->
                 <div class="section--title wow fadeInRight">
-                    <h2>À propos de nous</h2>
-                    <h1>Contenu par défaut</h1>
+                    <h2>{{ __('home.about_title') }}</h2>
+                    <h1>{{ __('home.about_title') }}</h1>
                 </div>
 
                 <div class="wow fadeInLeft">
-                    <p>Aucun contenu disponible pour le moment.</p>
+                    <p>{{ __('common.no_data') }}</p>
                 </div>
             @endif
         </div>
@@ -151,7 +151,7 @@
                                 <!-- Fallback stats -->
                                 <div class="knumb--elts__elt wow fadeInRight">
                                     <h1><img src="{{ asset('img/6.png') }}" alt="img"> 700</h1>
-                                    <p>Missions d'assistance technique mise en oeuvre</p>
+                                    <p>{{ __('home.projects') }}</p>
                                 </div>
                             @endif
                         </div>
@@ -163,9 +163,9 @@
                     @else
                         <!-- Fallback -->
                         <div class="section--title wow fadeInLeft">
-                            <h2>Nos chiffres clés</h2>
+                            <h2>{{ __('home.key_numbers_title') }}</h2>
                         </div>
-                        <p class="wow fadeInLeft">Aucun contenu disponible pour le moment.</p>
+                        <p class="wow fadeInLeft">{{ __('common.no_data') }}</p>
                     @endif
                 </div>
             </div>
@@ -261,7 +261,7 @@
     <section>
         <div class="container-lg">
             <div class="section--title wow fadeInRight">
-                <h2>ILS NOUS FONT CONFIANCE</h2>
+                <h2>{{ __('home.partners_subtitle') }}</h2>
             </div>
 
             @php

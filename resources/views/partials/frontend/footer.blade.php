@@ -45,30 +45,30 @@
             @else
                 <!-- Fallback si pas de colonnes en base de données -->
                 <div class="col-12 col-lg-3 footer-column">
-                    <div class="footer-title">À propos de nous</div>
+                    <div class="footer-title">{{ __('footer.about_company') }}</div>
                     <div class="footer-links">
-                        <a href="#">Histoire de l'entreprise</a>
-                        <a href="#">Mission, vision, valeurs</a>
-                        <a href="#">Transition ICI-Santé vers Kenaya Impact</a>
-                        <a href="#">Équipe dirigeante</a>
+                        <a href="#"><!-- TODO: Traduire: Histoire de l'entreprise --></a>
+                        <a href="#"><!-- TODO: Traduire: Mission, vision, valeurs --></a>
+                        <a href="#"><!-- TODO: Traduire: Transition ICI-Santé vers Kenaya Impact --></a>
+                        <a href="#"><!-- TODO: Traduire: Équipe dirigeante --></a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 footer-column">
-                    <div class="footer-title">Nos activités</div>
+                    <div class="footer-title"><!-- TODO: Traduire: Nos activités --></div>
                     <div class="footer-links">
-                        <a href="#">Domaines d'intervention</a>
-                        <a href="#">Services proposés</a>
-                        <a href="#">Couverture géographique</a>
-                        <a href="#">Études de cas/témoignages</a>
+                        <a href="#"><!-- TODO: Traduire: Domaines d'intervention --></a>
+                        <a href="#"><!-- TODO: Traduire: Services proposés --></a>
+                        <a href="#"><!-- TODO: Traduire: Couverture géographique --></a>
+                        <a href="#"><!-- TODO: Traduire: Études de cas/témoignages --></a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 footer-column">
-                    <div class="footer-title">Actualités</div>
+                    <div class="footer-title">{{ __('news.title') }}</div>
                     <div class="footer-links">
-                        <a href="#">Blog d'actualités</a>
-                        <a href="#">Événements</a>
-                        <a href="#">Publications</a>
-                        <a href="#">Communiqués de presse</a>
+                        <a href="#">{{ __('news.blog') }}</a>
+                        <a href="#">{{ __('news.events') }}</a>
+                        <a href="#">{{ __('news.publications') }}</a>
+                        <a href="#">{{ __('news.press_releases') }}</a>
                     </div>
                 </div>
             @endif
@@ -76,7 +76,7 @@
 
         <div class="row py-5">
             <div class="col text-center wow fadeInUp">
-                <p class="mb-3">Suivez-nous</p>
+                <p class="mb-3">{{ __('footer.follow_us') }}</p>
                 <div class="footer-social">
                     @if($footerSocials->count() > 0)
                         @foreach($footerSocials as $social)
