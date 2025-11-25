@@ -19,7 +19,7 @@
             <ul>
                 <ul>
                     <li>
-                        <a href="{{ route('front.home') }}" class="{{ Request::is('home') ? 'navSelect' : '' }}">{{ __('nav.home') }}</a>
+                        <a href="{{ route('front.home') }}" class="{{ Request::is('/') ? 'navSelect' : '' }}">{{ __('nav.home') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
                     <li>
@@ -33,7 +33,7 @@
                     </li>
                     <li>
                         <a href="{{ route('front.news') }}"
-                            class="{{ Request::is('news') ? 'navSelect' : '' }}">{{ __('nav.news') }}</a>
+                            class="{{ Request::is('actualites') ? 'navSelect' : '' }}">{{ __('nav.news') }}</a>
                         <i class="fa-solid fa-arrow-right"></i>
                     </li>
                     <li>
