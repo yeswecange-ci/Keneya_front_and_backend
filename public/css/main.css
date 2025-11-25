@@ -966,7 +966,9 @@ footer .footer-social{
   color: #00A3C6 ;
 }
 
-
+.navigation1 .navSelect {
+  color: #F59200 !important;
+}
 
 .white .menu ul li a {
   color:black;
