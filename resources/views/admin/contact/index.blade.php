@@ -1,21 +1,23 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des Demandes de Devis')
+@section('title', 'Gestion des Contacts')
 
 @section('content')
 <div class="space-y-6">
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Gestion des Demandes de Devis</h1>
-            <p class="text-gray-500 mt-1">Gérez et suivez toutes vos demandes de devis</p>
+            <h1 class="text-2xl font-bold text-gray-900">Gestion des Contacts</h1>
+            <p class="text-gray-500 mt-1">Gérez et suivez tous vos messages de contact</p>
         </div>
-        <button onclick="exportCSV()" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-            Exporter CSV
-        </button>
+        <div class="flex gap-2">
+            <button onclick="exportCSV()" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Exporter CSV
+            </button>
+        </div>
     </div>
 
     <!-- Success Message -->
@@ -26,16 +28,16 @@
     @endif
 
     <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex items-center">
                 <div class="flex-shrink-0 p-3 bg-blue-100 rounded-lg">
                     <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Total Devis</p>
+                    <p class="text-sm font-medium text-gray-600">Total Contacts</p>
                     <p class="text-2xl font-bold text-gray-900">{{ $quotes->count() }}</p>
                 </div>
             </div>
@@ -68,14 +70,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 p-3 bg-purple-100 rounded-lg">
+                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Aujourd'hui</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $quotes->where('created_at', '>=', now()->startOfDay())->count() }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Simple Table without Alpine.js for now -->
+    <!-- Filters and Search Bar -->
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Search -->
+            <div class="md:col-span-2">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Rechercher par nom, email ou téléphone..."
+                        class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Filter by Status -->
+            <div>
+                <select id="statusFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="all">Tous les statuts</option>
+                    <option value="unread">Non lus</option>
+                    <option value="read">Lus</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Container -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <h3 class="text-lg font-medium text-gray-900">Demandes de Devis</h3>
-                <span class="text-sm text-gray-500 mt-1 sm:mt-0">{{ $quotes->count() }} résultat(s)</span>
+                <h3 class="text-lg font-medium text-gray-900">Messages de Contact</h3>
+                <span class="text-sm text-gray-500 mt-1 sm:mt-0"><span id="resultCount">{{ $quotes->count() }}</span> résultat(s)</span>
             </div>
         </div>
         <div class="p-6">
@@ -132,7 +173,21 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                             </svg>
                                         </button>
-                                        <form action="{{ route('dashboard.contact.destroy', $quote->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">
+                                        <a href="mailto:{{ $quote->email }}?subject=Re: Votre message de contact" class="inline-flex items-center p-1.5 border border-transparent rounded text-green-600 hover:bg-green-100 transition-colors" title="Répondre par email">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </a>
+                                        <button onclick="toggleRead({{ $quote->id }}, {{ $quote->read_at ? 'true' : 'false' }})" class="inline-flex items-center p-1.5 border border-transparent rounded text-purple-600 hover:bg-purple-100 transition-colors" title="{{ $quote->read_at ? 'Marquer comme non lu' : 'Marquer comme lu' }}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                @if($quote->read_at)
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"></path>
+                                                @else
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                                @endif
+                                            </svg>
+                                        </button>
+                                        <form action="{{ route('dashboard.contact.destroy', $quote->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce message ?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center p-1.5 border border-transparent rounded text-red-600 hover:bg-red-100 transition-colors" title="Supprimer">
@@ -150,10 +205,18 @@
                                     <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
                                     </svg>
-                                    Aucune demande de devis pour le moment
+                                    Aucun message de contact pour le moment
                                 </td>
                             </tr>
                         @endforelse
+                        <tr id="noResults" style="display: none;">
+                            <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                Aucun résultat trouvé
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -161,13 +224,13 @@
     </div>
 </div>
 
-<!-- Quote Detail Modal -->
+<!-- Contact Detail Modal -->
 <div id="quoteModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
     <div class="flex items-center justify-center min-h-screen px-4 py-4">
         <div class="fixed inset-0 bg-gray-900 bg-opacity-50" onclick="closeModal()"></div>
         <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-900">Détails de la Demande de Devis</h3>
+                <h3 class="text-xl font-semibold text-gray-900">Détails du Message de Contact</h3>
                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -177,7 +240,10 @@
             <div id="modalContent" class="p-6 space-y-6">
                 <!-- Le contenu sera chargé dynamiquement -->
             </div>
-            <div class="flex justify-end p-6 border-t border-gray-200">
+            <div class="flex justify-end p-6 border-t border-gray-200 space-x-3">
+                <button onclick="replyToEmail()" id="replyButton" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    Répondre par email
+                </button>
                 <button onclick="closeModal()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
                     Fermer
                 </button>
@@ -187,6 +253,8 @@
 </div>
 
 <script>
+let currentEmail = '';
+
 function exportCSV() {
     window.location.href = '{{ route('dashboard.contact.export') }}';
 }
@@ -200,6 +268,8 @@ function viewQuote(id) {
             return response.json();
         })
         .then(data => {
+            currentEmail = data.email;
+
             // Afficher les données dans le modal
             document.getElementById('modalContent').innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -237,18 +307,15 @@ function viewQuote(id) {
             // Afficher le modal
             document.getElementById('quoteModal').style.display = 'block';
 
-            // Marquer comme lu
-            fetch('/dashboard/contact/mark-read/' + id, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            }).then(() => {
-                // Recharger la page pour mettre à jour le statut
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            });
+            // Marquer comme lu sans recharger
+            if (!data.read_at) {
+                fetch('/dashboard/contact/mark-read/' + id, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                });
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -256,8 +323,80 @@ function viewQuote(id) {
         });
 }
 
+function toggleRead(id, isRead) {
+    const action = isRead ? 'mark-unread' : 'mark-read';
+    fetch(`/dashboard/contact/${action}/` + id, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(() => {
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Erreur lors de la mise à jour');
+    });
+}
+
+function replyToEmail() {
+    if (currentEmail) {
+        window.location.href = `mailto:${currentEmail}?subject=Re: Votre message de contact`;
+    }
+}
+
 function closeModal() {
     document.getElementById('quoteModal').style.display = 'none';
+}
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    filterTable();
+});
+
+// Filter functionality
+document.getElementById('statusFilter').addEventListener('change', function(e) {
+    filterTable();
+});
+
+function filterTable() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    const rows = document.querySelectorAll('tbody tr:not(#noResults)');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        if (row.cells.length === 1 && row.cells[0].colSpan === 6) {
+            return; // Skip empty row
+        }
+
+        const name = row.cells[0]?.textContent.toLowerCase() || '';
+        const email = row.cells[1]?.textContent.toLowerCase() || '';
+        const message = row.cells[2]?.textContent.toLowerCase() || '';
+        const status = row.classList.contains('bg-blue-50') ? 'unread' : 'read';
+
+        const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm) || message.includes(searchTerm);
+        const matchesStatus = statusFilter === 'all' || statusFilter === status;
+
+        if (matchesSearch && matchesStatus) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Update result count
+    document.getElementById('resultCount').textContent = visibleCount;
+
+    // Show/hide no results message
+    const noResults = document.getElementById('noResults');
+    if (visibleCount === 0 && rows.length > 1) {
+        noResults.style.display = '';
+    } else {
+        noResults.style.display = 'none';
+    }
 }
 
 // Fermer le modal en cliquant à l'extérieur
