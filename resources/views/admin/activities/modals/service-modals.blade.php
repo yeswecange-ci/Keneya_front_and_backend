@@ -49,6 +49,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label">Fichier PDF</label>
+                    <input type="file" name="activities_service_pdf" class="form-input" accept="application/pdf">
+                    <p class="text-xs text-muted mt-1">Format accepté: PDF. Max: 10MB</p>
+                </div>
+
+                <div class="form-group">
                     <label class="form-label">Caractéristiques du service</label>
                     <div id="service-features">
                         <div class="flex items-center space-x-2 mb-2">
@@ -120,6 +126,13 @@
                     <label class="form-label">Image</label>
                     <input type="file" name="activities_service_image" class="form-input" accept="image/*">
                     <p class="text-xs text-muted mt-1">Laisser vide pour conserver l'image actuelle</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fichier PDF</label>
+                    <input type="file" name="activities_service_pdf" class="form-input" accept="application/pdf">
+                    <p class="text-xs text-muted mt-1">Format accepté: PDF. Max: 10MB. Laisser vide pour conserver le PDF actuel</p>
+                    <p id="current_pdf_info" class="text-xs text-gray-600 mt-1"></p>
                 </div>
 
                 <div class="form-group">

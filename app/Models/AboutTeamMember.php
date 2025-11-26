@@ -14,8 +14,13 @@ class AboutTeamMember extends Model
     protected $fillable = [
         'about_team_name',
         'about_team_position',
+        'about_team_description',
         'about_team_image_path',
-        'about_team_detail_link',
+        'about_team_facebook',
+        'about_team_twitter',
+        'about_team_linkedin',
+        'about_team_instagram',
+        'about_team_github',
         'about_team_order',
         'about_team_is_active'
     ];

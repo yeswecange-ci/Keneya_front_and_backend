@@ -163,15 +163,18 @@ class ActivitiesController extends Controller
     {
         $request->validate([
             'activities_service_title' => 'required|string|max:255',
+            'activities_service_description' => 'nullable|string',
             'activities_service_features' => 'nullable|array',
             'activities_service_features.*' => 'string|max:255',
             'activities_service_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'activities_service_pdf' => 'nullable|file|mimes:pdf|max:10240',
             'activities_service_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
 
         $service = new ActivitiesService();
         $service->activities_service_title = $request->activities_service_title;
+        $service->activities_service_description = $request->activities_service_description;
         $service->activities_service_order = $request->activities_service_order ?? 0;
         $service->activities_service_is_active = $request->is_active ?? true;
 
@@ -183,6 +186,12 @@ class ActivitiesController extends Controller
             $image = $request->file('activities_service_image');
             $imagePath = $image->store('activities/services', 'public');
             $service->activities_service_image = 'storage/' . $imagePath;
+        }
+
+        if ($request->hasFile('activities_service_pdf')) {
+            $pdf = $request->file('activities_service_pdf');
+            $pdfPath = $pdf->store('activities/services/pdfs', 'public');
+            $service->activities_service_pdf_path = $pdfPath;
         }
 
         if ($request->has('activities_service_features')) {
@@ -199,15 +208,18 @@ class ActivitiesController extends Controller
     {
         $request->validate([
             'activities_service_title' => 'required|string|max:255',
+            'activities_service_description' => 'nullable|string',
             'activities_service_features' => 'nullable|array',
             'activities_service_features.*' => 'string|max:255',
             'activities_service_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'activities_service_pdf' => 'nullable|file|mimes:pdf|max:10240',
             'activities_service_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
 
         $service = ActivitiesService::findOrFail($id);
         $service->activities_service_title = $request->activities_service_title;
+        $service->activities_service_description = $request->activities_service_description;
         $service->activities_service_order = $request->activities_service_order ?? 0;
         $service->activities_service_is_active = $request->is_active ?? true;
 
@@ -220,6 +232,17 @@ class ActivitiesController extends Controller
             $image = $request->file('activities_service_image');
             $imagePath = $image->store('activities/services', 'public');
             $service->activities_service_image = 'storage/' . $imagePath;
+        }
+
+        if ($request->hasFile('activities_service_pdf')) {
+            // Supprimer l'ancien PDF si il existe
+            if ($service->activities_service_pdf_path) {
+                Storage::disk('public')->delete($service->activities_service_pdf_path);
+            }
+
+            $pdf = $request->file('activities_service_pdf');
+            $pdfPath = $pdf->store('activities/services/pdfs', 'public');
+            $service->activities_service_pdf_path = $pdfPath;
         }
 
         if ($request->has('activities_service_features')) {
@@ -527,6 +550,20 @@ class ActivitiesController extends Controller
         $country->delete();
 
         return redirect()->back()->with('success', 'Pays supprimé avec succès.');
+    }
+
+    public function updateBulkColors(Request $request)
+    {
+        $validated = $request->validate([
+            'country_ids' => 'required|array|min:1',
+            'country_ids.*' => 'exists:activities_countries,id',
+            'color' => 'required|regex:/^#([A-Fa-f0-9]{6})$/'
+        ]);
+
+        $updatedCount = ActivitiesCountry::whereIn('id', $validated['country_ids'])
+            ->update(['color' => $validated['color']]);
+
+        return redirect()->back()->with('success', "{$updatedCount} pays mis à jour avec la couleur {$validated['color']}.");
     }
 
     public function getCountryData($countryCode)

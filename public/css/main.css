@@ -388,8 +388,17 @@ section img {
   /* permet à la carte noire de chevaucher l'image */
   padding: 20px 20px;
   z-index: 1;
-  height: 400px;
-  overflow: auto;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.card-content-offer:hover {
+  background-color: #2a2a2a;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 163, 198, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -410,18 +419,12 @@ section img {
   font-size: 18px;
   font-weight: bold;
   line-height: 1.4;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  transition: color 0.3s ease;
 }
 
-.card-content-offer ul {
-  padding-left: 20px;
-  margin: 0;
-}
-
-.card-content-offer ul li {
-  margin-bottom: 10px;
-  font-size: 15px;
-  line-height: 1.5;
+.card-content-offer h3:hover {
+  color: #00C4E8;
 }
 
 .form-candidature {

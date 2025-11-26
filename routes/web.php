@@ -99,6 +99,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/countries/{id}/edit', [\App\Http\Controllers\Admin\ActivitiesController::class, 'editCountry'])->name('edit-country');
         Route::put('/countries/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateCountry'])->name('update-country');
         Route::delete('/countries/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'deleteCountry'])->name('delete-country');
+        Route::post('/countries/bulk-colors', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateBulkColors'])->name('bulk-colors');
     });
 
     // Routes CRUD pour la page d'accueil
@@ -206,6 +207,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/team/{id}/edit', [AdminAboutController::class, 'getTeamMember'])->name('team.edit');
         Route::put('/team/{id}/update', [AdminAboutController::class, 'updateTeamMember'])->name('team.update');
         Route::delete('/team/{id}/delete', [AdminAboutController::class, 'deleteTeamMember'])->name('team.delete');
+        Route::post('/team/reorder', [AdminAboutController::class, 'reorderTeamMembers'])->name('team.reorder');
     });
 });
 
