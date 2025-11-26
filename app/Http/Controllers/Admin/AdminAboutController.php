@@ -173,7 +173,11 @@ class AdminAboutController extends Controller
         $validated = $request->validate([
             'about_team_name'        => 'required|string|max:255',
             'about_team_position'    => 'required|string|max:255',
-            'about_team_detail_link' => 'required|string|max:500',
+            'about_team_description' => 'nullable|string',
+            'about_team_facebook'    => 'nullable|url|max:500',
+            'about_team_twitter'     => 'nullable|url|max:500',
+            'about_team_linkedin'    => 'nullable|url|max:500',
+            'about_team_instagram'   => 'nullable|url|max:500',
             'about_team_image'       => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
@@ -184,7 +188,11 @@ class AdminAboutController extends Controller
         AboutTeamMember::create([
             'about_team_name'        => $validated['about_team_name'],
             'about_team_position'    => $validated['about_team_position'],
-            'about_team_detail_link' => $validated['about_team_detail_link'],
+            'about_team_description' => $validated['about_team_description'] ?? null,
+            'about_team_facebook'    => $validated['about_team_facebook'] ?? null,
+            'about_team_twitter'     => $validated['about_team_twitter'] ?? null,
+            'about_team_linkedin'    => $validated['about_team_linkedin'] ?? null,
+            'about_team_instagram'   => $validated['about_team_instagram'] ?? null,
             'about_team_image_path'  => $imagePath,
             'about_team_order'       => $lastOrder + 1,
             'about_team_is_active'   => true,
@@ -204,7 +212,11 @@ class AdminAboutController extends Controller
         $validated = $request->validate([
             'about_team_name'        => 'required|string|max:255',
             'about_team_position'    => 'required|string|max:255',
-            'about_team_detail_link' => 'required|string|max:500',
+            'about_team_description' => 'nullable|string',
+            'about_team_facebook'    => 'nullable|url|max:500',
+            'about_team_twitter'     => 'nullable|url|max:500',
+            'about_team_linkedin'    => 'nullable|url|max:500',
+            'about_team_instagram'   => 'nullable|url|max:500',
             'about_team_image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
@@ -237,5 +249,21 @@ class AdminAboutController extends Controller
         $member->delete();
 
         return redirect()->route('dashboard.about.manage')->with('success', 'Membre supprimé.');
+    }
+
+    public function reorderTeamMembers(Request $request)
+    {
+        $validated = $request->validate([
+            'orders' => 'required|array',
+            'orders.*.id' => 'required|exists:about_team_members,id',
+            'orders.*.order' => 'required|integer|min:0',
+        ]);
+
+        foreach ($validated['orders'] as $item) {
+            AboutTeamMember::where('id', $item['id'])
+                ->update(['about_team_order' => $item['order']]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Ordre mis à jour avec succès.']);
     }
 }

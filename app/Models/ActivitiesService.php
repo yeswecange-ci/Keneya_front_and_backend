@@ -15,6 +15,8 @@ class ActivitiesService extends Model
         'activities_service_number',
         'activities_service_title',
         'activities_service_features',
+        'activities_service_description',
+        'activities_service_pdf_path',
         'activities_service_image',
         'activities_service_order',
         'activities_service_is_active',

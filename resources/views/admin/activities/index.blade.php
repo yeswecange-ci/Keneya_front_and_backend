@@ -424,6 +424,163 @@
         @endif
     </div>
 
+    <!-- Bulk Color Update Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">🎨 Gestion des couleurs - Mise à jour groupée</h3>
+        </div>
+
+        <div class="card-body">
+            <p class="text-sm text-muted mb-4">
+                Sélectionnez plusieurs pays pour leur attribuer la même couleur en une seule fois.
+            </p>
+
+            @if($countries && $countries->count() > 0)
+                <form method="POST" action="{{ route('activities.bulk-colors') }}" id="bulkColorForm">
+                    @csrf
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <!-- Sélecteur de couleur -->
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">
+                                Couleur à appliquer
+                            </label>
+                            <div class="flex items-center space-x-3">
+                                <input type="color" name="color" id="bulkColor" value="#FFD700" required
+                                       class="h-12 w-20 p-1 rounded border-2 border-gray-300 cursor-pointer">
+                                <span id="colorPreview" class="text-sm font-mono text-gray-700">#FFD700</span>
+                            </div>
+                        </div>
+
+                        <!-- Compteur de sélection -->
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">
+                                Pays sélectionnés
+                            </label>
+                            <div class="text-3xl font-bold text-green-600">
+                                <span id="selectedCount">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex items-end">
+                            <div class="w-full space-y-2">
+                                <button type="submit" class="btn-success w-full" id="applyColorBtn" disabled>
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                                    </svg>
+                                    Appliquer la couleur
+                                </button>
+                                <button type="button" class="btn-secondary w-full text-xs" onclick="selectAllCountries()">
+                                    Tout sélectionner
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Liste des pays avec checkboxes -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                        @foreach($countries as $country)
+                            <label class="country-checkbox-item cursor-pointer">
+                                <input type="checkbox" name="country_ids[]" value="{{ $country->id }}"
+                                       class="country-checkbox sr-only" onchange="updateSelectedCount()">
+                                <div class="country-card">
+                                    <div class="country-flag" style="background-color: {{ $country->color ?? '#FFD700' }}"></div>
+                                    <div class="country-info">
+                                        <span class="country-code">{{ strtoupper($country->country_code) }}</span>
+                                        <span class="country-name">{{ $country->country_name }}</span>
+                                    </div>
+                                    <div class="country-check">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                </form>
+
+                <style>
+                    .country-checkbox-item {
+                        position: relative;
+                    }
+
+                    .country-card {
+                        position: relative;
+                        padding: 0.75rem;
+                        background: white;
+                        border: 2px solid #e5e7eb;
+                        border-radius: 0.75rem;
+                        transition: all 0.2s ease;
+                    }
+
+                    .country-card:hover {
+                        border-color: #9ca3af;
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .country-checkbox:checked + .country-card {
+                        border-color: #3b82f6;
+                        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+                        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                    }
+
+                    .country-flag {
+                        width: 100%;
+                        height: 3rem;
+                        border-radius: 0.5rem;
+                        margin-bottom: 0.5rem;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                    }
+
+                    .country-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.125rem;
+                    }
+
+                    .country-code {
+                        font-size: 0.875rem;
+                        font-weight: 700;
+                        color: #1f2937;
+                        font-family: monospace;
+                    }
+
+                    .country-name {
+                        font-size: 0.75rem;
+                        color: #6b7280;
+                        line-height: 1.2;
+                    }
+
+                    .country-check {
+                        position: absolute;
+                        top: 0.5rem;
+                        right: 0.5rem;
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        background: #3b82f6;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        opacity: 0;
+                        transform: scale(0);
+                        transition: all 0.2s ease;
+                    }
+
+                    .country-checkbox:checked ~ .country-card .country-check {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                </style>
+            @else
+                <p class="text-muted">Aucun pays disponible pour la mise à jour groupée.</p>
+            @endif
+        </div>
+    </div>
+
     <!-- Countries Section (Carte d'Afrique Interactive) -->
     <div class="dashboard-card">
         <div class="card-header">
@@ -538,6 +695,37 @@ function toggleSection(sectionId) {
     section.classList.toggle('hidden');
 }
 
+// Bulk Color Update Functions
+function updateSelectedCount() {
+    const checkboxes = document.querySelectorAll('.country-checkbox:checked');
+    const count = checkboxes.length;
+    document.getElementById('selectedCount').textContent = count;
+    document.getElementById('applyColorBtn').disabled = count === 0;
+}
+
+function selectAllCountries() {
+    const checkboxes = document.querySelectorAll('.country-checkbox');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+    checkboxes.forEach(cb => {
+        cb.checked = !allChecked;
+    });
+
+    updateSelectedCount();
+}
+
+// Mise à jour de l'aperçu de couleur
+document.addEventListener('DOMContentLoaded', function() {
+    const colorInput = document.getElementById('bulkColor');
+    const colorPreview = document.getElementById('colorPreview');
+
+    if (colorInput && colorPreview) {
+        colorInput.addEventListener('input', function(e) {
+            colorPreview.textContent = e.target.value.toUpperCase();
+        });
+    }
+});
+
 // Key Number Functions
 function editKeyNumber(id) {
     fetch(`/dashboard/activities/keynumbers/${id}/edit`)
@@ -592,6 +780,14 @@ function editService(id) {
             document.getElementById('edit_service_title').value = data.activities_service_title || '';
             document.getElementById('edit_service_description').value = data.activities_service_description || '';
             document.getElementById('edit_service_order').value = data.activities_service_order || 0;
+
+            // Handle PDF info
+            const pdfInfo = document.getElementById('current_pdf_info');
+            if (data.activities_service_pdf_path) {
+                pdfInfo.innerHTML = 'PDF actuel: <a href="/storage/' + data.activities_service_pdf_path + '" target="_blank" class="text-blue-600 hover:underline">Télécharger</a>';
+            } else {
+                pdfInfo.innerHTML = 'Aucun PDF actuellement.';
+            }
 
             // Handle service features
             const featuresContainer = document.getElementById('edit-service-features');

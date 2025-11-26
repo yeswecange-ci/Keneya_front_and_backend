@@ -114,21 +114,7 @@
                                         </div>
                                         <div class="card-content-offer">
                                             <small>{{ sprintf('%02d', $index + 1) }}</small>
-                                            <h3>{{ $service->activities_service_title }}</h3>
-                                            @if ($service->activities_service_features)
-                                                @php
-                                                    $features = is_string($service->activities_service_features)
-                                                        ? json_decode($service->activities_service_features, true)
-                                                        : $service->activities_service_features;
-                                                @endphp
-                                                @if ($features && is_array($features))
-                                                    <ul>
-                                                        @foreach ($features as $feature)
-                                                            <li>{{ $feature }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endif
+                                            <h3 style="cursor: pointer;" onclick="openServiceModal({{ $service->id }})">{{ $service->activities_service_title }}</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -144,6 +130,181 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Service Offer -->
+    <div id="serviceOfferModal" class="service-offer-modal" style="display: none;">
+        <div class="service-offer-modal-overlay" onclick="closeServiceModal()"></div>
+        <div class="service-offer-modal-content">
+            <button class="service-offer-modal-close" onclick="closeServiceModal()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <div class="service-offer-modal-body">
+                <h2 id="modalServiceTitle"></h2>
+                <p id="modalServiceDescription"></p>
+
+                <div id="modalServicePdfContainer" style="margin-top: 2rem; display: none;">
+                    <a id="modalServicePdfLink" href="#" target="_blank" class="btn-download-pdf">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Télécharger le PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .service-offer-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .service-offer-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+        }
+
+        .service-offer-modal-content {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalFadeIn 0.3s ease-out;
+            padding: 2.5rem;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .service-offer-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .service-offer-modal-close:hover {
+            background: #f3f4f6;
+            transform: scale(1.1);
+        }
+
+        .service-offer-modal-body h2 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-offer-modal-body p {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #4b5563;
+            white-space: pre-line;
+        }
+
+        .btn-download-pdf {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-download-pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.35);
+        }
+
+        .btn-download-pdf svg {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+
+    <script>
+        const servicesData = @json($services);
+
+        function openServiceModal(serviceId) {
+            const service = servicesData.find(s => s.id === serviceId);
+            if (!service) return;
+
+            document.getElementById('modalServiceTitle').textContent = service.activities_service_title;
+            document.getElementById('modalServiceDescription').textContent = service.activities_service_description || 'Aucune description disponible.';
+
+            // Gérer le PDF
+            const pdfContainer = document.getElementById('modalServicePdfContainer');
+            const pdfLink = document.getElementById('modalServicePdfLink');
+
+            if (service.activities_service_pdf_path) {
+                pdfLink.href = '/storage/' + service.activities_service_pdf_path;
+                pdfContainer.style.display = 'block';
+            } else {
+                pdfContainer.style.display = 'none';
+            }
+
+            document.getElementById('serviceOfferModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeServiceModal() {
+            document.getElementById('serviceOfferModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Fermer avec Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeServiceModal();
+            }
+        });
+    </script>
 
     <!-- sectionnn map -->
     <section class="domain-map">

@@ -233,9 +233,14 @@
         </div>
 
         @if($teamMembers && $teamMembers->count() > 0)
-            <div class="space-y-3">
+            <div class="space-y-3" id="team-members-sortable">
                 @foreach($teamMembers as $member)
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center team-member-item" data-id="{{ $member->id }}">
+                    <div class="cursor-move mr-3 text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                        </svg>
+                    </div>
                     @if($member->about_team_image_path)
                         <img src="{{ Storage::url($member->about_team_image_path) }}" alt="{{ $member->about_team_name }}"
                              class="w-20 h-20 rounded-full object-cover border-2 border-gray-300">
@@ -249,9 +254,9 @@
                     <div class="flex-1 ml-4">
                         <h3 class="font-semibold text-gray-900">{{ $member->about_team_name }}</h3>
                         <p class="text-sm text-muted">{{ $member->about_team_position }}</p>
-                        <a href="{{ $member->about_team_detail_link }}" target="_blank" class="text-sm text-gray-700 hover:text-gray-900">
-                            Voir le profil →
-                        </a>
+                        @if($member->about_team_description)
+                            <p class="text-xs text-gray-600 mt-1">{{ Str::limit($member->about_team_description, 100) }}</p>
+                        @endif
                     </div>
                     <div class="flex items-center space-x-2">
                         <button type="button" class="btn-secondary text-xs py-1 px-2"
@@ -354,25 +359,49 @@
 
                 <form id="teamForm" action="{{ route('dashboard.about.team.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
-                    <div class="form-group">
-                        <label class="form-label">Nom *</label>
-                        <input type="text" class="form-input" id="modal_team_name" name="about_team_name" required>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="form-label">Nom *</label>
+                            <input type="text" class="form-input" id="modal_team_name" name="about_team_name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Poste *</label>
+                            <input type="text" class="form-input" id="modal_team_position" name="about_team_position" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Poste *</label>
-                        <input type="text" class="form-input" id="modal_team_position" name="about_team_position" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Lien vers le profil *</label>
-                        <input type="text" class="form-input" id="modal_team_link" name="about_team_detail_link" required>
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="modal_team_description" name="about_team_description" rows="3" placeholder="Décrivez brièvement le membre de l'équipe"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Photo</label>
                         <input type="file" class="form-input" id="modal_team_image" name="about_team_image" accept="image/*">
                         <img id="team_image_preview" src="" alt="Aperçu" class="mt-3 h-32 w-auto rounded border border-gray-200" style="display: none;">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label font-semibold text-gray-700">Réseaux sociaux</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                            <div>
+                                <label class="text-xs text-gray-600">Facebook</label>
+                                <input type="url" class="form-input text-sm" id="modal_team_facebook" name="about_team_facebook" placeholder="https://facebook.com/...">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600">Twitter/X</label>
+                                <input type="url" class="form-input text-sm" id="modal_team_twitter" name="about_team_twitter" placeholder="https://twitter.com/...">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600">LinkedIn</label>
+                                <input type="url" class="form-input text-sm" id="modal_team_linkedin" name="about_team_linkedin" placeholder="https://linkedin.com/in/...">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600">Instagram</label>
+                                <input type="url" class="form-input text-sm" id="modal_team_instagram" name="about_team_instagram" placeholder="https://instagram.com/...">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="flex justify-end space-x-3 pt-4">
@@ -467,7 +496,11 @@ function editTeamMember(id) {
 
             document.getElementById('modal_team_name').value = data.about_team_name;
             document.getElementById('modal_team_position').value = data.about_team_position;
-            document.getElementById('modal_team_link').value = data.about_team_detail_link;
+            document.getElementById('modal_team_description').value = data.about_team_description || '';
+            document.getElementById('modal_team_facebook').value = data.about_team_facebook || '';
+            document.getElementById('modal_team_twitter').value = data.about_team_twitter || '';
+            document.getElementById('modal_team_linkedin').value = data.about_team_linkedin || '';
+            document.getElementById('modal_team_instagram').value = data.about_team_instagram || '';
 
             document.getElementById('modal_team_image').required = false;
 
@@ -496,6 +529,86 @@ document.getElementById('modal_team_image')?.addEventListener('change', function
             preview.style.display = 'block';
         };
         reader.readAsDataURL(file);
+    }
+});
+
+// === DRAG & DROP POUR RÉORDONNANCEMENT ===
+document.addEventListener('DOMContentLoaded', function() {
+    const sortableElement = document.getElementById('team-members-sortable');
+
+    if (sortableElement) {
+        let draggedElement = null;
+        let draggedIndex = null;
+
+        sortableElement.addEventListener('dragstart', function(e) {
+            if (e.target.classList.contains('team-member-item')) {
+                draggedElement = e.target;
+                draggedIndex = Array.from(sortableElement.children).indexOf(draggedElement);
+                e.target.style.opacity = '0.4';
+            }
+        });
+
+        sortableElement.addEventListener('dragend', function(e) {
+            if (e.target.classList.contains('team-member-item')) {
+                e.target.style.opacity = '1';
+
+                // Récupérer le nouvel ordre
+                const items = sortableElement.querySelectorAll('.team-member-item');
+                const orders = Array.from(items).map((item, index) => ({
+                    id: parseInt(item.getAttribute('data-id')),
+                    order: index + 1
+                }));
+
+                // Envoyer au serveur
+                fetch('{{ route('dashboard.about.team.reorder') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ orders: orders })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Ordre mis à jour:', data);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la mise à jour de l\'ordre:', error);
+                    alert('Erreur lors de la mise à jour de l\'ordre');
+                });
+            }
+        });
+
+        sortableElement.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(sortableElement, e.clientY);
+            if (afterElement == null) {
+                sortableElement.appendChild(draggedElement);
+            } else {
+                sortableElement.insertBefore(draggedElement, afterElement);
+            }
+        });
+
+        // Rendre les items draggables
+        const items = sortableElement.querySelectorAll('.team-member-item');
+        items.forEach(item => {
+            item.setAttribute('draggable', 'true');
+        });
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.team-member-item:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
     }
 });
 </script>
