@@ -64,9 +64,9 @@
                             <div class="slide-content wow fadeInLeft">
                                 <small>01</small>
                                 <div class="section--title">
-                                    <h1>Contenu par défaut</h1>
+                                    <h1>{{ __('home.hero_title') }}</h1>
                                 </div>
-                                <p>Aucun contenu disponible pour le moment.</p>
+                                <p>{{ __('common.no_data') }}</p>
                                 <div class="slide-bar-env">
                                     <div class="slide-bar"></div>
                                 </div>
@@ -102,12 +102,12 @@
             @else
                 <!-- Fallback -->
                 <div class="section--title wow fadeInRight">
-                    <h2>À propos de nous</h2>
-                    <h1>Contenu par défaut</h1>
+                    <h2>{{ __('home.about_title') }}</h2>
+                    <h1>{{ __('home.about_title') }}</h1>
                 </div>
 
                 <div class="wow fadeInLeft">
-                    <p>Aucun contenu disponible pour le moment.</p>
+                    <p>{{ __('common.no_data') }}</p>
                 </div>
             @endif
         </div>
@@ -151,7 +151,7 @@
                                 <!-- Fallback stats -->
                                 <div class="knumb--elts__elt wow fadeInRight">
                                     <h1><img src="{{ asset('img/6.png') }}" alt="img"> 700</h1>
-                                    <p>Missions d'assistance technique mise en oeuvre</p>
+                                    <p>{{ __('home.projects') }}</p>
                                 </div>
                             @endif
                         </div>
@@ -163,9 +163,9 @@
                     @else
                         <!-- Fallback -->
                         <div class="section--title wow fadeInLeft">
-                            <h2>Nos chiffres clés</h2>
+                            <h2>{{ __('home.key_numbers_title') }}</h2>
                         </div>
-                        <p class="wow fadeInLeft">Aucun contenu disponible pour le moment.</p>
+                        <p class="wow fadeInLeft">{{ __('common.no_data') }}</p>
                     @endif
                 </div>
             </div>
@@ -182,33 +182,33 @@
                 <p class="wow fadeInLeft">{{ $homeRecruitment->home_recruitment_description }}</p>
             @else
                 <div class="section--title wow fadeInLeft">
-                    <h2>Venez travailler avec nous</h2>
+                    <h2>{{ __('home.recruitment_default_title') }}</h2>
                 </div>
-                <p class="wow fadeInLeft">Merci de remplir ce formulaire, afin de postuler pour les positions disponibles dans notre cabinet.</p>
+                <p class="wow fadeInLeft">{{ __('home.recruitment_default_description') }}</p>
             @endif
 
             <div action="{{ route('home.application.store') }}" method="POST" enctype="multipart/form-data" class="form-candidature wow fadeInRight">
                 @csrf
 
-                <input type="text" name="home_application_first_name" placeholder="Prénom" value="{{ old('home_application_first_name') }}" required>
+                <input type="text" name="home_application_first_name" placeholder="{{ __('forms.first_name') }}" value="{{ old('home_application_first_name') }}" required>
                 @error('home_application_first_name')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
 
-                <input type="text" name="home_application_last_name" placeholder="Nom de famille" value="{{ old('home_application_last_name') }}" required>
+                <input type="text" name="home_application_last_name" placeholder="{{ __('forms.last_name') }}" value="{{ old('home_application_last_name') }}" required>
                 @error('home_application_last_name')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
 
                 <div class="row-double">
                     <div>
-                        <input type="email" name="home_application_email" placeholder="Email" value="{{ old('home_application_email') }}" required>
+                        <input type="email" name="home_application_email" placeholder="{{ __('forms.email') }}" value="{{ old('home_application_email') }}" required>
                         @error('home_application_email')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div>
-                        <input type="tel" name="home_application_phone" placeholder="Téléphone" value="{{ old('home_application_phone') }}" required>
+                        <input type="tel" name="home_application_phone" placeholder="{{ __('forms.phone') }}" value="{{ old('home_application_phone') }}" required>
                         @error('home_application_phone')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -216,25 +216,25 @@
                 </div>
 
                 <select name="home_application_desired_position" required>
-                    <option value="">Poste souhaité</option>
-                    <option value="Développeur" {{ old('home_application_desired_position') == 'Développeur' ? 'selected' : '' }}>Développeur</option>
-                    <option value="Designer" {{ old('home_application_desired_position') == 'Designer' ? 'selected' : '' }}>Designer</option>
-                    <option value="Assistant" {{ old('home_application_desired_position') == 'Assistant' ? 'selected' : '' }}>Assistant</option>
-                    <option value="Consultant" {{ old('home_application_desired_position') == 'Consultant' ? 'selected' : '' }}>Consultant</option>
-                    <option value="Chef de projet" {{ old('home_application_desired_position') == 'Chef de projet' ? 'selected' : '' }}>Chef de projet</option>
+                    <option value="">{{ __('home.desired_position') }}</option>
+                    <option value="Développeur" {{ old('home_application_desired_position') == 'Développeur' ? 'selected' : '' }}>{{ __('home.position_developer') }}</option>
+                    <option value="Designer" {{ old('home_application_desired_position') == 'Designer' ? 'selected' : '' }}>{{ __('home.position_designer') }}</option>
+                    <option value="Assistant" {{ old('home_application_desired_position') == 'Assistant' ? 'selected' : '' }}>{{ __('home.position_assistant') }}</option>
+                    <option value="Consultant" {{ old('home_application_desired_position') == 'Consultant' ? 'selected' : '' }}>{{ __('home.position_consultant') }}</option>
+                    <option value="Chef de projet" {{ old('home_application_desired_position') == 'Chef de projet' ? 'selected' : '' }}>{{ __('home.position_project_manager') }}</option>
                 </select>
                 @error('home_application_desired_position')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
 
-                <input type="date" name="home_application_availability_date" placeholder="Date de disponibilité" value="{{ old('home_application_availability_date') }}" required>
+                <input type="date" name="home_application_availability_date" placeholder="{{ __('home.availability_date') }}" value="{{ old('home_application_availability_date') }}" required>
                 @error('home_application_availability_date')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
 
                 <label class="file-upload">
                     <input type="file" name="home_application_cv" accept=".pdf,.doc,.docx" required>
-                    <span>Ajouter votre CV</span>
+                    <span>{{ __('home.upload_cv') }}</span>
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
@@ -250,7 +250,7 @@
                 @enderror
 
                 <button type="button" onclick="submitApplication()" class="btn-site1">
-                    <span>Postuler</span>
+                    <span>{{ __('home.submit_application') }}</span>
                     <span class="arrow">→</span>
                 </button>
             </div>
@@ -261,7 +261,7 @@
     <section>
         <div class="container-lg">
             <div class="section--title wow fadeInRight">
-                <h2>ILS NOUS FONT CONFIANCE</h2>
+                <h2>{{ __('home.partners_subtitle') }}</h2>
             </div>
 
             @php
@@ -422,6 +422,13 @@
             // Ajouter le token CSRF
             formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
+            // Messages traduits
+            const messages = {
+                success: '{{ __('home.application_success') }}',
+                error: '{{ __('home.application_error') }}',
+                sendingError: '{{ __('home.sending_error') }}'
+            };
+
             // Envoyer la requête
             fetch('{{ route("home.application.store") }}', {
                 method: 'POST',
@@ -430,15 +437,15 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Candidature envoyée avec succès !');
+                    alert(messages.success);
                     form.reset();
                 } else {
-                    alert('Erreur lors de l\'envoi de la candidature');
+                    alert(messages.error);
                 }
             })
             .catch(error => {
                 console.error('Erreur:', error);
-                alert('Erreur lors de l\'envoi');
+                alert(messages.sendingError);
             });
         }
     </script>

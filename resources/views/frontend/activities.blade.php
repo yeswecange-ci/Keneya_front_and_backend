@@ -70,7 +70,7 @@
                     <div class="knumb--elts my-5">
                         @foreach ($themes as $theme)
                             <div class="knumb--elts__elt wow fadeInLeft">
-                                <img src="{{ $theme->activities_theme_icon ?? 'img/16.png' }}"
+                                <img src="{{ asset($theme->activities_theme_icon ?? 'img/16.png') }}"
                                     alt="{{ $theme->activities_theme_title }}">
                                 <div>
                                     <h1>{{ $theme->activities_theme_title }}</h1>
@@ -109,26 +109,12 @@
                                 <div class="swiper-slide">
                                     <div class="card-offers">
                                         <div class="card-image-offer"
-                                            style="background: url('{{ $service->activities_service_image ?? 'img/12.jpg' }}');">
+                                            style="background: url('{{ asset($service->activities_service_image ?? 'img/12.jpg') }}');">
                                             <!-- <img src="" alt="Image santé" class="card-img" > -->
                                         </div>
                                         <div class="card-content-offer">
                                             <small>{{ sprintf('%02d', $index + 1) }}</small>
-                                            <h3>{{ $service->activities_service_title }}</h3>
-                                            @if ($service->activities_service_features)
-                                                @php
-                                                    $features = is_string($service->activities_service_features)
-                                                        ? json_decode($service->activities_service_features, true)
-                                                        : $service->activities_service_features;
-                                                @endphp
-                                                @if ($features && is_array($features))
-                                                    <ul>
-                                                        @foreach ($features as $feature)
-                                                            <li>{{ $feature }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endif
+                                            <h3 style="cursor: pointer;" onclick="openServiceModal({{ $service->id }})">{{ $service->activities_service_title }}</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -144,6 +130,181 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Service Offer -->
+    <div id="serviceOfferModal" class="service-offer-modal" style="display: none;">
+        <div class="service-offer-modal-overlay" onclick="closeServiceModal()"></div>
+        <div class="service-offer-modal-content">
+            <button class="service-offer-modal-close" onclick="closeServiceModal()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <div class="service-offer-modal-body">
+                <h2 id="modalServiceTitle"></h2>
+                <p id="modalServiceDescription"></p>
+
+                <div id="modalServicePdfContainer" style="margin-top: 2rem; display: none;">
+                    <a id="modalServicePdfLink" href="#" target="_blank" class="btn-download-pdf">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Télécharger le PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .service-offer-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .service-offer-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+        }
+
+        .service-offer-modal-content {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalFadeIn 0.3s ease-out;
+            padding: 2.5rem;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .service-offer-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .service-offer-modal-close:hover {
+            background: #f3f4f6;
+            transform: scale(1.1);
+        }
+
+        .service-offer-modal-body h2 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-offer-modal-body p {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #4b5563;
+            white-space: pre-line;
+        }
+
+        .btn-download-pdf {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-download-pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.35);
+        }
+
+        .btn-download-pdf svg {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+
+    <script>
+        const servicesData = @json($services);
+
+        function openServiceModal(serviceId) {
+            const service = servicesData.find(s => s.id === serviceId);
+            if (!service) return;
+
+            document.getElementById('modalServiceTitle').textContent = service.activities_service_title;
+            document.getElementById('modalServiceDescription').textContent = service.activities_service_description || 'Aucune description disponible.';
+
+            // Gérer le PDF
+            const pdfContainer = document.getElementById('modalServicePdfContainer');
+            const pdfLink = document.getElementById('modalServicePdfLink');
+
+            if (service.activities_service_pdf_path) {
+                pdfLink.href = '/storage/' + service.activities_service_pdf_path;
+                pdfContainer.style.display = 'block';
+            } else {
+                pdfContainer.style.display = 'none';
+            }
+
+            document.getElementById('serviceOfferModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeServiceModal() {
+            document.getElementById('serviceOfferModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Fermer avec Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeServiceModal();
+            }
+        });
+    </script>
 
     <!-- sectionnn map -->
     <section class="domain-map">
@@ -412,6 +573,25 @@
         </div>
     </section>
 
+    <!-- Country Modal -->
+    <div id="countryModal" class="modal fade" tabindex="-1" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="countryModalTitle">Informations sur le pays</h5>
+                    <button type="button" class="btn-close" onclick="closeCountryModal()"></button>
+                </div>
+                <div class="modal-body" id="countryModalBody">
+                    <div class="text-center py-4">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- temoignages -->
     <section class="temoignages">
         <div class="container-lg">
@@ -426,7 +606,7 @@
                             <div class="cardBlog">
                                 <a href="{{ $testimonial->activities_testimonial_link ?? '#' }}">
                                     <div class="cardBlog--img">
-                                        <img src="{{ $testimonial->activities_testimonial_image ?? 'img/21.jpg' }}"
+                                        <img src="{{ asset($testimonial->activities_testimonial_image ?? 'img/21.jpg') }}"
                                             alt="{{ $testimonial->activities_testimonial_title }}">
                                     </div>
 
@@ -458,5 +638,194 @@
                 behavior: 'smooth'
             });
         }
+
+        // Interactive Map functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const svgPaths = document.querySelectorAll('#map svg path[data-id]');
+            
+            // Data from backend
+            const activeCountries = @json($countries->map(function($country) {
+                return [
+                    'code' => $country->country_code,
+                    'color' => $country->color ?? '#FFD700',
+                    'name' => $country->country_name
+                ];
+            }));
+
+            // Create a map of country codes to colors for easy lookup
+            const countryColors = {};
+            activeCountries.forEach(country => {
+                countryColors[country.code] = country.color;
+            });
+
+            // Initialize map colors
+            svgPaths.forEach(path => {
+                const countryCode = path.getAttribute('data-id') || path.getAttribute('id');
+                
+                // Apply color if country is active
+                if (countryColors[countryCode]) {
+                    path.style.fill = countryColors[countryCode];
+                    path.setAttribute('data-original-color', countryColors[countryCode]);
+                    path.style.cursor = 'pointer';
+                } else {
+                    // Default styling for inactive countries
+                    path.setAttribute('data-original-color', '#f2f2f2');
+                }
+                
+                path.style.transition = 'all 0.3s ease';
+
+                path.addEventListener('mouseenter', function() {
+                    // Only apply hover effect if country is active (has a color in our list)
+                    if (countryColors[countryCode]) {
+                        this.style.fill = '#D4A017'; // Hover color (darker gold)
+                        this.style.opacity = '0.8';
+                    }
+                });
+
+                path.addEventListener('mouseleave', function() {
+                    // Restore original color
+                    const originalColor = this.getAttribute('data-original-color');
+                    this.style.fill = originalColor;
+                    this.style.opacity = '1';
+                });
+
+                // Add click event to show country modal
+                path.addEventListener('click', function() {
+                    // Only show modal for active countries
+                    if (countryColors[countryCode]) {
+                        const countryName = this.getAttribute('data-name') || this.getAttribute('data-bs-title');
+                        showCountryInfo(countryCode, countryName);
+                    }
+                });
+            });
+        });
+
+        function showCountryInfo(countryCode, countryName) {
+            const modal = document.getElementById('countryModal');
+            const modalTitle = document.getElementById('countryModalTitle');
+            const modalBody = document.getElementById('countryModalBody');
+
+            // Show modal with loading state
+            modal.style.display = 'block';
+            modal.classList.add('show');
+            document.body.classList.add('modal-open');
+
+            // Create backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            backdrop.id = 'countryModalBackdrop';
+            document.body.appendChild(backdrop);
+
+            // Set title
+            modalTitle.textContent = countryName || 'Informations sur le pays';
+
+            // Show loading spinner
+            modalBody.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                </div>
+            `;
+
+            // Fetch country data
+            fetch(`/activities/country/${countryCode}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Pays non trouvé');
+                    }
+                    return response.json();
+                })
+                .then(country => {
+                    displayCountryInfo(country);
+                })
+                .catch(error => {
+                    modalBody.innerHTML = `
+                        <div class="alert alert-warning">
+                            <p class="mb-0">Aucune information disponible pour ce pays.</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function displayCountryInfo(country) {
+            const modalBody = document.getElementById('countryModalBody');
+
+            let activitiesList = '';
+            if (country.activities && country.activities.length > 0) {
+                activitiesList = '<ul class="list-unstyled">';
+                country.activities.forEach(activity => {
+                    activitiesList += `<li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>${activity}</li>`;
+                });
+                activitiesList += '</ul>';
+            } else {
+                activitiesList = '<p class="text-muted">Aucune activité enregistrée.</p>';
+            }
+
+            let imageHtml = '';
+            if (country.image) {
+                imageHtml = `
+                    <div class="mb-4">
+                        <img src="{{ asset('') }}${country.image}" alt="${country.country_name}" class="img-fluid rounded" style="max-height: 300px; width: 100%; object-fit: cover;">
+                    </div>
+                `;
+            }
+
+            let descriptionHtml = '';
+            if (country.description) {
+                descriptionHtml = `
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Description</h6>
+                        <p>${country.description}</p>
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = `
+                ${imageHtml}
+                ${descriptionHtml}
+                <div>
+                    <h6 class="fw-bold">Nos activités en ${country.country_name}</h6>
+                    ${activitiesList}
+                </div>
+            `;
+        }
+
+        function closeCountryModal() {
+            const modal = document.getElementById('countryModal');
+            const backdrop = document.getElementById('countryModalBackdrop');
+
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+
+            if (backdrop) {
+                backdrop.remove();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('countryModal');
+            if (event.target === modal) {
+                closeCountryModal();
+            }
+        });
     </script>
+
+    <style>
+        /* Modal styles */
+        #countryModal {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #countryModal.show {
+            display: block !important;
+        }
+
+        /* Map interaction styles */
+        #map svg path[data-id] {
+            transition: all 0.3s ease;
+        }
+    </style>
 @endsection

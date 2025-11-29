@@ -22,7 +22,6 @@ class HomeKeyNumberStat extends Model
 
     protected $casts = [
         'home_stat_active' => 'boolean',
-        'home_stat_number' => 'integer',
     ];
 
     // Relation avec HomeKeyNumber

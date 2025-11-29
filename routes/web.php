@@ -8,11 +8,20 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\HomeApplicationController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamsController;
 use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Routes de Changement de Langue
+|--------------------------------------------------------------------------
+*/
+Route::post('/locale/change', [LocaleController::class, 'changeLocale'])->name('locale.change');
+Route::get('/locale/current', [LocaleController::class, 'getCurrentLocale'])->name('locale.current');
 
 /*
 |--------------------------------------------------------------------------
@@ -57,18 +66,22 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
         // Key Numbers
         Route::post('/keynumbers', [\App\Http\Controllers\Admin\ActivitiesController::class, 'storeKeyNumber'])->name('store-keynumber');
+        Route::get('/keynumbers/{id}/edit', [\App\Http\Controllers\Admin\ActivitiesController::class, 'editKeyNumber'])->name('edit-keynumber');
         Route::put('/keynumbers/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateKeyNumber'])->name('update-keynumber');
         Route::delete('/keynumbers/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'deleteKeyNumber'])->name('delete-keynumber');
+
         // Page Content
         Route::put('/page-content', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updatePageContent'])->name('update-page-content');
 
         // Themes
         Route::post('/themes', [\App\Http\Controllers\Admin\ActivitiesController::class, 'storeTheme'])->name('store-theme');
+        Route::get('/themes/{id}/edit', [\App\Http\Controllers\Admin\ActivitiesController::class, 'editTheme'])->name('edit-theme');
         Route::put('/themes/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateTheme'])->name('update-theme');
         Route::delete('/themes/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'deleteTheme'])->name('delete-theme');
 
         // Services
         Route::post('/services', [\App\Http\Controllers\Admin\ActivitiesController::class, 'storeService'])->name('store-service');
+        Route::get('/services/{id}/edit', [\App\Http\Controllers\Admin\ActivitiesController::class, 'editService'])->name('edit-service');
         Route::put('/services/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateService'])->name('update-service');
         Route::delete('/services/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'deleteService'])->name('delete-service');
 
@@ -77,8 +90,16 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
         // Testimonials
         Route::post('/testimonials', [\App\Http\Controllers\Admin\ActivitiesController::class, 'storeTestimonial'])->name('store-testimonial');
+        Route::get('/testimonials/{id}/edit', [\App\Http\Controllers\Admin\ActivitiesController::class, 'editTestimonial'])->name('edit-testimonial');
         Route::put('/testimonials/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateTestimonial'])->name('update-testimonial');
         Route::delete('/testimonials/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'deleteTestimonial'])->name('delete-testimonial');
+
+        // Countries
+        Route::post('/countries', [\App\Http\Controllers\Admin\ActivitiesController::class, 'storeCountry'])->name('store-country');
+        Route::get('/countries/{id}/edit', [\App\Http\Controllers\Admin\ActivitiesController::class, 'editCountry'])->name('edit-country');
+        Route::put('/countries/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateCountry'])->name('update-country');
+        Route::delete('/countries/{id}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'deleteCountry'])->name('delete-country');
+        Route::post('/countries/bulk-colors', [\App\Http\Controllers\Admin\ActivitiesController::class, 'updateBulkColors'])->name('bulk-colors');
     });
 
     // Routes CRUD pour la page d'accueil
@@ -147,17 +168,21 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/quote/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'showQuote'])->name('show-quote');
         Route::get('/download-cv/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'downloadCv'])->name('download-cv');
         Route::post('/mark-read/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'markAsRead'])->name('mark-read');
+        Route::post('/mark-unread/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'markAsUnread'])->name('mark-unread');
+        Route::post('/mark-multiple-read', [\App\Http\Controllers\Admin\ContactController::class, 'markMultipleRead'])->name('mark-multiple-read');
+        Route::post('/delete-multiple', [\App\Http\Controllers\Admin\ContactController::class, 'deleteMultiple'])->name('delete-multiple');
+        Route::get('/export', [\App\Http\Controllers\Admin\ContactController::class, 'export'])->name('export');
         Route::delete('/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'destroy'])->name('destroy');
     });
 
     // Routes CRUD pour l'équipe expert
     Route::prefix('expert')->name('dashboard.expert.')->group(function () {
-        // Team Leader - Accepter PUT et POST
-        Route::match(['put', 'post'], '/update-leader', [\App\Http\Controllers\Admin\ExpertController::class, 'updateTeamLeader'])->name('update-leader');
+        // Team Leader
+        Route::put('/update-leader', [\App\Http\Controllers\Admin\ExpertController::class, 'updateTeamLeader'])->name('update-leader');
 
         // Team Members
         Route::post('/store-member', [\App\Http\Controllers\Admin\ExpertController::class, 'storeTeamMember'])->name('store-member');
-        Route::match(['put', 'post'], '/update-member/{id}', [\App\Http\Controllers\Admin\ExpertController::class, 'updateTeamMember'])->name('update-member');
+        Route::put('/update-member/{id}', [\App\Http\Controllers\Admin\ExpertController::class, 'updateTeamMember'])->name('update-member');
         Route::delete('/delete-member/{id}', [\App\Http\Controllers\Admin\ExpertController::class, 'deleteTeamMember'])->name('delete-member');
     });
 
@@ -182,6 +207,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::get('/team/{id}/edit', [AdminAboutController::class, 'getTeamMember'])->name('team.edit');
         Route::put('/team/{id}/update', [AdminAboutController::class, 'updateTeamMember'])->name('team.update');
         Route::delete('/team/{id}/delete', [AdminAboutController::class, 'deleteTeamMember'])->name('team.delete');
+        Route::post('/team/reorder', [AdminAboutController::class, 'reorderTeamMembers'])->name('team.reorder');
     });
 });
 
@@ -204,6 +230,7 @@ Route::post('/home-application', [HomeApplicationController::class, 'store'])->n
 // Pages statiques
 Route::get('/about', [AboutController::class, 'index'])->name('front.about');
 Route::get('/activities', [ActivitiesController::class, 'index'])->name('front.activities');
+Route::get('/activities/country/{code}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'getCountryData'])->name('front.activities.country');
 Route::get('/actualites', [NewsController::class, 'index'])->name('front.news');
 Route::get('/team-details', [TeamController::class, 'index'])->name('front.team.details');
 Route::get('/contact', [ContactController::class, 'index'])->name('front.contact');
