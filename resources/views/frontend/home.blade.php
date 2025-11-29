@@ -46,9 +46,9 @@
                                     </div>
                                     <!--<p>{{ $slide->home_slide_description }}</p>-->
 
-                                    <!--<div class="slide-bar-env">
+                                    <div class="slide-bar-env">
                                         <div class="slide-bar"></div>
-                                    </div>-->
+                                    </div>
                                 </div>
                             </div>
                         </div>

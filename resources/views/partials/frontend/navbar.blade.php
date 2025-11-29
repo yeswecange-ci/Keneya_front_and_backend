@@ -3,7 +3,8 @@
     <div class="container-lg">
         <div class="img-logo">
             <a href="{{ route('front.home') }}">
-                <img src="{{ asset('img/logo1.png') }}" alt="logo">
+                <!--<img src="{{ asset('img/logo1.png') }}" alt="logo">-->
+                <img src="{{ asset('img/Logo.png') }}" alt="Kenaya Impact">
             </a>
         </div>
 
