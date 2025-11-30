@@ -3,7 +3,8 @@
     <div class="container-lg">
         <div class="img-logo">
             <a href="{{ route('front.home') }}">
-                <img src="{{ asset('img/logo1.png') }}" alt="logo">
+                <!--<img src="{{ asset('img/logo1.png') }}" alt="logo">-->
+                <img src="{{ asset('img/logo2.png') }}" alt="Kenaya Impact">
             </a>
         </div>
 
@@ -55,7 +56,7 @@
                                     <div class="lang-options" id="langOptions">
                                         <a href="#" data-lang="fr">FR</a>
                                         <a href="#" data-lang="en">EN</a>
-                                        <a href="#" data-lang="es">ES</a>
+                                        <a href="#" data-lang="es">PT</a>
                                     </div>
                                 </div>
                             </div>

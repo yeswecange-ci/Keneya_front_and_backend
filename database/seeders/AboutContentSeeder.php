@@ -93,7 +93,7 @@ class AboutContentSeeder extends Seeder
                 'about_team_name' => 'DR JEAN-BAPTISTE GUIARD-SCHMID',
                 'about_team_position' => 'Directeur Général',
                 'about_team_image_path' => 'img/12.jpg',
-                'about_team_detail_link' => 'team-details.html',
+                // 'about_team_detail_link' => '#',
                 'about_team_order' => 1,
                 'about_team_is_active' => true
             ],
@@ -101,7 +101,7 @@ class AboutContentSeeder extends Seeder
                 'about_team_name' => 'DR BENOIT KAFANDO',
                 'about_team_position' => 'Directeur des Programmes',
                 'about_team_image_path' => 'img/13.jpg',
-                'about_team_detail_link' => 'team-details.html',
+                // 'about_team_detail_link' => '#',
                 'about_team_order' => 2,
                 'about_team_is_active' => true
             ],
@@ -109,7 +109,7 @@ class AboutContentSeeder extends Seeder
                 'about_team_name' => 'MARTIAL SIDWAYAN ZONGO',
                 'about_team_position' => 'Directeur Administratif et Financier',
                 'about_team_image_path' => 'img/14.jpg',
-                'about_team_detail_link' => 'team-details.html',
+                // 'about_team_detail_link' => '#',
                 'about_team_order' => 3,
                 'about_team_is_active' => true
             ]
