@@ -46,9 +46,9 @@
                                     </div>
                                     <!--<p>{{ $slide->home_slide_description }}</p>-->
 
-                                    <div class="slide-bar-env">
+                                    <!--<div class="slide-bar-env">
                                         <div class="slide-bar"></div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -113,12 +113,33 @@
         </div>
     </section>
 
-    <!-- Chiffres clés -->
-    <section class="knumb">
+    <!--partFlesIndex offre service-->
+    <section class="part-flex__index">
         <div class="container-lg">
-            <div class="knumb-card">
+            <div class="part-flex">
+                <!-- right -->
+                <div class="part-flex__right wow fadeInLeft">
+                   <div class="section--title">
+                        <h2>Notre offre de services en santé et protection sociale</h2>
+                   </div>
+
+                    <p>Lorem ipsum dolor sit amet consectetur. Eget at lacus quis pretium vitae ac non varius nec. Feugiat praesent facilisi neque sollicitudin amet. Massa scelerisque pellentesque condimentum .. <br> Lorem ipsum dolor sit amet consectetur. Eget at lacus quis pretium.</p>
+                </div>
+
                 <!-- left -->
-                <div class="knumb-card__left">
+                <div class="part-flex__left wow fadeInRight">
+                    <img src="{{ asset('images/doc1.png') }}" alt="img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chiffres clés -->
+    <section class="part-flex__index part-flex__index2">
+        <div class="container-lg">
+            <div class="part-flex">
+                <!-- left -->
+                <div class="part-flex__left">
                     @if($homeKeyNumbers)
                         <img src="{{ asset($homeKeyNumbers->home_key_numbers_image) }}" alt="key numbers image">
                     @else
@@ -127,7 +148,7 @@
                 </div>
 
                 <!-- right -->
-                <div class="knumb-card__right">
+                <div class="part-flex__right">
                     @if($homeKeyNumbers)
                         <div class="section--title wow fadeInLeft">
                             <h2>{{ $homeKeyNumbers->home_key_numbers_section_title }}</h2>
@@ -172,6 +193,124 @@
         </div>
     </section>
 
+
+    <!--partFlesIndex a qui s'adresse-->
+    <section class="part-flex__index">
+        <div class="container-lg">
+            <div class="part-flex">
+
+                
+
+                <!-- right -->
+                 
+                <div class="part-flex__right wow fadeInLeft">
+                   <div class="section--title">
+                        <h2>À qui s’adresse notre assistance technique ?</h2>
+                   </div>
+
+                    <p>KENAYA Impact accompagne un large éventail d’acteurs du secteur de la santé, notamment :</p>
+                    <ul>
+                        <li>Institutions internationales</li>
+                        <li>Instances gouvernementales et ministères</li>
+                        <li>Organisations non gouvernementales</li>
+                        <li>Organisations de la société civile</li>
+                        <li>Acteurs du secteur privé</li>
+                    </ul>
+                    <p>À travers nos services, nous contribuons à la conception, la mise en œuvre et l’évaluation de programmes de santé générateurs d’impact durable, apportant des réponses solides aux défis sanitaires prioritaires du continent africain.</p>
+
+                    <a href="#" class="btn-site">
+                        <span>En savoir plus</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- left -->
+                <div class="part-flex__left wow fadeInRight" >
+                    <img src="{{ asset('images/kids.jpg') }}" alt="default image">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!--partFlesIndex approche unique-->
+    <section class="part-flex__index part-flex__index2">
+        <div class="container-lg">
+            <div class="part-flex">
+                <!-- left -->
+                <div class="part-flex__left wow fadeInLeft" >
+                    <img src="{{ asset('images/doc1.png') }}" alt="img">
+                </div>
+               
+
+                <!-- right -->
+                <div class="part-flex__right wow fadeInRight">
+                    <div class="section--title">
+                        <h2>Notre approche unique</h2>
+                    </div>
+
+                    <p>KENAYA Impact s’appuie sur une connaissance profonde du contexte socio-économique et culturel africain pour concevoir des solutions pratiques, culturellement adaptées et économiquement viables.</p>
+                    <p>Nous mobilisons un réseau d’experts locaux et internationaux pour relever les défis majeurs de santé publique, tout en assurant la pleine participation des parties prenantes, en particulier les populations vulnérables et usagers de la santé.</p>
+                    <p>Nos interventions intègrent systématiquement :</p>
+
+                    <ul>
+                        <li>Genre et droits humains</li>
+                        <li>Durabilité et impact à long terme</li>
+                        
+                    </ul>
+
+                    <p>Nous développons également des programmes originaux dans des domaines peu ou pas couverts en Afrique, avec une envergure et une échelle permettant un impact réel là où il est nécessaire.</p>
+
+                    
+                </div>
+
+            
+            </div>
+        </div>
+
+    </section>
+
+    <!--Team-->
+    <section class="about" >
+        <div class="container-lg">
+            <div class="section--title wow fadeInLeft">
+                <h2>Notre équipe</h2>
+            </div>
+
+            <p class="wow fadeInLeft">KENAYA Impact rassemble une équipe multidisciplinaire, combinant expertise locale et internationale, pour relever les défis majeurs de santé publique. Chaque membre contribue à la conception, la mise en œuvre et l’évaluation de programmes innovants, avec un engagement fort pour la qualité, l’impact et la durabilité.</p>
+            <img src="{{ asset('images/9.png') }}" alt="img-people" class="img--contact2 wow fadeInRight">
+
+        </div>
+    </section>
+
+
+    <!--partFlesIndex espace expert-->
+    <section class="part-flex__index part-flex__index2">
+        <div class="container-lg">
+            <div class="part-flex">
+                <!-- left -->
+                <div class="part-flex__left wow fadeInLeft" >
+                    <img src="{{ asset('images/doc.png') }}" alt="img">
+                </div>
+               
+
+                <!-- right -->
+                <div class="part-flex__right wow fadeInRight">
+                    <div class="section--title">
+                        <h2>l’espace expert</h2>
+                    </div>
+
+                    <p>Rejoignez notre réseau d’experts pour participer à des projets innovants et durables en Afrique. Créez votre profil dès aujourd’hui et mettez votre expertise au service des systèmes de santé et des communautés. Cliquez sur le bouton ci-dessous pour accéder au site de création de votre CV et intégrer notre pool d’experts.</p>    
+                    
+                    <a href="#" class="btn-site wow fadeInRight">
+                            <span>En savoir plus</span>
+                            <span class="arrow">→</span>
+                        </a>
+                </div>
+            </div>
+        </div>
+
+    </section>
     <!-- Section candidature -->
    <!-- <section>
         <div class="container-lg">
@@ -263,6 +402,8 @@
             <div class="section--title wow fadeInRight">
                 <h2>{{ __('home.partners_subtitle') }}</h2>
             </div>
+
+            <p class="mb-5 wow fadeInRight">KENAYA Impact collabore avec un réseau étendu de partenaires institutionnels, techniques et financiers afin de renforcer l’impact de ses interventions en santé publique en Afrique. La diversité et la portée de nos collaborations, illustrent notre capacité à travailler avec les gouvernements, les organisations internationales, les ONG et le secteur privé.</p>
 
             @php
                 // Récupérer directement les partenaires actifs depuis la base de données
