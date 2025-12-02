@@ -2,7 +2,7 @@
 
 @section('content')
  <!-- header--index -->
-    <section class="header-section">
+    <section class="header-section header-section2">
         <div class="slide active" style="background-image: url('{{asset('images/24.jpg')}}');">
             <div class="container-lg">
                 <div class="row">
