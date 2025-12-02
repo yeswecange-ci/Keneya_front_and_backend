@@ -34,24 +34,26 @@
 
 
 
+    @if($expertSpaceSection)
     <div class="team-details mgt">
-        <img src="{{ asset('images/doc.png') }}" alt="img" class="team-details-imgDoc">
+        <img src="{{ asset($expertSpaceSection->image) }}" alt="Expert Space" class="team-details-imgDoc">
 
         <div class="container-lg my-5 wow fadeInLeft">
-
             <div class="section--title">
-                <h2>l’espace expert</h2>
+                <h2>{{ $expertSpaceSection->title }}</h2>
             </div>
 
-            <p>Rejoignez notre réseau d’experts pour participer à des projets innovants et durables en Afrique. Créez votre profil dès aujourd’hui et mettez votre expertise au service des systèmes de santé et des communautés. <br> <br> Cliquez sur le bouton ci-dessous pour accéder au site de création de votre CV et intégrer notre pool d’experts.</p>
+            <p>{!! $expertSpaceSection->description !!}</p>
 
-            <a href="" class="btn-site">
-                <span>Rejoindre notre pool d’experts</span>
-                <span class="arrow">→</span>
-            </a>
-
+            @if($expertSpaceSection->button_text && $expertSpaceSection->button_link)
+                <a href="{{ $expertSpaceSection->button_link }}" class="btn-site">
+                    <span>{{ $expertSpaceSection->button_text }}</span>
+                    <span class="arrow">→</span>
+                </a>
+            @endif
         </div>
     </div>
+    @endif
 
    <!-- <section class="team-section">
         <div class="container-lg">

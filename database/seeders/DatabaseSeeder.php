@@ -31,6 +31,9 @@ class DatabaseSeeder extends Seeder
             ContactSubmissionSeeder::class,
             TeamDetailsSeeder::class,
             TeamSeeder::class,
+            // Nouveaux seeders
+            HomeNewSectionsSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }

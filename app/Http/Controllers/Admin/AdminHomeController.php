@@ -13,6 +13,11 @@ use App\Models\HomePartner;
 use App\Models\HomePartnerItem;
 use App\Models\HomeRecruitment;
 use App\Models\HomeSlide;
+use App\Models\HomeServicesSection;
+use App\Models\HomeTargetAudienceSection;
+use App\Models\HomeUniqueApproachSection;
+use App\Models\HomeTeamSection;
+use App\Models\HomeExpertSpaceSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,6 +35,13 @@ class AdminHomeController extends Controller
         $footerLinks     = FooterLink::with('column')->orderBy('link_order')->get();
         $footerSocials   = FooterSocial::orderBy('social_order')->get();
 
+        // Nouvelles sections
+        $servicesSection = HomeServicesSection::first();
+        $targetAudienceSection = HomeTargetAudienceSection::with('items')->first();
+        $uniqueApproachSection = HomeUniqueApproachSection::with('items')->first();
+        $teamSection = HomeTeamSection::first();
+        $expertSpaceSection = HomeExpertSpaceSection::first();
+
         return view('admin.home.index', compact(
             'homeSlides',
             'homeAbout',
@@ -39,7 +51,12 @@ class AdminHomeController extends Controller
             'footerSettings',
             'footerColumns',
             'footerLinks',
-            'footerSocials'
+            'footerSocials',
+            'servicesSection',
+            'targetAudienceSection',
+            'uniqueApproachSection',
+            'teamSection',
+            'expertSpaceSection'
         ));
     }
 
@@ -292,15 +309,14 @@ class AdminHomeController extends Controller
     {
         $request->validate([
             'home_partner_section_title' => 'required|string|max:255',
+            'home_partner_description' => 'nullable|string',
         ]);
 
-        $homePartners = HomePartner::first();
-
-        if ($homePartners) {
-            $homePartners->update($request->all());
-        } else {
-            HomePartner::create($request->all());
-        }
+        $homePartners = HomePartner::firstOrNew(['id' => 1]);
+        $homePartners->home_partner_section_title = $request->home_partner_section_title;
+        $homePartners->home_partner_description = $request->home_partner_description;
+        $homePartners->home_partner_active = true;
+        $homePartners->save();
 
         return redirect()->route('dashboard.accueil')->with('success', 'Section partenaires mise à jour avec succès!');
     }

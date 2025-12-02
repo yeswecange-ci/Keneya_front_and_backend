@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TeamLeaderDetail;
 use App\Models\TeamMemberDetail;
+use App\Models\HomeExpertSpaceSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,8 +15,9 @@ class ExpertController extends Controller
     {
         $teamLeader = TeamLeaderDetail::first();
         $teamMembers = TeamMemberDetail::orderBy('id')->get();
+        $expertSpaceSection = HomeExpertSpaceSection::first();
 
-        return view('admin.expert.index', compact('teamLeader', 'teamMembers'));
+        return view('admin.expert.index', compact('teamLeader', 'teamMembers', 'expertSpaceSection'));
     }
 
     // Team Leader Management
@@ -117,5 +119,39 @@ class ExpertController extends Controller
         $member->delete();
 
         return redirect()->route('dashboard.expert')->with('success', 'Membre d\'équipe supprimé avec succès.');
+    }
+
+    // Expert Space Section Management
+    public function updateExpertSpaceSection(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'button_text' => 'required|string|max:255',
+            'button_link' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $section = HomeExpertSpaceSection::firstOrNew(['id' => 1]);
+        $section->title = $request->title;
+        $section->description = $request->description;
+        $section->button_text = $request->button_text;
+        $section->button_link = $request->button_link;
+        $section->active = $request->has('active') ? true : false;
+
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image
+            if ($section->image) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $section->image));
+            }
+
+            $image = $request->file('image');
+            $imagePath = $image->store('expert-space', 'public');
+            $section->image = 'storage/' . $imagePath;
+        }
+
+        $section->save();
+
+        return redirect()->route('dashboard.expert')->with('success', 'Section Espace Expert mise à jour avec succès.');
     }
 }

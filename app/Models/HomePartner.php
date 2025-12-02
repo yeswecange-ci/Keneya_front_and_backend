@@ -11,6 +11,7 @@ class HomePartner extends Model
 
     protected $fillable = [
         'home_partner_section_title',
+        'home_partner_description',
         'home_partner_active'
     ];
 
