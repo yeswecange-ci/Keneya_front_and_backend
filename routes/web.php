@@ -4,6 +4,11 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ActivitiesController;
 use App\Http\Controllers\Admin\AdminAboutController;
 use App\Http\Controllers\Admin\AdminHomeController;
+use App\Http\Controllers\Admin\HomeServicesSectionController;
+use App\Http\Controllers\Admin\HomeTargetAudienceSectionController;
+use App\Http\Controllers\Admin\HomeUniqueApproachSectionController;
+use App\Http\Controllers\Admin\HomeTeamSectionController;
+use App\Http\Controllers\Admin\HomeExpertSpaceSectionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\FrontEndController;
@@ -162,6 +167,47 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         });
     });
 
+    // Routes pour les nouvelles sections de la page d'accueil
+    Route::prefix('home')->name('dashboard.home.')->group(function () {
+        // Section Services
+        Route::prefix('services')->name('services.')->group(function () {
+            Route::get('/', [HomeServicesSectionController::class, 'index'])->name('index');
+            Route::put('/update', [HomeServicesSectionController::class, 'update'])->name('update');
+        });
+
+        // Section Public Cible
+        Route::prefix('target-audience')->name('target-audience.')->group(function () {
+            Route::get('/', [HomeTargetAudienceSectionController::class, 'index'])->name('index');
+            Route::put('/update', [HomeTargetAudienceSectionController::class, 'update'])->name('update');
+            Route::post('/items/store', [HomeTargetAudienceSectionController::class, 'storeItem'])->name('items.store');
+            Route::put('/items/{id}/update', [HomeTargetAudienceSectionController::class, 'updateItem'])->name('items.update');
+            Route::get('/items/{id}/toggle', [HomeTargetAudienceSectionController::class, 'toggleItem'])->name('items.toggle');
+            Route::delete('/items/{id}/delete', [HomeTargetAudienceSectionController::class, 'destroyItem'])->name('items.delete');
+        });
+
+        // Section Approche Unique
+        Route::prefix('unique-approach')->name('unique-approach.')->group(function () {
+            Route::get('/', [HomeUniqueApproachSectionController::class, 'index'])->name('index');
+            Route::put('/update', [HomeUniqueApproachSectionController::class, 'update'])->name('update');
+            Route::post('/items/store', [HomeUniqueApproachSectionController::class, 'storeItem'])->name('items.store');
+            Route::put('/items/{id}/update', [HomeUniqueApproachSectionController::class, 'updateItem'])->name('items.update');
+            Route::get('/items/{id}/toggle', [HomeUniqueApproachSectionController::class, 'toggleItem'])->name('items.toggle');
+            Route::delete('/items/{id}/delete', [HomeUniqueApproachSectionController::class, 'destroyItem'])->name('items.delete');
+        });
+
+        // Section Équipe
+        Route::prefix('team')->name('team.')->group(function () {
+            Route::get('/', [HomeTeamSectionController::class, 'index'])->name('index');
+            Route::put('/update', [HomeTeamSectionController::class, 'update'])->name('update');
+        });
+
+        // Section Espace Expert
+        Route::prefix('expert-space')->name('expert-space.')->group(function () {
+            Route::get('/', [HomeExpertSpaceSectionController::class, 'index'])->name('index');
+            Route::put('/update', [HomeExpertSpaceSectionController::class, 'update'])->name('update');
+        });
+    });
+
     // Ajoutez ce groupe APRÈS la route dashboard.contact
     Route::prefix('contact')->name('dashboard.contact.')->group(function () {
         Route::get('/application/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'showApplication'])->name('show-application');
@@ -184,6 +230,9 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::post('/store-member', [\App\Http\Controllers\Admin\ExpertController::class, 'storeTeamMember'])->name('store-member');
         Route::put('/update-member/{id}', [\App\Http\Controllers\Admin\ExpertController::class, 'updateTeamMember'])->name('update-member');
         Route::delete('/delete-member/{id}', [\App\Http\Controllers\Admin\ExpertController::class, 'deleteTeamMember'])->name('delete-member');
+
+        // Expert Space Section
+        Route::put('/update-expert-space', [\App\Http\Controllers\Admin\ExpertController::class, 'updateExpertSpaceSection'])->name('update-expert-space');
     });
 
     // Routes CRUD pour la page About - CORRIGÉES

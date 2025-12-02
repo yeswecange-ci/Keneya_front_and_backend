@@ -28,7 +28,7 @@
     @endif
 
     <!-- Team Leader Section -->
-    <div class="dashboard-card">
+    {{-- <div class="dashboard-card">
         <div class="card-header">
             <h3 class="card-title">Leader d'Équipe</h3>
         </div>
@@ -113,10 +113,10 @@
                 </div>
             @endif
         </div>
-    </div>
+    </div> --}}
 
     <!-- Team Members Section -->
-    <div class="dashboard-card">
+    {{-- <div class="dashboard-card">
         <div class="card-header">
             <h3 class="card-title">Membres de l'Équipe</h3>
             <button @click="addMemberModal = true; editMemberModal = false" class="btn-success">
@@ -194,7 +194,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Add Member Modal -->
     <div x-show="addMemberModal"
@@ -316,5 +316,63 @@
             </div>
         </div>
     @endforeach
+
+    <!-- Expert Space Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3 class="card-title">Section Espace Expert</h3>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('dashboard.expert.update-expert-space') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" name="title" class="form-input" value="{{ $expertSpaceSection->title ?? '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description *</label>
+                    <textarea name="description" class="form-textarea" rows="6" required>{{ $expertSpaceSection->description ?? '' }}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">Texte du bouton *</label>
+                        <input type="text" name="button_text" class="form-input" value="{{ $expertSpaceSection->button_text ?? '' }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lien du bouton</label>
+                        <input type="text" name="button_link" class="form-input" value="{{ $expertSpaceSection->button_link ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Image</label>
+                    <input type="file" name="image" class="form-input" accept="image/*">
+                    @if(isset($expertSpaceSection->image) && $expertSpaceSection->image)
+                        <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-muted mb-2">Image actuelle: {{ basename($expertSpaceSection->image) }}</p>
+                            <img src="{{ asset($expertSpaceSection->image) }}" alt="Current expert space image"
+                                 class="max-h-40 object-cover rounded shadow-sm">
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="active" class="form-checkbox"
+                            {{ (isset($expertSpaceSection) && $expertSpaceSection && $expertSpaceSection->active) ? 'checked' : '' }}>
+                        <span class="text-sm text-gray-700">Section active</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <button type="submit" class="btn-primary">Enregistrer la Section</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

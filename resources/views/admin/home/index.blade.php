@@ -26,8 +26,8 @@
 
     <!-- Tabs Navigation -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div class="border-b border-gray-200">
-            <nav class="flex space-x-8 px-6" aria-label="Tabs">
+        <div class="border-b border-gray-200 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            <nav class="flex space-x-4 px-6 min-w-max" aria-label="Tabs">
                 <button @click="activeTab = 'slides'"
                     :class="activeTab === 'slides' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
@@ -52,6 +52,31 @@
                     :class="activeTab === 'footer' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
                     Footer
+                </button>
+                <button @click="activeTab = 'services'"
+                    :class="activeTab === 'services' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                    Services
+                </button>
+                <button @click="activeTab = 'targetaudience'"
+                    :class="activeTab === 'targetaudience' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                    Public Cible
+                </button>
+                <button @click="activeTab = 'approach'"
+                    :class="activeTab === 'approach' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                    Approche Unique
+                </button>
+                <button @click="activeTab = 'team'"
+                    :class="activeTab === 'team' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                    Équipe
+                </button>
+                <button @click="activeTab = 'expertspace'"
+                    :class="activeTab === 'expertspace' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                    Espace Expert
                 </button>
             </nav>
         </div>
@@ -331,6 +356,33 @@
 
             <!-- PARTNERS TAB -->
             <div x-show="activeTab === 'partners'" x-transition class="space-y-6">
+                <!-- Section principale des partenaires -->
+                <form action="{{ route('dashboard.accueil.partners.update') }}" method="POST" class="dashboard-card">
+                    @csrf
+                    @method('PUT')
+
+                    <h2 class="text-lg font-semibold text-gray-900 mb-6">Section Partenaires</h2>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Titre de la section</label>
+                            <input type="text" name="home_partner_section_title" class="form-input"
+                                value="{{ $homePartners->home_partner_section_title ?? 'ILS NOUS FONT CONFIANCE' }}" required>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Description</label>
+                            <textarea name="home_partner_description" rows="4" class="form-input">{{ $homePartners->home_partner_description ?? '' }}</textarea>
+                            <small class="text-muted">Décrivez votre réseau de partenaires</small>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+
+                <!-- Gestion des logos partenaires -->
                 <div class="dashboard-card">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-lg font-semibold text-gray-900">Logos des partenaires</h2>
@@ -676,6 +728,385 @@
                     @endif
                 </div>
             </div>
+
+            <!-- SERVICES TAB -->
+            <div x-show="activeTab === 'services'" x-transition class="space-y-6">
+                <form action="{{ route('dashboard.home.services.update') }}" method="POST" enctype="multipart/form-data" class="dashboard-card">
+                    @csrf
+                    @method('PUT')
+
+                    <h2 class="text-lg font-semibold text-gray-900 mb-6">Section Services</h2>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Titre</label>
+                            <input type="text" name="title" class="form-input"
+                                value="{{ $servicesSection->title ?? 'Notre offre de services en santé et protection sociale' }}" required>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Description</label>
+                            <textarea name="description" rows="5" class="form-input" required>{{ $servicesSection->description ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Image</label>
+                            <input type="file" name="image" class="form-input" accept="image/*">
+                            @if(isset($servicesSection) && $servicesSection && $servicesSection->image)
+                                <img src="{{ asset($servicesSection->image) }}" alt="Preview" class="mt-2 h-32 rounded">
+                            @endif
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="active" class="form-checkbox"
+                                    {{ (isset($servicesSection) && $servicesSection && $servicesSection->active) ? 'checked' : '' }}>
+                                <span class="text-sm text-gray-700">Section active</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TARGET AUDIENCE TAB -->
+            <div x-show="activeTab === 'targetaudience'" x-transition class="space-y-6">
+                <form action="{{ route('dashboard.home.target-audience.update') }}" method="POST" enctype="multipart/form-data" class="dashboard-card">
+                    @csrf
+                    @method('PUT')
+
+                    <h2 class="text-lg font-semibold text-gray-900 mb-6">Section Public Cible</h2>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Titre</label>
+                            <input type="text" name="title" class="form-input"
+                                value="{{ $targetAudienceSection->title ?? 'À qui s\'adresse notre assistance technique ?' }}" required>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Description d'introduction</label>
+                            <textarea name="description" rows="3" class="form-input" required>{{ $targetAudienceSection->description ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Description de conclusion</label>
+                            <textarea name="outro_description" rows="3" class="form-input">{{ $targetAudienceSection->outro_description ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Texte du bouton</label>
+                            <input type="text" name="button_text" class="form-input"
+                                value="{{ $targetAudienceSection->button_text ?? '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Lien du bouton</label>
+                            <input type="text" name="button_link" class="form-input"
+                                value="{{ $targetAudienceSection->button_link ?? '' }}">
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Image</label>
+                            <input type="file" name="image" class="form-input" accept="image/*">
+                            @if(isset($targetAudienceSection) && $targetAudienceSection && $targetAudienceSection->image)
+                                <img src="{{ asset($targetAudienceSection->image) }}" alt="Preview" class="mt-2 h-32 rounded">
+                            @endif
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="active" class="form-checkbox"
+                                    {{ (isset($targetAudienceSection) && $targetAudienceSection && $targetAudienceSection->active) ? 'checked' : '' }}>
+                                <span class="text-sm text-gray-700">Section active</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+
+                <!-- Items List -->
+                <div class="dashboard-card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Liste des acteurs cibles</h3>
+                        <button type="button" class="btn-primary" onclick="document.getElementById('addTargetAudienceItemModal').classList.remove('hidden')">
+                            Ajouter un item
+                        </button>
+                    </div>
+
+                    @if(isset($targetAudienceSection) && $targetAudienceSection && $targetAudienceSection->items && $targetAudienceSection->items->count() > 0)
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Texte</th>
+                                        <th>Ordre</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($targetAudienceSection->items as $item)
+                                        <tr>
+                                            <td>{{ $item->item_text }}</td>
+                                            <td>{{ $item->order }}</td>
+                                            <td>
+                                                <span class="badge {{ $item->active ? 'badge-success' : 'badge-danger' }}">
+                                                    {{ $item->active ? 'Actif' : 'Inactif' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <a href="{{ route('dashboard.home.target-audience.items.toggle', $item->id) }}" class="btn-icon">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                        </svg>
+                                                    </a>
+                                                    <form action="{{ route('dashboard.home.target-audience.items.delete', $item->id) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn-icon btn-icon-danger"
+                                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet item ?')">
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="empty-state">
+                            <h3 class="empty-state-title">Aucun item</h3>
+                            <p class="empty-state-description">Ajoutez votre premier item</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- UNIQUE APPROACH TAB -->
+            <div x-show="activeTab === 'approach'" x-transition class="space-y-6">
+                <form action="{{ route('dashboard.home.unique-approach.update') }}" method="POST" enctype="multipart/form-data" class="dashboard-card">
+                    @csrf
+                    @method('PUT')
+
+                    <h2 class="text-lg font-semibold text-gray-900 mb-6">Section Approche Unique</h2>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Titre</label>
+                            <input type="text" name="title" class="form-input"
+                                value="{{ $uniqueApproachSection->title ?? 'Notre approche unique' }}" required>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Description d'introduction</label>
+                            <textarea name="description_intro" rows="3" class="form-input">{{ $uniqueApproachSection->description_intro ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Description du milieu</label>
+                            <textarea name="description_middle" rows="3" class="form-input">{{ $uniqueApproachSection->description_middle ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Description de conclusion</label>
+                            <textarea name="description_outro" rows="3" class="form-input">{{ $uniqueApproachSection->description_outro ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Image</label>
+                            <input type="file" name="image" class="form-input" accept="image/*">
+                            @if(isset($uniqueApproachSection) && $uniqueApproachSection && $uniqueApproachSection->image)
+                                <img src="{{ asset($uniqueApproachSection->image) }}" alt="Preview" class="mt-2 h-32 rounded">
+                            @endif
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="active" class="form-checkbox"
+                                    {{ (isset($uniqueApproachSection) && $uniqueApproachSection && $uniqueApproachSection->active) ? 'checked' : '' }}>
+                                <span class="text-sm text-gray-700">Section active</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+
+                <!-- Items List -->
+                <div class="dashboard-card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Liste des interventions</h3>
+                        <button type="button" class="btn-primary" onclick="document.getElementById('addUniqueApproachItemModal').classList.remove('hidden')">
+                            Ajouter un item
+                        </button>
+                    </div>
+
+                    @if(isset($uniqueApproachSection) && $uniqueApproachSection && $uniqueApproachSection->items && $uniqueApproachSection->items->count() > 0)
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Texte</th>
+                                        <th>Ordre</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($uniqueApproachSection->items as $item)
+                                        <tr>
+                                            <td>{{ $item->item_text }}</td>
+                                            <td>{{ $item->order }}</td>
+                                            <td>
+                                                <span class="badge {{ $item->active ? 'badge-success' : 'badge-danger' }}">
+                                                    {{ $item->active ? 'Actif' : 'Inactif' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <a href="{{ route('dashboard.home.unique-approach.items.toggle', $item->id) }}" class="btn-icon">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                        </svg>
+                                                    </a>
+                                                    <form action="{{ route('dashboard.home.unique-approach.items.delete', $item->id) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn-icon btn-icon-danger"
+                                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet item ?')">
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="empty-state">
+                            <h3 class="empty-state-title">Aucun item</h3>
+                            <p class="empty-state-description">Ajoutez votre premier item</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- TEAM TAB -->
+            <div x-show="activeTab === 'team'" x-transition class="space-y-6">
+                <form action="{{ route('dashboard.home.team.update') }}" method="POST" enctype="multipart/form-data" class="dashboard-card">
+                    @csrf
+                    @method('PUT')
+
+                    <h2 class="text-lg font-semibold text-gray-900 mb-6">Section Équipe</h2>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Titre</label>
+                            <input type="text" name="title" class="form-input"
+                                value="{{ $teamSection->title ?? 'Notre équipe' }}" required>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Description</label>
+                            <textarea name="description" rows="5" class="form-input" required>{{ $teamSection->description ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Image</label>
+                            <input type="file" name="image" class="form-input" accept="image/*">
+                            @if(isset($teamSection) && $teamSection && $teamSection->image)
+                                <img src="{{ asset($teamSection->image) }}" alt="Preview" class="mt-2 h-32 rounded">
+                            @endif
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="active" class="form-checkbox"
+                                    {{ (isset($teamSection) && $teamSection && $teamSection->active) ? 'checked' : '' }}>
+                                <span class="text-sm text-gray-700">Section active</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- EXPERT SPACE TAB -->
+            <div x-show="activeTab === 'expertspace'" x-transition class="space-y-6">
+                <form action="{{ route('dashboard.home.expert-space.update') }}" method="POST" enctype="multipart/form-data" class="dashboard-card">
+                    @csrf
+                    @method('PUT')
+
+                    <h2 class="text-lg font-semibold text-gray-900 mb-6">Section Espace Expert</h2>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Titre</label>
+                            <input type="text" name="title" class="form-input"
+                                value="{{ $expertSpaceSection->title ?? 'l\'espace expert' }}" required>
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label required">Description</label>
+                            <textarea name="description" rows="5" class="form-input" required>{{ $expertSpaceSection->description ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">Texte du bouton</label>
+                            <input type="text" name="button_text" class="form-input"
+                                value="{{ $expertSpaceSection->button_text ?? 'En savoir plus' }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Lien du bouton</label>
+                            <input type="text" name="button_link" class="form-input"
+                                value="{{ $expertSpaceSection->button_link ?? '' }}">
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="form-label">Image</label>
+                            <input type="file" name="image" class="form-input" accept="image/*">
+                            @if(isset($expertSpaceSection) && $expertSpaceSection && $expertSpaceSection->image)
+                                <img src="{{ asset($expertSpaceSection->image) }}" alt="Preview" class="mt-2 h-32 rounded">
+                            @endif
+                        </div>
+
+                        <div class="form-group col-span-full">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="active" class="form-checkbox"
+                                    {{ (isset($expertSpaceSection) && $expertSpaceSection && $expertSpaceSection->active) ? 'checked' : '' }}>
+                                <span class="text-sm text-gray-700">Section active</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>
@@ -685,6 +1116,60 @@
 @include('admin.home.modals.stat-modals')
 @include('admin.home.modals.partner-modals')
 @include('admin.home.modals.footer-modals')
+
+<!-- Modal Ajout Item Public Cible -->
+<div id="addTargetAudienceItemModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Ajouter un item Public Cible</h3>
+            <button type="button" class="modal-close" onclick="document.getElementById('addTargetAudienceItemModal').classList.add('hidden')">×</button>
+        </div>
+        <form action="{{ route('dashboard.home.target-audience.items.store') }}" method="POST">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">Texte de l'item</label>
+                    <input type="text" name="item_text" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">Ordre</label>
+                    <input type="number" name="order" class="form-input" value="1" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="document.getElementById('addTargetAudienceItemModal').classList.add('hidden')">Annuler</button>
+                <button type="submit" class="btn-primary">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Ajout Item Approche Unique -->
+<div id="addUniqueApproachItemModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Ajouter un item Approche Unique</h3>
+            <button type="button" class="modal-close" onclick="document.getElementById('addUniqueApproachItemModal').classList.add('hidden')">×</button>
+        </div>
+        <form action="{{ route('dashboard.home.unique-approach.items.store') }}" method="POST">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">Texte de l'item</label>
+                    <input type="text" name="item_text" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">Ordre</label>
+                    <input type="number" name="order" class="form-input" value="1" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="document.getElementById('addUniqueApproachItemModal').classList.add('hidden')">Annuler</button>
+                <button type="submit" class="btn-primary">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 @push('scripts')
 <script>

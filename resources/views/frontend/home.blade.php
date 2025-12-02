@@ -114,25 +114,27 @@
     </section>
 
     <!--partFlesIndex offre service-->
+    @if($servicesSection)
     <section class="part-flex__index">
         <div class="container-lg">
             <div class="part-flex">
                 <!-- right -->
                 <div class="part-flex__right wow fadeInLeft">
                    <div class="section--title">
-                        <h2>Notre offre de services en santé et protection sociale</h2>
+                        <h2>{{ $servicesSection->title }}</h2>
                    </div>
 
-                    <p>Lorem ipsum dolor sit amet consectetur. Eget at lacus quis pretium vitae ac non varius nec. Feugiat praesent facilisi neque sollicitudin amet. Massa scelerisque pellentesque condimentum .. <br> Lorem ipsum dolor sit amet consectetur. Eget at lacus quis pretium.</p>
+                    <p>{!! $servicesSection->description !!}</p>
                 </div>
 
                 <!-- left -->
                 <div class="part-flex__left wow fadeInRight">
-                    <img src="{{ asset('images/doc1.png') }}" alt="img">
+                    <img src="{{ asset($servicesSection->image) }}" alt="Services">
                 </div>
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Chiffres clés -->
     <section class="part-flex__index part-flex__index2">
@@ -195,122 +197,131 @@
 
 
     <!--partFlesIndex a qui s'adresse-->
+    @if($targetAudienceSection)
     <section class="part-flex__index">
         <div class="container-lg">
             <div class="part-flex">
-
-                
-
                 <!-- right -->
-                 
                 <div class="part-flex__right wow fadeInLeft">
                    <div class="section--title">
-                        <h2>À qui s’adresse notre assistance technique ?</h2>
+                        <h2>{{ $targetAudienceSection->title }}</h2>
                    </div>
 
-                    <p>KENAYA Impact accompagne un large éventail d’acteurs du secteur de la santé, notamment :</p>
-                    <ul>
-                        <li>Institutions internationales</li>
-                        <li>Instances gouvernementales et ministères</li>
-                        <li>Organisations non gouvernementales</li>
-                        <li>Organisations de la société civile</li>
-                        <li>Acteurs du secteur privé</li>
-                    </ul>
-                    <p>À travers nos services, nous contribuons à la conception, la mise en œuvre et l’évaluation de programmes de santé générateurs d’impact durable, apportant des réponses solides aux défis sanitaires prioritaires du continent africain.</p>
+                    <p>{!! $targetAudienceSection->description !!}</p>
+                    @if($targetAudienceSection->activeItems && $targetAudienceSection->activeItems->count() > 0)
+                        <ul>
+                            @foreach($targetAudienceSection->activeItems as $item)
+                                <li>{{ $item->item_text }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    @if($targetAudienceSection->outro_description)
+                        <p>{!! $targetAudienceSection->outro_description !!}</p>
+                    @endif
 
-                    <a href="#" class="btn-site">
-                        <span>En savoir plus</span>
-                        <span class="arrow">→</span>
-                    </a>
+                    @if($targetAudienceSection->button_text && $targetAudienceSection->button_link)
+                        <a href="{{ $targetAudienceSection->button_link }}" class="btn-site">
+                            <span>{{ $targetAudienceSection->button_text }}</span>
+                            <span class="arrow">→</span>
+                        </a>
+                    @endif
                 </div>
 
                 <!-- left -->
-                <div class="part-flex__left wow fadeInRight" >
-                    <img src="{{ asset('images/kids.jpg') }}" alt="default image">
+                <div class="part-flex__left wow fadeInRight">
+                    <img src="{{ asset($targetAudienceSection->image) }}" alt="Target Audience">
                 </div>
             </div>
         </div>
     </section>
+    @endif
     
 
     <!--partFlesIndex approche unique-->
+    @if($uniqueApproachSection)
     <section class="part-flex__index part-flex__index2">
         <div class="container-lg">
             <div class="part-flex">
                 <!-- left -->
-                <div class="part-flex__left wow fadeInLeft" >
-                    <img src="{{ asset('images/doc1.png') }}" alt="img">
+                <div class="part-flex__left wow fadeInLeft">
+                    <img src="{{ asset($uniqueApproachSection->image) }}" alt="Unique Approach">
                 </div>
-               
 
                 <!-- right -->
                 <div class="part-flex__right wow fadeInRight">
                     <div class="section--title">
-                        <h2>Notre approche unique</h2>
+                        <h2>{{ $uniqueApproachSection->title }}</h2>
                     </div>
 
-                    <p>KENAYA Impact s’appuie sur une connaissance profonde du contexte socio-économique et culturel africain pour concevoir des solutions pratiques, culturellement adaptées et économiquement viables.</p>
-                    <p>Nous mobilisons un réseau d’experts locaux et internationaux pour relever les défis majeurs de santé publique, tout en assurant la pleine participation des parties prenantes, en particulier les populations vulnérables et usagers de la santé.</p>
-                    <p>Nos interventions intègrent systématiquement :</p>
+                    @if($uniqueApproachSection->description_intro)
+                        <p>{!! $uniqueApproachSection->description_intro !!}</p>
+                    @endif
 
-                    <ul>
-                        <li>Genre et droits humains</li>
-                        <li>Durabilité et impact à long terme</li>
-                        
-                    </ul>
+                    @if($uniqueApproachSection->description_middle)
+                        <p>{!! $uniqueApproachSection->description_middle !!}</p>
+                    @endif
 
-                    <p>Nous développons également des programmes originaux dans des domaines peu ou pas couverts en Afrique, avec une envergure et une échelle permettant un impact réel là où il est nécessaire.</p>
+                    @if($uniqueApproachSection->activeItems && $uniqueApproachSection->activeItems->count() > 0)
+                        <ul>
+                            @foreach($uniqueApproachSection->activeItems as $item)
+                                <li>{{ $item->item_text }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
 
-                    
+                    @if($uniqueApproachSection->description_outro)
+                        <p>{!! $uniqueApproachSection->description_outro !!}</p>
+                    @endif
                 </div>
-
-            
             </div>
         </div>
-
     </section>
+    @endif
 
     <!--Team-->
-    <section class="about" >
+    @if($teamSection)
+    <section class="about">
         <div class="container-lg">
             <div class="section--title wow fadeInLeft">
-                <h2>Notre équipe</h2>
+                <h2>{{ $teamSection->title }}</h2>
             </div>
 
-            <p class="wow fadeInLeft">KENAYA Impact rassemble une équipe multidisciplinaire, combinant expertise locale et internationale, pour relever les défis majeurs de santé publique. Chaque membre contribue à la conception, la mise en œuvre et l’évaluation de programmes innovants, avec un engagement fort pour la qualité, l’impact et la durabilité.</p>
-            <img src="{{ asset('images/9.png') }}" alt="img-people" class="img--contact2 wow fadeInRight">
-
+            <p class="wow fadeInLeft">{!! $teamSection->description !!}</p>
+            <img src="{{ asset($teamSection->image) }}" alt="Team" class="img--contact2 wow fadeInRight">
         </div>
     </section>
+    @endif
 
 
     <!--partFlesIndex espace expert-->
+    @if($expertSpaceSection)
     <section class="part-flex__index part-flex__index2">
         <div class="container-lg">
             <div class="part-flex">
                 <!-- left -->
-                <div class="part-flex__left wow fadeInLeft" >
-                    <img src="{{ asset('images/doc.png') }}" alt="img">
+                <div class="part-flex__left wow fadeInLeft">
+                    <img src="{{ asset($expertSpaceSection->image) }}" alt="Expert Space">
                 </div>
-               
 
                 <!-- right -->
                 <div class="part-flex__right wow fadeInRight">
                     <div class="section--title">
-                        <h2>l’espace expert</h2>
+                        <h2>{{ $expertSpaceSection->title }}</h2>
                     </div>
 
-                    <p>Rejoignez notre réseau d’experts pour participer à des projets innovants et durables en Afrique. Créez votre profil dès aujourd’hui et mettez votre expertise au service des systèmes de santé et des communautés. Cliquez sur le bouton ci-dessous pour accéder au site de création de votre CV et intégrer notre pool d’experts.</p>    
-                    
-                    <a href="#" class="btn-site wow fadeInRight">
-                            <span>En savoir plus</span>
+                    <p>{!! $expertSpaceSection->description !!}</p>
+
+                    @if($expertSpaceSection->button_text && $expertSpaceSection->button_link)
+                        <a href="{{ $expertSpaceSection->button_link }}" class="btn-site wow fadeInRight">
+                            <span>{{ $expertSpaceSection->button_text }}</span>
                             <span class="arrow">→</span>
                         </a>
+                    @endif
                 </div>
             </div>
         </div>
-
     </section>
+    @endif
     <!-- Section candidature -->
    <!-- <section>
         <div class="container-lg">
@@ -399,18 +410,30 @@
     <!-- Section partenaires -->
     <section>
         <div class="container-lg">
-            <div class="section--title wow fadeInRight">
-                <h2>{{ __('home.partners_subtitle') }}</h2>
-            </div>
+            @if($homePartners)
+                <div class="section--title wow fadeInRight">
+                    <h2>{{ $homePartners->home_partner_section_title }}</h2>
+                </div>
 
-            <p class="mb-5 wow fadeInRight">KENAYA Impact collabore avec un réseau étendu de partenaires institutionnels, techniques et financiers afin de renforcer l’impact de ses interventions en santé publique en Afrique. La diversité et la portée de nos collaborations, illustrent notre capacité à travailler avec les gouvernements, les organisations internationales, les ONG et le secteur privé.</p>
+                @if($homePartners->home_partner_description)
+                    <p class="mb-5 wow fadeInRight">{!! $homePartners->home_partner_description !!}</p>
+                @endif
 
-            @php
-                // Récupérer directement les partenaires actifs depuis la base de données
-                $partnerItems = \App\Models\HomePartnerItem::where('home_partner_item_active', true)
-                    ->orderBy('home_partner_item_order')
-                    ->get();
-            @endphp
+                @php
+                    $partnerItems = $homePartners->activeItems;
+                @endphp
+            @else
+                <div class="section--title wow fadeInRight">
+                    <h2>{{ __('home.partners_subtitle') }}</h2>
+                </div>
+
+                @php
+                    // Récupérer directement les partenaires actifs depuis la base de données
+                    $partnerItems = \App\Models\HomePartnerItem::where('home_partner_item_active', true)
+                        ->orderBy('home_partner_item_order')
+                        ->get();
+                @endphp
+            @endif
 
             @if($partnerItems->count() > 0)
                 <div class="swiper partners-swiper">
