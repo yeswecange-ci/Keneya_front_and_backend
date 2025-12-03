@@ -750,14 +750,18 @@ footer .footer-social{
     align-items: flex-end;
 }
 
-.header-section2 .slide {
-  padding-bottom: 200px;
+.header-section2 .slide  {
+  padding-bottom: 200px !important;
 }
 
 @media only screen and (max-width: 48em) {
   .header-section .slide {
     padding-bottom: 80px;
     align-items: flex-end;
+  }
+
+  .header-section2 .slide  {
+    padding-bottom: 80px !important;
   }
 }
 

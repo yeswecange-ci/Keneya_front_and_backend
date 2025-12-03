@@ -26,7 +26,7 @@
                     </a>
                 @else
                     <a href="#" class="logo-footer-2">
-                        <img src="{{ asset('img/logo2.png') }}" alt="Kenaya Impact">
+                        <img src="{{ asset('img/Logo.png') }}" alt="Kenaya Impact">
                     </a>
                 @endif
             </div>
