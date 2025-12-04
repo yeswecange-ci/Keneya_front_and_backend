@@ -22,7 +22,7 @@
         </div>
 
         <!-- *** -->
-        <img src="{{ asset('img/9.png') }}" alt="img-people" class="img--contact wow fadeInLeft">
+        <img src="{{ asset('img/25.jpg') }}" alt="img-people" class="img--contact wow fadeInLeft">
 
         <!-- *** -->
         <div class="container-lg">
@@ -46,7 +46,7 @@
             </form>
         </div>
 
-        <img src="{{ asset('img/9.png') }}" alt="img-people" class="img--contact1 wow fadeInLeft">
+        <img src="{{ asset('img/25.jpg') }}" alt="img-people" class="img--contact1 wow fadeInLeft">
     </section>
     <!-- *** -->
 
