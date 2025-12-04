@@ -45,4 +45,10 @@ return [
     'no_articles_events' => 'No events available at the moment.',
     'no_articles_publications' => 'No publications available at the moment.',
     'no_articles_press' => 'No press releases available at the moment.',
+
+    // Detail page
+    'home' => 'Home',
+    'read_more' => 'Read more',
+    'back_to_news' => 'Back to news',
+    'related_articles' => 'Related articles',
 ];

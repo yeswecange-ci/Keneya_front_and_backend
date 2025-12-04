@@ -18,7 +18,7 @@
                         @foreach($blogArticles as $article)
                             <div class="swiper-slide">
                                 <div class="cardBlog">
-                                    <a href="{{ $article->news_link ?? '#' }}">
+                                    <a href="{{ $article->news_slug ? route('front.news.show', $article->news_slug) : '#' }}">
                                         <div class="cardBlog--img">
                                             <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}"
                                                 alt="{{ $article->news_title }}">
@@ -60,7 +60,7 @@
                         @foreach($eventArticles as $article)
                             <div class="swiper-slide">
                                 <div class="cardBlog">
-                                    <a href="{{ $article->news_link ?? '#' }}">
+                                    <a href="{{ $article->news_slug ? route('front.news.show', $article->news_slug) : '#' }}">
                                         <div class="cardBlog--img">
                                             <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}"
                                                 alt="{{ $article->news_title }}">
@@ -102,7 +102,7 @@
                         @foreach($publicationArticles as $article)
                             <div class="swiper-slide">
                                 <div class="cardBlog">
-                                    <a href="{{ $article->news_link ?? '#' }}">
+                                    <a href="{{ $article->news_slug ? route('front.news.show', $article->news_slug) : '#' }}">
                                         <div class="cardBlog--img">
                                             <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}"
                                                 alt="{{ $article->news_title }}">
@@ -143,7 +143,7 @@
                     @foreach($pressReleaseArticles as $article)
                         <div class="col-md-4 mb-4">
                             <div class="cardBlog">
-                                <a href="{{ $article->news_link ?? '#' }}">
+                                <a href="{{ $article->news_slug ? route('front.news.show', $article->news_slug) : '#' }}">
                                     <div class="cardBlog--img">
                                         <img src="{{ $article->news_image ? asset($article->news_image) : asset('img/default.jpg') }}"
                                             alt="{{ $article->news_title }}">

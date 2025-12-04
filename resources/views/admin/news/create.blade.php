@@ -55,16 +55,29 @@
                                value="{{ old('news_title') }}" placeholder="Titre de l'article">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Ordre d'affichage</label>
-                        <input type="number" name="news_order" class="form-input"
-                               value="{{ old('news_order', 0) }}" min="0">
+                        <label class="form-label">Slug (URL)</label>
+                        <input type="text" name="news_slug" class="form-input"
+                               value="{{ old('news_slug') }}" placeholder="Généré automatiquement si vide">
+                        <p class="text-xs text-muted mt-1">Laisser vide pour générer automatiquement depuis le titre</p>
                     </div>
                 </div>
 
                 <div class="form-group mb-6">
-                    <label class="form-label">Description</label>
-                    <textarea name="news_description" class="form-textarea" rows="4"
-                              placeholder="Description de l'article">{{ old('news_description') }}</textarea>
+                    <label class="form-label">Description courte</label>
+                    <textarea name="news_description" class="form-textarea" rows="3"
+                              placeholder="Description courte affichée dans la liste">{{ old('news_description') }}</textarea>
+                </div>
+
+                <div class="form-group mb-6">
+                    <label class="form-label">Contenu complet</label>
+                    <textarea name="news_full_content" class="form-textarea" rows="8"
+                              placeholder="Contenu détaillé de l'article (affiché sur la page de détails)">{{ old('news_full_content') }}</textarea>
+                </div>
+
+                <div class="form-group mb-6">
+                    <label class="form-label">Ordre d'affichage</label>
+                    <input type="number" name="news_order" class="form-input"
+                           value="{{ old('news_order', 0) }}" min="0">
                 </div>
 
                 <div class="form-group mb-6">
