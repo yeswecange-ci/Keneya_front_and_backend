@@ -18,11 +18,15 @@
                 </div>
             @endif
 
-            <p class="wow fadeInRight">{{ __('contact.contact_description') }}</p>
+            @if($settings && $settings->text_above_image_fr)
+                <p class="wow fadeInRight">{{ $settings->{'text_above_image_' . app()->getLocale()} ?? $settings->text_above_image_fr }}</p>
+            @else
+                <p class="wow fadeInRight">{{ __('contact.contact_description') }}</p>
+            @endif
         </div>
 
         <!-- *** -->
-        <img src="{{ asset('img/9.png') }}" alt="img-people" class="img--contact wow fadeInLeft">
+        <img src="{{ $settings && $settings->image ? asset($settings->image) : asset('img/9.png') }}" alt="img-people" class="img--contact wow fadeInLeft">
 
         <!-- *** -->
         <div class="container-lg">
@@ -53,11 +57,15 @@
     <section class="findUs">
         <div class="container-lg wow fadeInRight">
             <div class="section--title">
-                <h2>{{ __('contact.find_us') }}</h2>
+                @if($settings && $settings->location_text_fr)
+                    <h2>{{ $settings->{'location_text_' . app()->getLocale()} ?? $settings->location_text_fr }}</h2>
+                @else
+                    <h2>{{ __('contact.find_us') }}</h2>
+                @endif
             </div>
 
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16801.114518740127!2d-3.9994224484780414!3d5.312937414646711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfc1ebf60b2e34af%3A0xa62c41360300c47!2sMarcory%20Residentiel%2C%20Abidjan!5e1!3m2!1sfr!2sci!4v1754061918651!5m2!1sfr!2sci"
+                src="{{ $settings && $settings->location_url ? $settings->location_url : 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16801.114518740127!2d-3.9994224484780414!3d5.312937414646711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfc1ebf60b2e34af%3A0xa62c41360300c47!2sMarcory%20Residentiel%2C%20Abidjan!5e1!3m2!1sfr!2sci!4v1754061918651!5m2!1sfr!2sci' }}"
                 width="100%" height="361" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
