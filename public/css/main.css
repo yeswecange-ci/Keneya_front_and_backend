@@ -730,7 +730,8 @@ footer .footer-social{
 }
 
 .header-section {
-  height: 100vh;
+  height: 87vh;
+  margin-top: 80px;
   position: relative;
   overflow: hidden;
 }
@@ -747,7 +748,7 @@ footer .footer-social{
   opacity: 0;
   z-index: 0;
   padding-bottom: 80px;
-    align-items: flex-end;
+  align-items: flex-end;
 }
 
 .header-section2 .slide  {

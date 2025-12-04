@@ -4,11 +4,11 @@
         <div class="row footer-top align-items-start text-md-start wow fadeInUp">
             <div class="col-12 col-lg-3 footer-logo mb-4 mb-md-0">
                 <a href="#" class="logo-footer-1">
-                    <img src="{{ asset('images/Logo.png') }}" alt="Kenaya Impact">
+                    <img src="{{ asset('img/Logo.png') }}" alt="Kenaya Impact">
                 </a>
 
                 <a href="#" class="logo-footer-2">
-                    <img src="{{ asset('images/logo2.png') }}" alt="Kenaya Impact">
+                    <img src="{{ asset('img/Logo.png') }}" alt="Kenaya Impact">
                 </a>
             </div>
             <div class="col-12 col-lg-3 footer-column">
