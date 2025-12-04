@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactSubmission;
+use App\Models\ContactPage;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -98,5 +99,47 @@ class ContactController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function editSettings()
+    {
+        $settings = ContactPage::first();
+
+        if (!$settings) {
+            $settings = ContactPage::create([]);
+        }
+
+        return view('admin.contact.settings', compact('settings'));
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'text_above_image_fr' => 'nullable|string',
+            'text_above_image_en' => 'nullable|string',
+            'text_above_image_es' => 'nullable|string',
+            'location_url' => 'nullable|string',
+            'location_text_fr' => 'nullable|string',
+            'location_text_en' => 'nullable|string',
+            'location_text_es' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $settings = ContactPage::first();
+
+        if (!$settings) {
+            $settings = ContactPage::create([]);
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('img'), $imageName);
+            $validated['image'] = 'img/' . $imageName;
+        }
+
+        $settings->update($validated);
+
+        return redirect()->route('dashboard.contact.settings')->with('success', 'Paramètres de la page de contact mis à jour avec succès.');
     }
 }

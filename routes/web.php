@@ -219,6 +219,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::post('/delete-multiple', [\App\Http\Controllers\Admin\ContactController::class, 'deleteMultiple'])->name('delete-multiple');
         Route::get('/export', [\App\Http\Controllers\Admin\ContactController::class, 'export'])->name('export');
         Route::delete('/{id}', [\App\Http\Controllers\Admin\ContactController::class, 'destroy'])->name('destroy');
+        Route::get('/settings', [\App\Http\Controllers\Admin\ContactController::class, 'editSettings'])->name('settings');
+        Route::post('/settings', [\App\Http\Controllers\Admin\ContactController::class, 'updateSettings'])->name('settings.update');
     });
 
     // Routes CRUD pour l'équipe expert

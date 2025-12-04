@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContactSubmission;
+use App\Models\ContactPage;
 
 class ContactController extends Controller
 {
     public function index()
     {
-        return view('frontend.contact');
+        $settings = ContactPage::first();
+
+        return view('frontend.contact', compact('settings'));
     }
 
     public function storeApplication(Request $request)
