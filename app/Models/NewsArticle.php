@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class NewsArticle extends Model
 {
@@ -11,7 +12,9 @@ class NewsArticle extends Model
 
     protected $fillable = [
         'news_title',
+        'news_slug',
         'news_description',
+        'news_full_content',
         'news_image',
         'news_link',
         'news_type',
@@ -55,5 +58,23 @@ class NewsArticle extends Model
             self::TYPE_PUBLICATION => 'Publications',
             self::TYPE_PRESS_RELEASE => 'Communiqués de presse',
         ];
+    }
+
+    // Génération automatique du slug à partir du titre
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($article) {
+            if (empty($article->news_slug)) {
+                $article->news_slug = Str::slug($article->news_title);
+            }
+        });
+
+        static::updating(function ($article) {
+            if ($article->isDirty('news_title') && empty($article->news_slug)) {
+                $article->news_slug = Str::slug($article->news_title);
+            }
+        });
     }
 }

@@ -281,6 +281,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('front.about');
 Route::get('/activities', [ActivitiesController::class, 'index'])->name('front.activities');
 Route::get('/activities/country/{code}', [\App\Http\Controllers\Admin\ActivitiesController::class, 'getCountryData'])->name('front.activities.country');
 Route::get('/actualites', [NewsController::class, 'index'])->name('front.news');
+Route::get('/actualites/{slug}', [NewsController::class, 'show'])->name('front.news.show');
 Route::get('/team-details', [TeamController::class, 'index'])->name('front.team.details');
 Route::get('/contact', [ContactController::class, 'index'])->name('front.contact');
 Route::get('/team', [TeamsController::class, 'index'])->name('front.teams');

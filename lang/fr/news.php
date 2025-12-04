@@ -45,4 +45,10 @@ return [
     'no_articles_events' => 'Aucun événement disponible pour le moment.',
     'no_articles_publications' => 'Aucune publication disponible pour le moment.',
     'no_articles_press' => 'Aucun communiqué de presse disponible pour le moment.',
+
+    // Detail page
+    'home' => 'Accueil',
+    'read_more' => 'En savoir plus',
+    'back_to_news' => 'Retour aux actualités',
+    'related_articles' => 'Articles similaires',
 ];

@@ -45,4 +45,10 @@ return [
     'no_articles_events' => 'No hay eventos disponibles en este momento.',
     'no_articles_publications' => 'No hay publicaciones disponibles en este momento.',
     'no_articles_press' => 'No hay comunicados de prensa disponibles en este momento.',
+
+    // Detail page
+    'home' => 'Inicio',
+    'read_more' => 'Leer más',
+    'back_to_news' => 'Volver a noticias',
+    'related_articles' => 'Artículos relacionados',
 ];

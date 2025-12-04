@@ -35,7 +35,9 @@ class NewsController extends Controller
     {
         $request->validate([
             'news_title' => 'required|string|max:255',
+            'news_slug' => 'nullable|string|max:255|unique:news_articles,news_slug',
             'news_description' => 'nullable|string',
+            'news_full_content' => 'nullable|string',
             'news_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'news_link' => 'nullable|url',
             'news_type' => 'required|in:' . implode(',', array_keys(NewsArticle::getTypes())),
@@ -45,7 +47,9 @@ class NewsController extends Controller
 
         $article = new NewsArticle();
         $article->news_title = $request->news_title;
+        $article->news_slug = $request->news_slug; // Le modèle générera automatiquement si vide
         $article->news_description = $request->news_description;
+        $article->news_full_content = $request->news_full_content;
         $article->news_link = $request->news_link;
         $article->news_type = $request->news_type;
         $article->news_is_active = $request->news_is_active ?? true;
@@ -74,7 +78,9 @@ class NewsController extends Controller
     {
         $request->validate([
             'news_title' => 'required|string|max:255',
+            'news_slug' => 'nullable|string|max:255|unique:news_articles,news_slug,' . $id,
             'news_description' => 'nullable|string',
+            'news_full_content' => 'nullable|string',
             'news_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'news_link' => 'nullable|url',
             'news_type' => 'required|in:' . implode(',', array_keys(NewsArticle::getTypes())),
@@ -84,7 +90,9 @@ class NewsController extends Controller
 
         $article = NewsArticle::findOrFail($id);
         $article->news_title = $request->news_title;
+        $article->news_slug = $request->news_slug; // Le modèle générera automatiquement si vide
         $article->news_description = $request->news_description;
+        $article->news_full_content = $request->news_full_content;
         $article->news_link = $request->news_link;
         $article->news_type = $request->news_type;
         $article->news_is_active = $request->news_is_active ?? true;
